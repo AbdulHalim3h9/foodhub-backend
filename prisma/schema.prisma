@@ -38,7 +38,7 @@ model User {
   reviews        Review[]
 
   @@unique([email])
-  @@map("user")
+  @@map("users")
 }
 
 model Session {
@@ -54,7 +54,7 @@ model Session {
 
   @@unique([token])
   @@index([userId])
-  @@map("session")
+  @@map("sessions")
 }
 
 model Account {
@@ -74,7 +74,7 @@ model Account {
   updatedAt             DateTime  @updatedAt
 
   @@index([userId])
-  @@map("account")
+  @@map("accounts")
 }
 
 model Verification {
@@ -86,7 +86,7 @@ model Verification {
   updatedAt  DateTime @updatedAt
 
   @@index([identifier])
-  @@map("verification")
+  @@map("verifications")
 }
 
 // FoodHub specific models
@@ -136,6 +136,9 @@ model Meal {
   ingredients String?  @db.Text
   allergens   String?  @db.Text
   prepTime    Int?     // in minutes
+  cuisine      String?
+  isVegan      Boolean?
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
