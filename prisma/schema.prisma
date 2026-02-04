@@ -22,17 +22,15 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  role          String?   @default("USER")
+  role          String?   @default("CUSTOMER")
   phone         String?
   status        String?   @default("ACTIVE")
   sessions      Session[]
   accounts      Account[]
 
-  // Additional FoodHub fields
   address      String?
   isActive     Boolean  @default(true)
 
-  // FoodHub relations
   providerProfile ProviderProfile?
   orders         Order[]
   reviews        Review[]
@@ -89,7 +87,6 @@ model Verification {
   @@map("verifications")
 }
 
-// FoodHub specific models
 model ProviderProfile {
   id          String   @id @default(cuid())
   userId      String   @unique
@@ -135,7 +132,7 @@ model Meal {
   isAvailable Boolean  @default(true)
   ingredients String?  @db.Text
   allergens   String?  @db.Text
-  prepTime    Int?     // in minutes
+  prepTime    Int?
   cuisine      String?
   isVegan      Boolean?
 
@@ -179,7 +176,7 @@ model OrderItem {
   orderId  String
   mealId   String
   quantity Int
-  price    Decimal @db.Decimal(10, 2) // price at time of order
+  price    Decimal @db.Decimal(10, 2)
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   meal  Meal  @relation(fields: [mealId], references: [id], onDelete: Cascade)
@@ -203,7 +200,6 @@ model Review {
   @@map("reviews")
 }
 
-// Enums
 enum UserRole {
   CUSTOMER
   PROVIDER

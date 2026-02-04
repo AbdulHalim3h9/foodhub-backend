@@ -3,7 +3,9 @@ import type { Application } from "express";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 // import adminRoutes from "./modules/admin/admin.routes";
-// import userRoutes from "./modules/user/user.routes";
+import { userRouter } from "./modules/user/user.routes";
+import { providerRouter } from "./modules/provider/provider.routes";
+import { categoryRouter } from "./modules/category/category.routes";
 
 const app: Application = express();
 
@@ -15,7 +17,9 @@ app.get("/", (req, res) => {
 });
 
 // app.use("/api/admin", adminRoutes);
-// app.use("/api/users", userRoutes);
+app.use("/api/user", userRouter);
+app.use("/api/provider", providerRouter);
+app.use("/api/categories", categoryRouter);
 
 
 export default app;
