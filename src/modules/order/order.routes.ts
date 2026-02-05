@@ -7,3 +7,30 @@
 
 // Admin (optional but useful)
 // GET /api/admin/orders - View all orders platform-wide
+
+import express, { Router } from 'express';
+import { orderController } from './order.controller';
+import auth, { UserRole } from '../../middlewares/auth';
+
+const router = express.Router();
+
+// Customer routes
+router.post(
+    "/",
+    auth(UserRole.CUSTOMER),
+    orderController.createOrder
+)
+
+router.get(
+    "/",
+    auth(UserRole.CUSTOMER),
+    orderController.getMyOrders
+)
+
+router.get(
+    "/:orderId",
+    auth(UserRole.CUSTOMER),
+    orderController.getOrderById
+)
+
+export const orderRouter: Router = router;
