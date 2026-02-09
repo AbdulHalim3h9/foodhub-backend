@@ -272,10 +272,94 @@ const deleteCategory = async (categoryId: string) => {
     return result;
 }
 
+const getAllCategories = async ({
+    page,
+    limit,
+    skip,
+    sortBy,
+    sortOrder,
+    search,
+    isActive,
+    providerId
+}: {
+    page: number,
+    limit: number,
+    skip: number,
+    sortBy: string,
+    sortOrder: string,
+    search?: string,
+    isActive?: string,
+    providerId?: string
+}) => {
+    const where: any = {};
+
+    // Apply filters
+    if (search) {
+        where.OR = [
+            {
+                name: {
+                    contains: search,
+                    mode: "insensitive"
+                }
+            },
+            {
+                description: {
+                    contains: search,
+                    mode: "insensitive"
+                }
+            }
+        ];
+    }
+
+    if (isActive !== undefined) {
+        where.isActive = isActive === 'true';
+    }
+
+    if (providerId) {
+        where.providerId = providerId;
+    }
+
+    const categories = await prisma.category.findMany({
+        take: limit,
+        skip,
+        where,
+        orderBy: {
+            [sortBy]: sortOrder
+        },
+        include: {
+            provider: {
+                select: {
+                    id: true,
+                    businessName: true,
+                    isActive: true
+                }
+            },
+            _count: {
+                select: {
+                    meals: true
+                }
+            }
+        }
+    });
+
+    const total = await prisma.category.count({ where });
+
+    return {
+        data: categories,
+        pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit)
+        }
+    };
+}
+
 export const adminService = {
     getAllUsers,
     updateUser,
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getAllCategories
 }

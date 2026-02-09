@@ -33,6 +33,12 @@ router.patch(
 )
 
 // Category management routes
+router.get(
+    "/categories",
+    auth(UserRole.ADMIN),
+    adminController.getAllCategories
+)
+
 router.post(
     "/categories",
     auth(UserRole.ADMIN),
