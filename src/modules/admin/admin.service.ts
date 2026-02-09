@@ -355,11 +355,112 @@ const getAllCategories = async ({
     };
 }
 
+const getAllProviders = async ({
+    page,
+    limit,
+    skip,
+    sortBy,
+    sortOrder,
+    search,
+    isActive,
+    status
+}: {
+    page: number,
+    limit: number,
+    skip: number,
+    sortBy: string,
+    sortOrder: string,
+    search?: string,
+    isActive?: string,
+    status?: string
+}) => {
+    const where: any = {};
+
+    // Apply filters
+    if (search) {
+        where.OR = [
+            {
+                businessName: {
+                    contains: search,
+                    mode: "insensitive"
+                }
+            },
+            {
+                user: {
+                    name: {
+                        contains: search,
+                        mode: "insensitive"
+                    }
+                }
+            },
+            {
+                user: {
+                    email: {
+                        contains: search,
+                        mode: "insensitive"
+                    }
+                }
+            }
+        ];
+    }
+
+    if (isActive !== undefined) {
+        where.isActive = isActive === 'true';
+    }
+
+    if (status) {
+        where.user = {
+            status: status
+        };
+    }
+
+    const providers = await prisma.providerProfile.findMany({
+        take: limit,
+        skip,
+        where,
+        orderBy: {
+            [sortBy]: sortOrder
+        },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    image: true,
+                    status: true,
+                    isActive: true,
+                    createdAt: true
+                }
+            },
+            _count: {
+                select: {
+                    meals: true,
+                    categories: true
+                }
+            }
+        }
+    });
+
+    const total = await prisma.providerProfile.count({ where });
+
+    return {
+        data: providers,
+        pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit)
+        }
+    };
+}
+
 export const adminService = {
     getAllUsers,
     updateUser,
     createCategory,
     updateCategory,
     deleteCategory,
-    getAllCategories
+    getAllCategories,
+    getAllProviders
 }

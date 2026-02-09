@@ -174,11 +174,47 @@ const getAllCategories = async (req: Request, res: Response, next: NextFunction)
     }
 }
 
+const getAllProviders = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({
+                error: "Unauthorized!",
+            })
+        }
+
+        const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query)
+        
+        // Extract additional filters
+        const { search, isActive, status } = req.query as {
+            search?: string;
+            isActive?: string;
+            status?: string;
+        };
+
+        const result = await adminService.getAllProviders({
+            page,
+            limit,
+            skip,
+            sortBy,
+            sortOrder,
+            ...(search && { search }),
+            ...(isActive && { isActive }),
+            ...(status && { status })
+        })
+        
+        res.status(200).json(result)
+    } catch (e) {
+        next(e)
+    }
+}
+
 export const adminController = {
     getAllUsers,
     updateUser,
     createCategory,
     updateCategory,
     deleteCategory,
-    getAllCategories
+    getAllCategories,
+    getAllProviders
 }

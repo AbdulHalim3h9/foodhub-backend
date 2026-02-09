@@ -32,6 +32,13 @@ router.patch(
     adminController.updateUser
 )
 
+// Provider management routes
+router.get(
+    "/providers",
+    auth(UserRole.ADMIN),
+    adminController.getAllProviders
+)
+
 // Category management routes
 router.get(
     "/categories",
