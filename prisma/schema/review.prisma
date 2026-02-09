@@ -1,0 +1,30 @@
+model Review {
+  id        String   @id @default(cuid())
+  customerId String
+  mealId    String
+  rating    Int      // 1-5 stars
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer User @relation(fields: [customerId], references: [id])
+  meal     Meal @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@unique([customerId, mealId]) // one review per customer per meal
+  @@map("reviews")
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  mealId    String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meal Meal @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, mealId])
+  @@map("cart_items")
+}
