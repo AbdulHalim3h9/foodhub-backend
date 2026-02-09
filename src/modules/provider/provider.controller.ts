@@ -78,7 +78,108 @@ const createMenuItem = async (req: Request, res: Response, next: NextFunction) =
     }
 }
 
+const getProviderById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { providerId } = req.params;
+        if (!providerId || typeof providerId !== 'string') {
+            return res.status(400).json({
+                error: "Valid provider ID is required!"
+            })
+        }
+
+        const result = await providerService.getProviderById(providerId)
+        res.status(200).json(result)
+    } catch (e) {
+        next(e)
+    }
+}
+
+const updateMenuItem = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({
+                error: "Unauthorized!",
+            })
+        }
+
+        const { mealId } = req.params;
+        if (!mealId || typeof mealId !== 'string') {
+            return res.status(400).json({
+                error: "Valid meal ID is required!"
+            })
+        }
+
+        // Get provider profile for this user
+        const providerProfile = await prisma.providerProfile.findFirst({
+            where: {
+                userId: user.id,
+                isActive: true
+            }
+        });
+
+        if (!providerProfile) {
+            return res.status(403).json({
+                error: "Provider profile not found or inactive!",
+            })
+        }
+
+        const result = await providerService.updateMenuItem(providerProfile.id, mealId, req.body)
+        res.status(200).json({
+            success: true,
+            message: "Menu item updated successfully!",
+            data: result
+        })
+    } catch (e) {
+        next(e)
+    }
+}
+
+const deleteMenuItem = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({
+                error: "Unauthorized!",
+            })
+        }
+
+        const { mealId } = req.params;
+        if (!mealId || typeof mealId !== 'string') {
+            return res.status(400).json({
+                error: "Valid meal ID is required!"
+            })
+        }
+
+        // Get provider profile for this user
+        const providerProfile = await prisma.providerProfile.findFirst({
+            where: {
+                userId: user.id,
+                isActive: true
+            }
+        });
+
+        if (!providerProfile) {
+            return res.status(403).json({
+                error: "Provider profile not found or inactive!",
+            })
+        }
+
+        const result = await providerService.deleteMenuItem(providerProfile.id, mealId)
+        res.status(200).json({
+            success: true,
+            message: "Menu item deleted successfully!",
+            data: result
+        })
+    } catch (e) {
+        next(e)
+    }
+}
+
 export const providerController = {
     getAllProviders,
-    createMenuItem
+    createMenuItem,
+    getProviderById,
+    updateMenuItem,
+    deleteMenuItem
 }

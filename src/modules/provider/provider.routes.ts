@@ -24,10 +24,27 @@ router.get(
     providerController.getAllProviders
 )
 
+router.get(
+    "/:providerId",
+    providerController.getProviderById
+)
+
 router.post(
     "/menu",
     auth(UserRole.PROVIDER),
     providerController.createMenuItem
+)
+
+router.put(
+    "/menu/:mealId",
+    auth(UserRole.PROVIDER),
+    providerController.updateMenuItem
+)
+
+router.delete(
+    "/menu/:mealId",
+    auth(UserRole.PROVIDER),
+    providerController.deleteMenuItem
 )
 
 export const providerRouter: Router = router;

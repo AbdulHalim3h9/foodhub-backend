@@ -9,6 +9,7 @@ import { categoryRouter } from "./modules/category/category.routes";
 import { orderRouter } from "./modules/order/order.routes";
 import { cartRouter } from "./modules/cart/cart.routes";
 import { mealRouter } from "./modules/meal/meal.routes";
+import { reviewRouter } from "./modules/review/review.routes";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 
 const app: Application = express();
@@ -27,6 +28,7 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/meals", mealRouter);
+app.use("/api", reviewRouter); // Review routes have their own prefix
 
 // Global error handler (must be last)
 app.use(globalErrorHandler);
