@@ -32,4 +32,23 @@ router.patch(
     adminController.updateUser
 )
 
+// Category management routes
+router.post(
+    "/categories",
+    auth(UserRole.ADMIN),
+    adminController.createCategory
+)
+
+router.put(
+    "/categories/:categoryId",
+    auth(UserRole.ADMIN),
+    adminController.updateCategory
+)
+
+router.delete(
+    "/categories/:categoryId",
+    auth(UserRole.ADMIN),
+    adminController.deleteCategory
+)
+
 export const adminRouter: Router = router;

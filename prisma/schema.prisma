@@ -34,6 +34,7 @@ model User {
   providerProfile ProviderProfile?
   orders         Order[]
   reviews        Review[]
+  cartItems      CartItem[]
 
   @@unique([email])
   @@map("users")
@@ -145,6 +146,7 @@ model Meal {
   provider   ProviderProfile @relation(fields: [providerId], references: [id], onDelete: Cascade)
   orderItems  OrderItem[]
   reviews     Review[]
+  cartItems   CartItem[]
 
   @@map("meals")
 }
@@ -198,6 +200,21 @@ model Review {
 
   @@unique([customerId, mealId]) // one review per customer per meal
   @@map("reviews")
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  mealId    String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meal Meal @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, mealId])
+  @@map("cart_items")
 }
 
 enum UserRole {
