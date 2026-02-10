@@ -6,7 +6,7 @@ async function main() {
     try {
 
         app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+            console.log(`🍱 FoodHub Backend is running on http://localhost:${PORT}`);
         });
     } catch (error) {
         console.error("An error occurred:", error);
