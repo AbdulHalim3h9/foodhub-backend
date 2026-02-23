@@ -4,29 +4,37 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
 
 export const auth = betterAuth({
-      trustedOrigins: [process.env.APP_URL!],
-      database: prismaAdapter(prisma, {
-            provider: "postgresql", // or "mysql", "postgresql", ...etc
-      }),
-      user: {
-            additionalFields: {
-                  role: {
-                        type: "string",
-                        defaultValue: "USER",
-                        required: false
-                  },
-                  phone: {
-                        type: "string",
-                        required: false
-                  },
-                  status: {
-                        type: "string",
-                        defaultValue: "ACTIVE",
-                        required: false
-                  }
-            }
+  trustedOrigins: ["http://localhost:3000", "https://localhost:3000"],
+  database: prismaAdapter(prisma, {
+    provider: "postgresql", // or "mysql", "postgresql", ...etc
+  }),
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        defaultValue: "USER",
+        required: false,
       },
-      emailAndPassword: {
-            enabled: true,
+      phone: {
+        type: "string",
+        required: false,
       },
+      status: {
+        type: "string",
+        defaultValue: "ACTIVE",
+        required: false,
+      },
+    },
+  },
+  emailAndPassword: {
+    enabled: true,
+  },
+  // session: {
+  //   expiresIn: 60 * 60 * 24 * 30, // 30 days
+  //   updateAge: 60 * 60 * 24, // 1 day
+  //   cookieCache: {
+  //     enabled: true,
+  //     maxAge: 300,
+  //   },
+  // },
 });

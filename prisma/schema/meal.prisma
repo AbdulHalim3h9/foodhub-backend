@@ -10,6 +10,7 @@ model Meal {
   prepTime    Int?
   cuisine      String?
   isVegan      Boolean?
+  isFeatured   Boolean  @default(false)
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
