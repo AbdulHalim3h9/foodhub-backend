@@ -455,12 +455,176 @@ const getAllProviders = async ({
     };
 }
 
+const deleteUser = async (userId: string) => {
+    console.log("Backend: Attempting to delete user:", userId);
+    
+    // Check if user exists
+    const existingUser = await prisma.user.findUnique({
+        where: { id: userId }
+    });
+
+    if (!existingUser) {
+        console.log("Backend: User not found:", userId);
+        throw new Error("User not found!");
+    }
+
+    console.log("Backend: User exists:", existingUser.name);
+
+    // Check if user has associated orders
+    const ordersCount = await prisma.order.count({
+        where: { 
+            customerId: userId 
+        }
+    });
+
+    console.log("Backend: User has", ordersCount, "orders");
+
+    if (ordersCount > 0) {
+        console.log("Backend: Cannot delete user with orders");
+        throw new Error("Cannot delete user with associated orders!");
+    }
+
+    // Delete user
+    console.log("Backend: Deleting user record:", userId);
+    const result = await prisma.user.delete({
+        where: { id: userId }
+    });
+
+    console.log("Backend: User deleted successfully:", userId);
+    return result;
+}
+
+const getAllOrders = async ({
+    limit,
+    skip,
+    sortBy,
+    sortOrder,
+    search,
+    status,
+    customerId,
+    providerId
+}: {
+    limit: number;
+    skip: number;
+    sortBy: string;
+    sortOrder: string;
+    search?: string;
+    status?: string;
+    customerId?: string;
+    providerId?: string;
+}) => {
+    const where: any = {};
+
+    // Apply filters
+    if (search) {
+        where.OR = [
+            { id: { contains: search, mode: 'insensitive' } },
+            { customer: { name: { contains: search, mode: 'insensitive' } } },
+            { customer: { email: { contains: search, mode: 'insensitive' } } },
+            { provider: { name: { contains: search, mode: 'insensitive' } } },
+        ];
+    }
+
+    if (status) {
+        where.status = status;
+    }
+
+    if (customerId) {
+        where.customerId = customerId;
+    }
+
+    if (providerId) {
+        where.providerId = providerId;
+    }
+
+    const orders = await prisma.order.findMany({
+        take: limit,
+        skip,
+        where,
+        orderBy: {
+            [sortBy]: sortOrder
+        },
+        include: {
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                }
+            },
+            provider: {
+                select: {
+                    id: true,
+                    businessName: true,
+                    phone: true,
+                    user: {
+                        select: {
+                            email: true,
+                        }
+                    }
+                }
+            },
+            items: {
+                include: {
+                    meal: {
+                        select: {
+                            id: true,
+                            name: true,
+                            price: true,
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const total = await prisma.order.count({ where });
+
+    return {
+        data: orders,
+        pagination: {
+            total,
+            page: Math.floor(skip / limit) + 1,
+            limit,
+            totalPages: Math.ceil(total / limit)
+        }
+    };
+}
+
+const updateOrderStatus = async (orderId: string, status: string) => {
+    // Check if order exists
+    const existingOrder = await prisma.order.findUnique({
+        where: { id: orderId }
+    });
+
+    if (!existingOrder) {
+        throw new Error("Order not found!");
+    }
+
+    // Validate status
+    const validStatuses = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED'];
+    if (!validStatuses.includes(status)) {
+        throw new Error("Invalid status! Must be one of: PENDING, CONFIRMED, PREPARING, READY, OUT_FOR_DELIVERY, DELIVERED, CANCELLED");
+    }
+
+    const result = await prisma.order.update({
+        where: { id: orderId },
+        data: { status: status as any }
+    });
+
+    return result;
+}
+
 export const adminService = {
     getAllUsers,
     updateUser,
+    deleteUser,
+    getAllOrders,
+    updateOrderStatus,
     createCategory,
     updateCategory,
     deleteCategory,
+    getAllProviders,
     getAllCategories,
-    getAllProviders
-}
+};

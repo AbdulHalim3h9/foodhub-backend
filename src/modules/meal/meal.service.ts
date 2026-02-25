@@ -12,7 +12,6 @@ const getAllMeals = async ({
   priceMax,
   search,
   cuisine,
-  isVegan,
 }: {
   page: number;
   limit: number;
@@ -24,11 +23,8 @@ const getAllMeals = async ({
   priceMax?: string;
   search?: string;
   cuisine?: string;
-  isVegan?: string;
 }) => {
-  const where: any = {
-    isAvailable: true,
-  };
+  const where: any = {};
 
   // Apply filters
   if (category) {
@@ -57,10 +53,6 @@ const getAllMeals = async ({
 
   if (cuisine) {
     where.cuisine = { contains: cuisine, mode: "insensitive" };
-  }
-
-  if (isVegan !== undefined) {
-    where.isVegan = isVegan === "true";
   }
 
   const meals = await prisma.meal.findMany({
@@ -135,7 +127,6 @@ const getMealById = async (mealId: string) => {
   const meal = await prisma.meal.findFirst({
     where: {
       id: mealId,
-      isAvailable: true,
     },
     include: {
       category: {

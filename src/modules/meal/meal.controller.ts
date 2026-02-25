@@ -10,15 +10,13 @@ const getAllMeals = async (req: Request, res: Response, next: NextFunction) => {
     );
 
     // Extract additional filters
-    const { category, priceMin, priceMax, search, cuisine, isVegan } =
-      req.query as {
-        category?: string;
-        priceMin?: string;
-        priceMax?: string;
-        search?: string;
-        cuisine?: string;
-        isVegan?: string;
-      };
+    const { category, priceMin, priceMax, search, cuisine } = req.query as {
+      category?: string;
+      priceMin?: string;
+      priceMax?: string;
+      search?: string;
+      cuisine?: string;
+    };
 
     const result = await mealService.getAllMeals({
       page,
@@ -31,7 +29,6 @@ const getAllMeals = async (req: Request, res: Response, next: NextFunction) => {
       ...(priceMax && { priceMax }),
       ...(search && { search }),
       ...(cuisine && { cuisine }),
-      ...(isVegan && { isVegan }),
     });
 
     res.status(200).json(result);

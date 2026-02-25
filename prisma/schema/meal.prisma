@@ -4,12 +4,11 @@ model Meal {
   description String?
   price       Decimal  @db.Decimal(10, 2)
   image       String?
-  isAvailable Boolean  @default(true)
   ingredients String?  @db.Text
   allergens   String?  @db.Text
   prepTime    Int?
-  cuisine      String?
-  isVegan      Boolean?
+  cuisineId    String?
+  cuisine      Cuisine? @relation(fields: [cuisineId], references: [id], onDelete: SetNull)
   isFeatured   Boolean  @default(false)
 
   createdAt   DateTime @default(now())

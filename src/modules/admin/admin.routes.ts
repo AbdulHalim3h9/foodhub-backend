@@ -32,6 +32,31 @@ router.patch(
     adminController.updateUser
 )
 
+router.patch(
+    "/users/:userId/status",
+    auth(UserRole.ADMIN),
+    adminController.updateUserStatus
+)
+
+router.delete(
+    "/users/:userId",
+    auth(UserRole.ADMIN),
+    adminController.deleteUser
+)
+
+// Order management routes
+router.get(
+    "/orders",
+    auth(UserRole.ADMIN),
+    adminController.getAllOrders
+)
+
+router.patch(
+    "/orders/:orderId/status",
+    auth(UserRole.ADMIN),
+    adminController.updateOrderStatus
+)
+
 // Provider management routes
 router.get(
     "/providers",
