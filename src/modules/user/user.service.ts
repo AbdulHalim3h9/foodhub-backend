@@ -4,7 +4,7 @@ const getMyProfile = async (userId: string) => {
     const result = await prisma.user.findUnique({
         where: {
             id: userId,
-            status: "ACTIVE"
+            isActive: true
         },
         select: {
             id: true,
@@ -86,7 +86,51 @@ const applyForProvider = async (userId: string, providerData: {
     return result;
 }
 
+const updateProfile = async (userId: string, updateData: {
+    name?: string;
+    phone?: string;
+    address?: string;
+    image?: string;
+}) => {
+    const result = await prisma.user.update({
+        where: {
+            id: userId,
+            isActive: true
+        },
+        data: updateData,
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            phone: true,
+            address: true,
+            role: true,
+            createdAt: true,
+            updatedAt: true,
+            providerProfile: {
+                select: {
+                    id: true,
+                    businessName: true,
+                    description: true,
+                    logo: true,
+                    phone: true,
+                    address: true,
+                    isActive: true
+                }
+            }
+        }
+    });
+
+    if (!result) {
+        throw new Error("User not found!");
+    }
+
+    return result;
+}
+
 export const userService = {
     getMyProfile,
+    updateProfile,
     applyForProvider
 }

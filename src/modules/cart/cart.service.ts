@@ -6,7 +6,7 @@ const getCart = async (userId: string) => {
     const user = await prisma.user.findUnique({
         where: {
             id: userId,
-            status: "ACTIVE"
+            isActive: true
         }
     });
 
@@ -72,7 +72,7 @@ const addItemToCart = async (userId: string, itemData: {
     const user = await prisma.user.findUnique({
         where: {
             id: userId,
-            status: "ACTIVE"
+            isActive: true
         }
     });
 

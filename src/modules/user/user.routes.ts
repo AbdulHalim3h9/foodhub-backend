@@ -9,6 +9,11 @@ router.get(
     auth(UserRole.CUSTOMER, UserRole.PROVIDER, UserRole.ADMIN),
     userController.getMyProfile
 )
+router.put(
+    "/me",
+    auth(UserRole.CUSTOMER, UserRole.PROVIDER, UserRole.ADMIN),
+    userController.updateProfile
+)
 //add admin approval
 router.post(
     "/apply-provider",

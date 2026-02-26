@@ -14,7 +14,7 @@ const createOrder = async (userId: string, orderData: {
     const user = await prisma.user.findUnique({
         where: {
             id: userId,
-            status: "ACTIVE"
+            isActive: true
         }
     });
 
@@ -27,7 +27,9 @@ const createOrder = async (userId: string, orderData: {
         throw new Error("Order must contain at least one item!");
     }
 
-    const mealIds = orderData.items.map(item => item.mealId);
+    // Get unique meal IDs to handle multiple quantities of same meal
+    const mealIds = [...new Set(orderData.items.map(item => item.mealId))];
+    
     const meals = await prisma.meal.findMany({
         where: {
             id: { in: mealIds },
@@ -37,6 +39,12 @@ const createOrder = async (userId: string, orderData: {
 
     if (meals.length !== mealIds.length) {
         throw new Error("Some meals are not available!");
+    }
+
+    // Validate all meals are from same provider
+    const providerIds = [...new Set(meals.map(meal => meal.providerId))];
+    if (providerIds.length > 1) {
+        throw new Error("All meals must be from same provider!");
     }
 
     // Calculate total amount
@@ -64,7 +72,7 @@ const createOrder = async (userId: string, orderData: {
             data: {
                 orderNumber,
                 customerId: userId,
-                providerId: meals[0]!.providerId, // Assuming all meals from same provider
+                providerId: providerIds[0]!, // All meals from same provider
                 status: "PENDING",
                 totalAmount,
                 deliveryAddress: orderData.deliveryAddress,
@@ -88,7 +96,7 @@ const createOrder = async (userId: string, orderData: {
     });
 
     return result;
-}
+};
 
 const getMyOrders = async (userId: string, {
     page,
@@ -199,8 +207,133 @@ const getOrderById = async (orderId: string, userId: string) => {
     return order;
 }
 
+// Admin order management methods
+const getAllOrders = async ({
+    limit,
+    skip,
+    sortBy,
+    sortOrder,
+    search,
+    status,
+    customerId,
+    providerId
+}: {
+    limit: number;
+    skip: number;
+    sortBy: string;
+    sortOrder: string;
+    search?: string;
+    status?: string;
+    customerId?: string;
+    providerId?: string;
+}) => {
+    const where: any = {};
+
+    // Apply filters
+    if (search) {
+        where.OR = [
+            { id: { contains: search, mode: 'insensitive' } },
+            { customer: { name: { contains: search, mode: 'insensitive' } } },
+            { customer: { email: { contains: search, mode: 'insensitive' } } },
+            { provider: { name: { contains: search, mode: 'insensitive' } } },
+        ];
+    }
+
+    if (status) {
+        where.status = status;
+    }
+
+    if (customerId) {
+        where.customerId = customerId;
+    }
+
+    if (providerId) {
+        where.providerId = providerId;
+    }
+
+    const orders = await prisma.order.findMany({
+        take: limit,
+        skip,
+        where,
+        orderBy: {
+            [sortBy]: sortOrder
+        },
+        include: {
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                }
+            },
+            provider: {
+                select: {
+                    id: true,
+                    businessName: true,
+                    phone: true,
+                    user: {
+                        select: {
+                            email: true,
+                        }
+                    }
+                }
+            },
+            items: {
+                include: {
+                    meal: {
+                        select: {
+                            id: true,
+                            name: true,
+                            price: true,
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const total = await prisma.order.count({ where });
+
+    return {
+        data: orders,
+        pagination: {
+            total,
+            page: Math.floor(skip / limit) + 1,
+            limit,
+            totalPages: Math.ceil(total / limit)
+        }
+    };
+}
+
+const updateOrderStatus = async (orderId: string, status: string) => {
+    // Check if order exists
+    const existingOrder = await prisma.order.findUnique({
+        where: { id: orderId }
+    });
+
+    if (!existingOrder) {
+        throw new Error("Order not found!");
+    }
+
+    // Validate status
+    const validStatuses = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED'];
+    if (!validStatuses.includes(status)) {
+        throw new Error("Invalid status! Must be one of: PENDING, CONFIRMED, PREPARING, READY, OUT_FOR_DELIVERY, DELIVERED, CANCELLED");
+    }
+
+    const result = await prisma.order.update({
+        where: { id: orderId },
+        data: { status: status as any }
+    });
+
+    return result;
+}
+
 export const orderService = {
     createOrder,
     getMyOrders,
-    getOrderById
+    getOrderById,
+    getAllOrders,
+    updateOrderStatus
 }

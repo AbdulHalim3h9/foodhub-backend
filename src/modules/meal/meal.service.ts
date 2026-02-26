@@ -55,36 +55,35 @@ const getAllMeals = async ({
     where.cuisine = { contains: cuisine, mode: "insensitive" };
   }
 
-  const meals = await prisma.meal.findMany({
-    take: limit,
-    skip,
-    where,
-    orderBy: {
-      [sortBy]: sortOrder,
-    },
-    include: {
-      category: {
-        select: {
-          id: true,
-          name: true,
+  // Only show available meals
+  where.isAvailable = true;
+
+  const [meals, total] = await Promise.all([
+    prisma.meal.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: {
+        [sortBy]: sortOrder,
+      },
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        provider: {
+          select: {
+            id: true,
+            businessName: true,
+            logo: true,
+          },
         },
       },
-      provider: {
-        select: {
-          id: true,
-          businessName: true,
-          phone: true,
-          address: true,
-          isActive: true,
-        },
-      },
-      _count: {
-        select: {
-          reviews: true,
-        },
-      },
-    },
-  });
+    }),
+    prisma.meal.count({ where }),
+  ]);
 
   // Calculate average rating for each meal
   const mealsWithRatings = await Promise.all(
@@ -110,8 +109,6 @@ const getAllMeals = async ({
     }),
   );
 
-  const total = await prisma.meal.count({ where });
-
   return {
     data: mealsWithRatings,
     pagination: {
@@ -124,10 +121,8 @@ const getAllMeals = async ({
 };
 
 const getMealById = async (mealId: string) => {
-  const meal = await prisma.meal.findFirst({
-    where: {
-      id: mealId,
-    },
+  const meal = await prisma.meal.findUnique({
+    where: { id: mealId, isAvailable: true },
     include: {
       category: {
         select: {
@@ -210,7 +205,163 @@ const getMealById = async (mealId: string) => {
   };
 };
 
+const createMeal = async (mealData: {
+  name: string;
+  description: string | null;
+  price: number;
+  image: string | null;
+  ingredients: string | null;
+  allergens: string | null;
+  prepTime: number | null;
+  cuisineId: string | null;
+  isFeatured: boolean;
+  categoryId: string;
+  providerId: string;
+}) => {
+  // Verify category exists
+  const category = await prisma.category.findUnique({
+    where: { id: mealData.categoryId },
+  });
+
+  if (!category) {
+    throw new Error("Category not found!");
+  }
+
+  // Verify cuisine exists if provided
+  if (mealData.cuisineId) {
+    const cuisine = await prisma.cuisine.findUnique({
+      where: { id: mealData.cuisineId },
+    });
+
+    if (!cuisine) {
+      throw new Error("Cuisine not found!");
+    }
+  }
+
+  // Create meal
+  const meal = await prisma.meal.create({
+    data: {
+      name: mealData.name,
+      description: mealData.description,
+      price: mealData.price,
+      image: mealData.image,
+      ingredients: mealData.ingredients,
+      allergens: mealData.allergens,
+      prepTime: mealData.prepTime,
+      cuisineId: mealData.cuisineId,
+      isFeatured: mealData.isFeatured,
+      isAvailable: true, // Default to available
+      categoryId: mealData.categoryId,
+      providerId: mealData.providerId,
+    },
+    include: {
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      provider: {
+        select: {
+          id: true,
+          businessName: true,
+          logo: true,
+        },
+      },
+    },
+  });
+
+  return meal;
+};
+
+const updateMeal = async (
+  mealId: string,
+  updateData: any,
+  providerProfileId: string
+) => {
+  // First check if meal exists and user owns it
+  const existingMeal = await prisma.meal.findUnique({
+    where: { id: mealId },
+  });
+
+  if (!existingMeal) {
+    throw new Error("Meal not found!");
+  }
+
+  if (existingMeal.providerId !== providerProfileId) {
+    throw new Error("You can only update your own meals!");
+  }
+
+  // If categoryId is provided, verify it exists
+  if (updateData.categoryId) {
+    const category = await prisma.category.findUnique({
+      where: { id: updateData.categoryId },
+    });
+
+    if (!category) {
+      throw new Error("Category not found!");
+    }
+  }
+
+  // Update meal
+  const updatedMeal = await prisma.meal.update({
+    where: { id: mealId },
+    data: updateData,
+    include: {
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      provider: {
+        select: {
+          id: true,
+          businessName: true,
+          logo: true,
+        },
+      },
+    },
+  });
+
+  return updatedMeal;
+};
+
+const deleteMeal = async (mealId: string, providerProfileId: string) => {
+  // First check if meal exists and user owns it
+  const existingMeal = await prisma.meal.findUnique({
+    where: { id: mealId },
+  });
+
+  if (!existingMeal) {
+    throw new Error("Meal not found!");
+  }
+
+  if (existingMeal.providerId !== providerProfileId) {
+    throw new Error("You can only delete your own meals!");
+  }
+
+  // Check if meal has any orders
+  const orderCount = await prisma.orderItem.count({
+    where: { mealId },
+  });
+
+  if (orderCount > 0) {
+    throw new Error("Cannot delete meal that has been ordered!");
+  }
+
+  // Delete meal
+  await prisma.meal.delete({
+    where: { id: mealId },
+  });
+
+  return { message: "Meal deleted successfully!" };
+};
+
 export const mealService = {
   getAllMeals,
   getMealById,
+  createMeal,
+  updateMeal,
+  deleteMeal,
 };

@@ -3,7 +3,6 @@
 // GET /api/admin/users - List all users
 // PATCH /api/admin/users/:id - Update user
 
-// GET /api/admin/orders - All orders overview
 // GET /api/admin/providers - List providers + status
 
 // GET /api/admin/categories - List all categories
@@ -42,19 +41,6 @@ router.delete(
     "/users/:userId",
     auth(UserRole.ADMIN),
     adminController.deleteUser
-)
-
-// Order management routes
-router.get(
-    "/orders",
-    auth(UserRole.ADMIN),
-    adminController.getAllOrders
-)
-
-router.patch(
-    "/orders/:orderId/status",
-    auth(UserRole.ADMIN),
-    adminController.updateOrderStatus
 )
 
 // Provider management routes
