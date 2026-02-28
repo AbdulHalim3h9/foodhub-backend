@@ -22,10 +22,43 @@ export const auth = betterAuth({
       },
       status: {
         type: "string",
-        defaultValue: "active",
+        defaultValue: "ACTIVE",
         required: false,
       },
       address: {
+        type: "string",
+        required: false,
+      },
+      // Provider-specific fields
+      businessName: {
+        type: "string",
+        required: false,
+      },
+      businessDescription: {
+        type: "string",
+        required: false,
+      },
+      businessPhone: {
+        type: "string",
+        required: false,
+      },
+      businessAddress: {
+        type: "string",
+        required: false,
+      },
+      website: {
+        type: "string",
+        required: false,
+      },
+      cuisine: {
+        type: "string",
+        required: false,
+      },
+      deliveryRadius: {
+        type: "number",
+        required: false,
+      },
+      openingHours: {
         type: "string",
         required: false,
       },
@@ -50,6 +83,7 @@ export const auth = betterAuth({
           name: user.name,
           email: user.email,
           role: (user as any).role,
+          emailVerified: (user as any).emailVerified,
         },
         session,
       };

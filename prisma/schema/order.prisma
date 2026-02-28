@@ -3,11 +3,14 @@ model Order {
   orderNumber   String      @unique
   customerId    String
   providerId    String
+  mealId        String      // Which meal (only one type)
+  quantity      Int         // How many of that meal
+  pricePerItem  Decimal     @db.Decimal(10, 2)  // Price per single item
+  totalAmount   Decimal     @db.Decimal(10, 2)  // quantity × pricePerItem
   status        OrderStatus @default(PENDING)
-  totalAmount   Decimal     @db.Decimal(10, 2)
   deliveryAddress String
   deliveryPhone   String
-  specialInstructions String? @db.Text
+  specialInstructions String?
   estimatedDeliveryTime DateTime?
   actualDeliveryTime    DateTime?
   createdAt     DateTime    @default(now())
@@ -15,20 +18,7 @@ model Order {
 
   customer User           @relation(fields: [customerId], references: [id])
   provider ProviderProfile @relation(fields: [providerId], references: [id])
-  items    OrderItem[]
+  meal     Meal           @relation(fields: [mealId], references: [id])
 
   @@map("orders")
-}
-
-model OrderItem {
-  id       String @id @default(cuid())
-  orderId  String
-  mealId   String
-  quantity Int
-  price    Decimal @db.Decimal(10, 2)
-
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  meal  Meal  @relation(fields: [mealId], references: [id], onDelete: Cascade)
-
-  @@map("order_items")
 }

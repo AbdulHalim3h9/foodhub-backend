@@ -71,6 +71,54 @@ const getOrderById = async (req: Request, res: Response, next: NextFunction) => 
     }
 }
 
+const getProviderOrders = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({
+                error: "Unauthorized!",
+            })
+        }
+
+        // Get provider profile for this user
+        const { prisma } = await import("../../lib/prisma");
+        const providerProfile = await prisma.providerProfile.findUnique({
+            where: { userId: user.id },
+        });
+
+        console.log(`🔍 [PROVIDER ORDERS] User ID: ${user.id}`);
+        console.log(`🔍 [PROVIDER ORDERS] Provider profile:`, providerProfile);
+
+        if (!providerProfile) {
+            return res.status(403).json({
+                error: "Provider profile not found!",
+            });
+        }
+
+        const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query)
+        
+        // Extract status filter
+        const { status } = req.query as {
+            status?: string;
+        }
+
+        const result = await orderService.getProviderOrders(providerProfile.id, {
+            page, 
+            limit, 
+            skip, 
+            sortBy, 
+            sortOrder,
+            ...(status && { status })
+        })
+        
+        console.log(`🔍 [PROVIDER ORDERS] Final result:`, result);
+        
+        res.status(200).json(result)
+    } catch (e) {
+        next(e)
+    }
+}
+
 // Admin order management methods
 const getAllOrders = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -145,6 +193,7 @@ const updateOrderStatus = async (req: Request, res: Response, next: NextFunction
 export const orderController = {
     createOrder,
     getMyOrders,
+    getProviderOrders,
     getOrderById,
     getAllOrders,
     updateOrderStatus

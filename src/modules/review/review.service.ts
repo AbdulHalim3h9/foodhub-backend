@@ -16,16 +16,15 @@ const getMealReviews = async ({
     sortBy: string;
     sortOrder: string;
 }) => {
-    // Check if meal exists and is available
+    // Check if meal exists
     const meal = await prisma.meal.findFirst({
         where: {
-            id: mealId,
-            isAvailable: true
+            id: mealId
         }
     });
 
     if (!meal) {
-        throw new Error("Meal not found or not available!");
+        throw new Error("Meal not found!");
     }
 
     const reviews = await prisma.review.findMany({
@@ -74,33 +73,30 @@ const createReview = async (customerId: string, mealId: string, reviewData: {
         throw new Error("Rating must be between 1 and 5!");
     }
 
-    // Check if meal exists and is available
+    // Check if meal exists
     const meal = await prisma.meal.findFirst({
         where: {
-            id: mealId,
-            isAvailable: true
+            id: mealId
         }
     });
 
     if (!meal) {
-        throw new Error("Meal not found or not available!");
+        throw new Error("Meal not found!");
     }
 
     // Check if customer has ordered this meal and the order is delivered
-    const orderItem = await prisma.orderItem.findFirst({
+    const order = await prisma.order.findFirst({
         where: {
             mealId: mealId,
-            order: {
-                customerId: customerId,
-                status: "DELIVERED"
-            }
+            customerId: customerId,
+            status: "DELIVERED"
         },
         include: {
-            order: true
+            customer: true
         }
     });
 
-    if (!orderItem) {
+    if (!order) {
         throw new Error("You can only review meals from delivered orders!");
     }
 
@@ -129,6 +125,12 @@ const createReview = async (customerId: string, mealId: string, reviewData: {
                     id: true,
                     name: true,
                     image: true
+                }
+            },
+            meal: {
+                select: {
+                    id: true,
+                    name: true
                 }
             }
         }

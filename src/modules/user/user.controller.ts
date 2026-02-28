@@ -36,6 +36,33 @@ const applyForProvider = async (req: Request, res: Response, next: NextFunction)
     }
 }
 
+const updateProviderProfile = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({
+                error: "Unauthorized!",
+            })
+        }
+        
+        console.log("🔧 [USER CONTROLLER] Updating provider profile for user:", user.email);
+        console.log("📝 [USER CONTROLLER] Request body:", req.body);
+        
+        const result = await userService.updateProviderProfile(user.id as string, req.body)
+        
+        console.log("✅ [USER CONTROLLER] Provider profile updated successfully");
+        
+        res.status(200).json({
+            success: true,
+            message: "Provider profile updated successfully!",
+            data: result
+        })
+    } catch (e) {
+        console.error("💥 [USER CONTROLLER] Error updating provider profile:", e);
+        next(e)
+    }
+}
+
 const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user;
@@ -59,5 +86,6 @@ const updateProfile = async (req: Request, res: Response, next: NextFunction) =>
 export const userController = {
     getMyProfile,
     updateProfile,
+    updateProviderProfile,
     applyForProvider
 }

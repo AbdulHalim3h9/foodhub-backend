@@ -19,6 +19,11 @@ import auth, { UserRole } from '../../middlewares/auth';
 
 const router = express.Router();
 
+router.post(
+    "/profile",
+    providerController.createProviderProfile
+)
+
 router.get(
     "/",
     providerController.getAllProviders

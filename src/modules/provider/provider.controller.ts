@@ -4,6 +4,46 @@ import { providerService } from "./provider.service";
 import { prisma } from "../../lib/prisma";
 import paginationSortingHelper from "../../helpers/paginationSortingHelper";
 
+const createProviderProfile = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { userId, businessName, description, phone, address, website, cuisine, deliveryRadius, openingHours } = req.body;
+
+        if (!userId || !businessName || !phone || !address) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing required fields: userId, businessName, phone, address"
+            });
+        }
+
+        const result = await providerService.createProviderProfile({
+            userId,
+            businessName,
+            description,
+            phone,
+            address,
+            website,
+            cuisine,
+            deliveryRadius,
+            openingHours
+        });
+
+        if (!result.success) {
+            return res.status(500).json({
+                success: false,
+                message: result.error
+            });
+        }
+
+        res.status(201).json({
+            success: true,
+            data: result.data,
+            message: "Provider profile created successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getAllProviders = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { search } = req.query
@@ -177,6 +217,7 @@ const deleteMenuItem = async (req: Request, res: Response, next: NextFunction) =
 }
 
 export const providerController = {
+    createProviderProfile,
     getAllProviders,
     createMenuItem,
     getProviderById,

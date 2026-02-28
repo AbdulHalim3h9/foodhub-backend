@@ -16,7 +16,7 @@ const getAllCategories = async ({
     sortBy: string,
     sortOrder: string,
     search?: string,
-    isActive?: string
+    isActive?: boolean
 }) => {
     const where: any = {};
 
@@ -39,7 +39,7 @@ const getAllCategories = async ({
     }
 
     if (isActive !== undefined) {
-        where.isActive = isActive === 'true';
+        where.isActive = isActive;
     }
 
     const categories = await prisma.category.findMany({
@@ -50,13 +50,6 @@ const getAllCategories = async ({
             [sortBy]: sortOrder
         },
         include: {
-            provider: {
-                select: {
-                    id: true,
-                    businessName: true,
-                    isActive: true
-                }
-            },
             _count: {
                 select: {
                     meals: true

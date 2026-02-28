@@ -1,6 +1,36 @@
 // Provider service - Provider-specific actions: menu management, order handling dashboard
 import { prisma } from "../../lib/prisma";
 
+const createProviderProfile = async (providerData: {
+    userId: string;
+    businessName: string;
+    description?: string;
+    phone: string;
+    address: string;
+    website?: string;
+    cuisine?: string;
+    deliveryRadius?: number;
+    openingHours?: string;
+}) => {
+    try {
+        const providerProfile = await prisma.providerProfile.create({
+            data: {
+                userId: providerData.userId,
+                businessName: providerData.businessName,
+                description: providerData.description || "",
+                phone: providerData.phone,
+                address: providerData.address,
+                isActive: true,
+            },
+        });
+
+        return { success: true, data: providerProfile };
+    } catch (error) {
+        console.error("Error creating provider profile:", error);
+        return { success: false, error: "Failed to create provider profile" };
+    }
+};
+
 const getAllProviders = async ({
     search,
     isActive,
@@ -97,8 +127,7 @@ const createMenuItem = async (providerId: string, mealData: {
     ingredients?: string;
     allergens?: string;
     prepTime?: number;
-    cuisine?: string;
-    isVegan?: boolean;
+    cuisineId?: string;
     categoryId: string;
 }) => {
     // Verify provider exists and is active
@@ -113,16 +142,16 @@ const createMenuItem = async (providerId: string, mealData: {
         throw new Error("Provider not found or inactive!");
     }
 
-    // Verify category belongs to this provider
+    // Verify category exists (admin-managed)
     const category = await prisma.category.findFirst({
         where: {
             id: mealData.categoryId,
-            providerId
+            isActive: true
         }
     });
 
     if (!category) {
-        throw new Error("Category not found or doesn't belong to this provider!");
+        throw new Error("Category not found or inactive!");
     }
 
     // Create meal
@@ -135,8 +164,7 @@ const createMenuItem = async (providerId: string, mealData: {
             ingredients: mealData.ingredients || null,
             allergens: mealData.allergens || null,
             prepTime: mealData.prepTime || null,
-            cuisine: mealData.cuisine || null,
-            isVegan: mealData.isVegan || false,
+            cuisineId: mealData.cuisineId || null,
             categoryId: mealData.categoryId,
             providerId
         }
@@ -161,27 +189,6 @@ const getProviderById = async (providerId: string) => {
                     createdAt: true
                 }
             },
-            meals: {
-                where: {
-                    isAvailable: true
-                },
-                include: {
-                    category: {
-                        select: {
-                            id: true,
-                            name: true
-                        }
-                    },
-                    _count: {
-                        select: {
-                            reviews: true
-                        }
-                    }
-                },
-                orderBy: {
-                    createdAt: 'desc'
-                }
-            },
             _count: {
                 select: {
                     meals: true,
@@ -195,45 +202,11 @@ const getProviderById = async (providerId: string) => {
         throw new Error("Provider not found or inactive!");
     }
 
-    // Calculate average rating for each meal
-    const mealsWithRatings = await Promise.all(
-        provider.meals.map(async (meal: any) => {
-            const reviews = await prisma.review.findMany({
-                where: { mealId: meal.id },
-                select: { rating: true }
-            });
-
-            const avgRating = reviews.length > 0 
-                ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviews.length 
-                : 0;
-
-            return {
-                ...meal,
-                avgRating: parseFloat(avgRating.toFixed(1)),
-                reviewCount: reviews.length
-            };
-        })
-    );
-
-    // Calculate overall provider rating
-    const allReviews = await prisma.review.findMany({
-        where: { 
-            meal: {
-                providerId: providerId
-            }
-        },
-        select: { rating: true }
-    });
-
-    const overallRating = allReviews.length > 0 
-        ? allReviews.reduce((sum: number, review: any) => sum + review.rating, 0) / allReviews.length 
-        : 0;
-
     return {
         ...provider,
-        meals: mealsWithRatings,
-        overallRating: parseFloat(overallRating.toFixed(1)),
-        totalReviews: allReviews.length
+        meals: [], // Return empty array for now since meals relation was removed
+        overallRating: 0,
+        totalReviews: 0
     };
 }
 
@@ -245,9 +218,7 @@ const updateMenuItem = async (providerId: string, mealId: string, mealData: {
     ingredients?: string;
     allergens?: string;
     prepTime?: number;
-    cuisine?: string;
-    isVegan?: boolean;
-    isAvailable?: boolean;
+    cuisineId?: string;
     categoryId?: string;
 }) => {
     // Verify provider exists and is active
@@ -274,17 +245,17 @@ const updateMenuItem = async (providerId: string, mealId: string, mealData: {
         throw new Error("Meal not found or doesn't belong to this provider!");
     }
 
-    // If updating category, verify it belongs to this provider
+    // If updating category, verify it exists (admin-managed)
     if (mealData.categoryId && mealData.categoryId !== existingMeal.categoryId) {
         const category = await prisma.category.findFirst({
             where: {
                 id: mealData.categoryId,
-                providerId
+                isActive: true
             }
         });
 
         if (!category) {
-            throw new Error("Category not found or doesn't belong to this provider!");
+            throw new Error("Category not found or inactive!");
         }
     }
 
@@ -301,9 +272,7 @@ const updateMenuItem = async (providerId: string, mealId: string, mealData: {
             ...(mealData.ingredients !== undefined && { ingredients: mealData.ingredients }),
             ...(mealData.allergens !== undefined && { allergens: mealData.allergens }),
             ...(mealData.prepTime !== undefined && { prepTime: mealData.prepTime }),
-            ...(mealData.cuisine !== undefined && { cuisine: mealData.cuisine }),
-            ...(mealData.isVegan !== undefined && { isVegan: mealData.isVegan }),
-            ...(mealData.isAvailable !== undefined && { isAvailable: mealData.isAvailable }),
+            ...(mealData.cuisineId !== undefined && { cuisineId: mealData.cuisineId }),
             ...(mealData.categoryId && { categoryId: mealData.categoryId })
         }
     });
@@ -337,13 +306,13 @@ const deleteMenuItem = async (providerId: string, mealId: string) => {
     }
 
     // Check if meal has any orders
-    const orderItemsCount = await prisma.orderItem.count({
+    const ordersCount = await prisma.order.count({
         where: {
             mealId: mealId
         }
     });
 
-    if (orderItemsCount > 0) {
+    if (ordersCount > 0) {
         throw new Error("Cannot delete meal with existing orders!");
     }
 
@@ -359,6 +328,7 @@ const deleteMenuItem = async (providerId: string, mealId: string) => {
 
 export const providerService = {
     getAllProviders,
+    createProviderProfile,
     createMenuItem,
     getProviderById,
     updateMenuItem,

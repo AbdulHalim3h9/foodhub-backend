@@ -714,47 +714,62 @@ async function main() {
 
     console.log('🏪 Created provider profiles');
 
-// ... (rest of the code remains the same)
-    // Create Categories (each provider gets their own category)
+    // Create Categories (admin-managed, available to all providers)
     const categories = await Promise.all([
       prisma.category.create({
         data: {
           name: 'Italian Cuisine',
           description: 'Authentic Italian cuisine with pasta, pizza, and more',
-          image: '/categories/italian.jpg',
-          providerId: providerProfiles[0].id
+          image: '/categories/italian.jpg'
         }
       }),
       prisma.category.create({
         data: {
           name: 'Chinese Cuisine',
           description: 'Traditional Chinese dishes from various regions',
-          image: '/categories/chinese.jpg',
-          providerId: providerProfiles[1].id
+          image: '/categories/chinese.jpg'
         }
       }),
       prisma.category.create({
         data: {
           name: 'Mexican Cuisine',
           description: 'Spicy Mexican flavors with tacos, burritos, and more',
-          image: '/categories/mexican.jpg',
-          providerId: providerProfiles[2].id
+          image: '/categories/mexican.jpg'
         }
       }),
       prisma.category.create({
         data: {
           name: 'American Cuisine',
           description: 'Classic American comfort food and burgers',
-          image: '/categories/american.jpg',
-          providerId: providerProfiles[3].id
+          image: '/categories/american.jpg'
         }
       }),
       prisma.category.create({
         data: {
           name: 'Indian Cuisine',
           description: 'Aromatic Indian cuisine with curries and tandoori',
-          image: '/categories/indian.jpg',
-          providerId: providerProfiles[4].id
+          image: '/categories/indian.jpg'
+        }
+      }),
+      prisma.category.create({
+        data: {
+          name: 'Japanese Cuisine',
+          description: 'Traditional Japanese dishes including sushi and ramen',
+          image: '/categories/japanese.jpg'
+        }
+      }),
+      prisma.category.create({
+        data: {
+          name: 'Thai Cuisine',
+          description: 'Authentic Thai flavors with aromatic herbs and spices',
+          image: '/categories/thai.jpg'
+        }
+      }),
+      prisma.category.create({
+        data: {
+          name: 'Mediterranean Cuisine',
+          description: 'Healthy Mediterranean dishes with olive oil and fresh vegetables',
+          image: '/categories/mediterranean.jpg'
         }
       })
     ]);

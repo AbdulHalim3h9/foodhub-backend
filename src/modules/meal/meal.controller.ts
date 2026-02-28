@@ -3,6 +3,89 @@ import type { NextFunction, Request, Response } from "express";
 import { mealService } from "./meal.service";
 import paginationSortingHelper from "../../helpers/paginationSortingHelper";
 
+const getProviderMeals = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = req.user;
+    if (!user || !user.id) {
+      return res.status(401).json({
+        error: "Authentication required!",
+      });
+    }
+
+    console.log(`📋 [PROVIDER MEALS] Fetching meals for provider: ${user.email} (Role: ${user.role})`);
+
+    // Get the provider profile for this user
+    const { prisma } = await import("../../lib/prisma");
+    const providerProfile = await prisma.providerProfile.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!providerProfile) {
+      console.log(`❌ [PROVIDER MEALS] No provider profile found for user: ${user.id}`);
+      return res.status(403).json({
+        error: "Please complete your provider profile first to manage meals. You can set up your profile at: /dashboard/profile",
+        action: "complete_profile",
+        profileUrl: "/dashboard/profile"
+      });
+    }
+
+    console.log(`✅ [PROVIDER MEALS] Using provider profile: ${providerProfile.id} (${providerProfile.businessName})`);
+
+    // Parse pagination and filter parameters
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+    const sortBy = (req.query.sortBy as string) || "createdAt";
+    const sortOrder = (req.query.sortOrder as string) || "desc";
+
+    // Extract additional filters
+    const { category, categoryIds, priceMin, priceMax, search, cuisine } = req.query as {
+      category?: string;
+      categoryIds?: string;
+      priceMin?: string;
+      priceMax?: string;
+      search?: string;
+      cuisine?: string;
+    };
+
+    console.log(`🔍 [PROVIDER MEALS] Filters:`, {
+      page,
+      limit,
+      skip,
+      sortBy,
+      sortOrder,
+      category,
+      categoryIds,
+      priceMin,
+      priceMax,
+      search,
+      cuisine,
+    });
+
+    const result = await mealService.getProviderMeals({
+      page,
+      limit,
+      skip,
+      sortBy,
+      sortOrder,
+      providerId: providerProfile.id, // Pass provider profile ID
+      ...(category && { category }),
+      ...(categoryIds && { categoryIds }),
+      ...(priceMin && { priceMin }),
+      ...(priceMax && { priceMax }),
+      ...(search && { search }),
+      ...(cuisine && { cuisine }),
+    });
+
+    console.log(`✅ [PROVIDER MEALS] Retrieved ${result.data.length} meals for provider ${providerProfile.businessName}`);
+
+    res.status(200).json(result);
+  } catch (e) {
+    console.error("💥 [PROVIDER MEALS] Error:", e);
+    next(e);
+  }
+};
+
 const getAllMeals = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(
@@ -10,8 +93,9 @@ const getAllMeals = async (req: Request, res: Response, next: NextFunction) => {
     );
 
     // Extract additional filters
-    const { category, priceMin, priceMax, search, cuisine } = req.query as {
+    const { category, categoryIds, priceMin, priceMax, search, cuisine } = req.query as {
       category?: string;
+      categoryIds?: string;
       priceMin?: string;
       priceMax?: string;
       search?: string;
@@ -25,6 +109,7 @@ const getAllMeals = async (req: Request, res: Response, next: NextFunction) => {
       sortBy,
       sortOrder,
       ...(category && { category }),
+      ...(categoryIds && { categoryIds }),
       ...(priceMin && { priceMin }),
       ...(priceMax && { priceMax }),
       ...(search && { search }),
@@ -55,12 +140,17 @@ const getMealById = async (req: Request, res: Response, next: NextFunction) => {
 
 const createMeal = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log("🍽️ [CREATE MEAL] Starting meal creation process");
+    
     const user = req.user;
     if (!user || !user.id) {
+      console.log("❌ [CREATE MEAL] Authentication failed - no user found");
       return res.status(401).json({
         error: "Authentication required!",
       });
     }
+
+    console.log(`👤 [CREATE MEAL] User authenticated: ${user.email} (ID: ${user.id}, Role: ${user.role})`);
 
     const {
       name,
@@ -75,30 +165,57 @@ const createMeal = async (req: Request, res: Response, next: NextFunction) => {
       categoryId,
     } = req.body;
 
+    console.log(`📝 [CREATE MEAL] Request data:`, {
+      name,
+      description,
+      price,
+      image,
+      ingredients,
+      allergens,
+      prepTime,
+      cuisineId,
+      isFeatured,
+      categoryId,
+    });
+
     // Validate required fields
-    if (!name || !price || !categoryId) {
+    if (!name || !price) {
+      console.log("❌ [CREATE MEAL] Validation failed - missing required fields:", {
+        hasName: !!name,
+        hasPrice: !!price,
+      });
       return res.status(400).json({
-        error: "Name, price, and category are required!",
+        error: "Name and price are required!",
       });
     }
 
+    console.log("✅ [CREATE MEAL] Basic validation passed");
+
     // Get the provider profile for this user
     const { prisma } = await import("../../lib/prisma");
+    console.log(`🔍 [CREATE MEAL] Looking up provider profile for user: ${user.id}`);
+    
     const providerProfile = await prisma.providerProfile.findUnique({
       where: { userId: user.id },
     });
 
     if (!providerProfile) {
+      console.log(`❌ [CREATE MEAL] No provider profile found for user: ${user.id}`);
       return res.status(403).json({
         error: "Provider profile not found! Please apply for provider status first.",
       });
     }
 
+    console.log(`✅ [CREATE MEAL] Provider profile found: ${providerProfile.id} (${providerProfile.businessName})`);
+
     if (!providerProfile.isActive) {
+      console.log(`❌ [CREATE MEAL] Provider profile not active: ${providerProfile.id}`);
       return res.status(403).json({
         error: "Provider profile is not active! Please wait for admin approval.",
       });
     }
+
+    console.log(`✅ [CREATE MEAL] Provider profile is active`);
 
     const mealData = {
       name,
@@ -110,13 +227,28 @@ const createMeal = async (req: Request, res: Response, next: NextFunction) => {
       prepTime: prepTime ? parseInt(prepTime) : null,
       cuisineId: cuisineId || null,
       isFeatured: isFeatured || false,
-      categoryId,
+      categoryId: categoryId || null,
       providerId: providerProfile.id, // Use ProviderProfile id, not User id
     };
 
+    console.log(`🍳 [CREATE MEAL] Prepared meal data:`, {
+      ...mealData,
+      providerId: providerProfile.id,
+    });
+
+    console.log("🚀 [CREATE MEAL] Calling meal service to create meal");
     const result = await mealService.createMeal(mealData);
+    
+    console.log(`✅ [CREATE MEAL] Meal created successfully:`, {
+      mealId: result.id,
+      mealName: result.name,
+      providerId: result.providerId,
+      categoryId: result.categoryId,
+    });
+    
     res.status(201).json(result);
   } catch (e) {
+    console.error("💥 [CREATE MEAL] Error during meal creation:", e);
     next(e);
   }
 };
@@ -205,6 +337,7 @@ const deleteMeal = async (req: Request, res: Response, next: NextFunction) => {
 
 export const mealController = {
   getAllMeals,
+  getProviderMeals,
   getMealById,
   createMeal,
   updateMeal,

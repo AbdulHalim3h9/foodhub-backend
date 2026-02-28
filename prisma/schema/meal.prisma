@@ -9,16 +9,18 @@ model Meal {
   prepTime    Int?
   cuisineId    String?
   cuisine      Cuisine? @relation(fields: [cuisineId], references: [id], onDelete: SetNull)
+  isVegan     Boolean  @default(false)
+  isAvailable Boolean  @default(true)
   isFeatured   Boolean  @default(false)
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   providerId String
   provider   ProviderProfile @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  orderItems  OrderItem[]
+  orders     Order[]    // A meal can be in many orders
   reviews     Review[]
   cartItems   CartItem[]
 

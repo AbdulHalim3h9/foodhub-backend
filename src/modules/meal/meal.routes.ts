@@ -6,6 +6,7 @@
 // POST /api/meals - Create new meal (provider/admin only)
 // PUT /api/meals/:id - Update meal (provider/admin only)
 // DELETE /api/meals/:id - Delete meal (provider/admin only)
+// GET /api/meals/provider/meals - Get provider's own meals
 
 import express, { Router } from 'express';
 import { mealController } from './meal.controller';
@@ -25,9 +26,15 @@ router.get(
 )
 
 // Protected routes (Provider/Admin only)
+router.get(
+    "/provider/meals",
+    auth(UserRole.PROVIDER, UserRole.ADMIN),
+    mealController.getProviderMeals
+)
+
 router.post(
     "/",
-    auth(UserRole.PROVIDER, UserRole.ADMIN),
+    auth(UserRole.PROVIDER),
     mealController.createMeal
 )
 

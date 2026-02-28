@@ -1,11 +1,10 @@
 // Order service - Create order, list my orders, get order details, update status (provider)
 import { prisma } from "../../lib/prisma";
+import { Prisma } from "../../../prisma/generated/prisma/client";
 
 const createOrder = async (userId: string, orderData: {
-    items: {
-        mealId: string;
-        quantity: number;
-    }[];
+    mealId: string;
+    quantity: number;
     deliveryAddress: string;
     deliveryPhone: string;
     specialInstructions?: string;
@@ -22,77 +21,70 @@ const createOrder = async (userId: string, orderData: {
         throw new Error("User not found or inactive!");
     }
 
-    // Validate items and calculate total
-    if (!orderData.items || orderData.items.length === 0) {
-        throw new Error("Order must contain at least one item!");
+    // Validate quantity
+    if (!orderData.quantity || orderData.quantity <= 0) {
+        throw new Error("Quantity must be greater than 0!");
     }
 
-    // Get unique meal IDs to handle multiple quantities of same meal
-    const mealIds = [...new Set(orderData.items.map(item => item.mealId))];
-    
-    const meals = await prisma.meal.findMany({
-        where: {
-            id: { in: mealIds },
-            isAvailable: true
-        }
+    // Get meal details and validate it exists
+    const meal = await prisma.meal.findUnique({
+        where: { id: orderData.mealId }
     });
 
-    if (meals.length !== mealIds.length) {
-        throw new Error("Some meals are not available!");
+    if (!meal) {
+        throw new Error("Meal not found!");
     }
 
-    // Validate all meals are from same provider
-    const providerIds = [...new Set(meals.map(meal => meal.providerId))];
-    if (providerIds.length > 1) {
-        throw new Error("All meals must be from same provider!");
-    }
-
-    // Calculate total amount
-    let totalAmount = 0;
-    const orderItems = orderData.items.map(item => {
-        const meal = meals.find(m => m.id === item.mealId);
-        if (!meal) {
-            throw new Error(`Meal ${item.mealId} not found!`);
-        }
-        const itemTotal = Number(meal.price) * item.quantity;
-        totalAmount += itemTotal;
-        return {
-            mealId: item.mealId,
-            quantity: item.quantity,
-            price: meal.price
-        };
-    });
+    // Calculate total amount using Decimal
+    const pricePerItem = new Prisma.Decimal(meal.price.toString());
+    const totalAmount = pricePerItem.mul(orderData.quantity);
 
     // Generate order number
     const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 
-    // Create order with transaction
-    const result = await prisma.$transaction(async (tx) => {
-        const order = await tx.order.create({
-            data: {
-                orderNumber,
-                customerId: userId,
-                providerId: providerIds[0]!, // All meals from same provider
-                status: "PENDING",
-                totalAmount,
-                deliveryAddress: orderData.deliveryAddress,
-                deliveryPhone: orderData.deliveryPhone,
-                specialInstructions: orderData.specialInstructions || null,
-                estimatedDeliveryTime: new Date(Date.now() + 45 * 60 * 1000), // 45 minutes from now
+    // Create order
+    const result = await prisma.order.create({
+        data: {
+            orderNumber,
+            customerId: userId,
+            providerId: meal.providerId,
+            mealId: orderData.mealId,
+            quantity: orderData.quantity,
+            pricePerItem: pricePerItem,
+            totalAmount: totalAmount,
+            status: "PENDING",
+            deliveryAddress: orderData.deliveryAddress,
+            deliveryPhone: orderData.deliveryPhone,
+            specialInstructions: orderData.specialInstructions || null,
+            estimatedDeliveryTime: new Date(Date.now() + 45 * 60 * 1000), // 45 minutes from now
+        },
+        include: {
+            meal: {
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    image: true,
+                    price: true
+                }
+            },
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true
+                }
+            },
+            provider: {
+                select: {
+                    id: true,
+                    businessName: true,
+                    phone: true
+                }
             }
-        });
-
-        // Create order items
-        await tx.orderItem.createMany({
-            data: orderItems.map(item => ({
-                orderId: order.id,
-                mealId: item.mealId,
-                quantity: item.quantity,
-                price: item.price
-            }))
-        });
-
-        return order;
+        }
     });
 
     return result;
@@ -121,24 +113,26 @@ const getMyOrders = async (userId: string, {
             [sortBy]: sortOrder
         },
         include: {
+            meal: {
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    image: true,
+                    price: true,
+                    category: {
+                        select: {
+                            name: true
+                        }
+                    }
+                }
+            },
             provider: {
                 select: {
                     id: true,
                     businessName: true,
                     phone: true,
                     address: true
-                }
-            },
-            items: {
-                include: {
-                    meal: {
-                        select: {
-                            id: true,
-                            name: true,
-                            image: true,
-                            price: true
-                        }
-                    }
                 }
             }
         }
@@ -161,6 +155,83 @@ const getMyOrders = async (userId: string, {
     };
 }
 
+const getProviderOrders = async (providerId: string, {
+    page,
+    limit,
+    skip,
+    sortBy,
+    sortOrder,
+    status
+}: {
+    page: number,
+    limit: number,
+    skip: number,
+    sortBy: string,
+    sortOrder: string,
+    status?: string
+}) => {
+    console.log(`🔍 [PROVIDER ORDERS] Fetching orders for providerId: ${providerId}`);
+    console.log(`🔍 [PROVIDER ORDERS] Filters:`, { page, limit, skip, sortBy, sortOrder, status });
+    
+    const where: any = {
+        providerId
+    };
+
+    // Apply status filter if provided
+    if (status) {
+        where.status = status;
+    }
+
+    console.log(`🔍 [PROVIDER ORDERS] Query where clause:`, where);
+
+    const orders = await prisma.order.findMany({
+        take: limit,
+        skip,
+        where,
+        orderBy: {
+            [sortBy]: sortOrder
+        },
+        include: {
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true
+                }
+            },
+            meal: {
+                select: {
+                    id: true,
+                    name: true,
+                    image: true,
+                    price: true,
+                    description: true
+                }
+            }
+        }
+    });
+
+    console.log(`🔍 [PROVIDER ORDERS] Found ${orders.length} orders`);
+
+    const total = await prisma.order.count({
+        where
+    });
+
+    console.log(`🔍 [PROVIDER ORDERS] Total orders count: ${total}`);
+
+    return {
+        data: orders,
+        pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit)
+        }
+    };
+}
+
 const getOrderById = async (orderId: string, userId: string) => {
     const order = await prisma.order.findFirst({
         where: {
@@ -168,33 +239,26 @@ const getOrderById = async (orderId: string, userId: string) => {
             customerId: userId
         },
         include: {
+            meal: {
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    image: true,
+                    price: true,
+                    category: {
+                        select: {
+                            name: true
+                        }
+                    }
+                }
+            },
             provider: {
                 select: {
                     id: true,
                     businessName: true,
                     phone: true,
-                    address: true,
-                    user: {
-                        select: {
-                            name: true,
-                            image: true
-                        }
-                    }
-                }
-            },
-            items: {
-                include: {
-                    meal: {
-                        select: {
-                            id: true,
-                            name: true,
-                            description: true,
-                            image: true,
-                            price: true,
-                            cuisine: true,
-                            isVegan: true
-                        }
-                    }
+                    address: true
                 }
             }
         }
@@ -271,23 +335,15 @@ const getAllOrders = async ({
                 select: {
                     id: true,
                     businessName: true,
-                    phone: true,
-                    user: {
-                        select: {
-                            email: true,
-                        }
-                    }
+                    phone: true
                 }
             },
-            items: {
-                include: {
-                    meal: {
-                        select: {
-                            id: true,
-                            name: true,
-                            price: true,
-                        }
-                    }
+            meal: {
+                select: {
+                    id: true,
+                    name: true,
+                    price: true,
+                    image: true
                 }
             }
         }
@@ -316,6 +372,10 @@ const updateOrderStatus = async (orderId: string, status: string) => {
         throw new Error("Order not found!");
     }
 
+    if (existingOrder.status === 'DELIVERED') {
+        throw new Error("Delivered orders cannot be updated!");
+    }
+
     // Validate status
     const validStatuses = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED'];
     if (!validStatuses.includes(status)) {
@@ -333,6 +393,7 @@ const updateOrderStatus = async (orderId: string, status: string) => {
 export const orderService = {
     createOrder,
     getMyOrders,
+    getProviderOrders,
     getOrderById,
     getAllOrders,
     updateOrderStatus

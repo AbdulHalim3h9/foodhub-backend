@@ -1,0 +1,2492 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as Prisma from "../internal/prismaNamespace";
+/**
+ * Model Meal
+ *
+ */
+export type MealModel = runtime.Types.Result.DefaultSelection<Prisma.$MealPayload>;
+export type AggregateMeal = {
+    _count: MealCountAggregateOutputType | null;
+    _avg: MealAvgAggregateOutputType | null;
+    _sum: MealSumAggregateOutputType | null;
+    _min: MealMinAggregateOutputType | null;
+    _max: MealMaxAggregateOutputType | null;
+};
+export type MealAvgAggregateOutputType = {
+    price: runtime.Decimal | null;
+    prepTime: number | null;
+};
+export type MealSumAggregateOutputType = {
+    price: runtime.Decimal | null;
+    prepTime: number | null;
+};
+export type MealMinAggregateOutputType = {
+    id: string | null;
+    name: string | null;
+    description: string | null;
+    price: runtime.Decimal | null;
+    image: string | null;
+    ingredients: string | null;
+    allergens: string | null;
+    prepTime: number | null;
+    cuisineId: string | null;
+    isVegan: boolean | null;
+    isAvailable: boolean | null;
+    isFeatured: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    categoryId: string | null;
+    providerId: string | null;
+};
+export type MealMaxAggregateOutputType = {
+    id: string | null;
+    name: string | null;
+    description: string | null;
+    price: runtime.Decimal | null;
+    image: string | null;
+    ingredients: string | null;
+    allergens: string | null;
+    prepTime: number | null;
+    cuisineId: string | null;
+    isVegan: boolean | null;
+    isAvailable: boolean | null;
+    isFeatured: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    categoryId: string | null;
+    providerId: string | null;
+};
+export type MealCountAggregateOutputType = {
+    id: number;
+    name: number;
+    description: number;
+    price: number;
+    image: number;
+    ingredients: number;
+    allergens: number;
+    prepTime: number;
+    cuisineId: number;
+    isVegan: number;
+    isAvailable: number;
+    isFeatured: number;
+    createdAt: number;
+    updatedAt: number;
+    categoryId: number;
+    providerId: number;
+    _all: number;
+};
+export type MealAvgAggregateInputType = {
+    price?: true;
+    prepTime?: true;
+};
+export type MealSumAggregateInputType = {
+    price?: true;
+    prepTime?: true;
+};
+export type MealMinAggregateInputType = {
+    id?: true;
+    name?: true;
+    description?: true;
+    price?: true;
+    image?: true;
+    ingredients?: true;
+    allergens?: true;
+    prepTime?: true;
+    cuisineId?: true;
+    isVegan?: true;
+    isAvailable?: true;
+    isFeatured?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    categoryId?: true;
+    providerId?: true;
+};
+export type MealMaxAggregateInputType = {
+    id?: true;
+    name?: true;
+    description?: true;
+    price?: true;
+    image?: true;
+    ingredients?: true;
+    allergens?: true;
+    prepTime?: true;
+    cuisineId?: true;
+    isVegan?: true;
+    isAvailable?: true;
+    isFeatured?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    categoryId?: true;
+    providerId?: true;
+};
+export type MealCountAggregateInputType = {
+    id?: true;
+    name?: true;
+    description?: true;
+    price?: true;
+    image?: true;
+    ingredients?: true;
+    allergens?: true;
+    prepTime?: true;
+    cuisineId?: true;
+    isVegan?: true;
+    isAvailable?: true;
+    isFeatured?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    categoryId?: true;
+    providerId?: true;
+    _all?: true;
+};
+export type MealAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Meal to aggregate.
+     */
+    where?: Prisma.MealWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Meals to fetch.
+     */
+    orderBy?: Prisma.MealOrderByWithRelationInput | Prisma.MealOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.MealWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Meals from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Meals.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned Meals
+    **/
+    _count?: true | MealCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: MealAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: MealSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: MealMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: MealMaxAggregateInputType;
+};
+export type GetMealAggregateType<T extends MealAggregateArgs> = {
+    [P in keyof T & keyof AggregateMeal]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateMeal[P]> : Prisma.GetScalarType<T[P], AggregateMeal[P]>;
+};
+export type MealGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.MealWhereInput;
+    orderBy?: Prisma.MealOrderByWithAggregationInput | Prisma.MealOrderByWithAggregationInput[];
+    by: Prisma.MealScalarFieldEnum[] | Prisma.MealScalarFieldEnum;
+    having?: Prisma.MealScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: MealCountAggregateInputType | true;
+    _avg?: MealAvgAggregateInputType;
+    _sum?: MealSumAggregateInputType;
+    _min?: MealMinAggregateInputType;
+    _max?: MealMaxAggregateInputType;
+};
+export type MealGroupByOutputType = {
+    id: string;
+    name: string;
+    description: string | null;
+    price: runtime.Decimal;
+    image: string | null;
+    ingredients: string | null;
+    allergens: string | null;
+    prepTime: number | null;
+    cuisineId: string | null;
+    isVegan: boolean;
+    isAvailable: boolean;
+    isFeatured: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    categoryId: string | null;
+    providerId: string;
+    _count: MealCountAggregateOutputType | null;
+    _avg: MealAvgAggregateOutputType | null;
+    _sum: MealSumAggregateOutputType | null;
+    _min: MealMinAggregateOutputType | null;
+    _max: MealMaxAggregateOutputType | null;
+};
+type GetMealGroupByPayload<T extends MealGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<MealGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof MealGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], MealGroupByOutputType[P]> : Prisma.GetScalarType<T[P], MealGroupByOutputType[P]>;
+}>>;
+export type MealWhereInput = {
+    AND?: Prisma.MealWhereInput | Prisma.MealWhereInput[];
+    OR?: Prisma.MealWhereInput[];
+    NOT?: Prisma.MealWhereInput | Prisma.MealWhereInput[];
+    id?: Prisma.StringFilter<"Meal"> | string;
+    name?: Prisma.StringFilter<"Meal"> | string;
+    description?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    price?: Prisma.DecimalFilter<"Meal"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    ingredients?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    allergens?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    prepTime?: Prisma.IntNullableFilter<"Meal"> | number | null;
+    cuisineId?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    isVegan?: Prisma.BoolFilter<"Meal"> | boolean;
+    isAvailable?: Prisma.BoolFilter<"Meal"> | boolean;
+    isFeatured?: Prisma.BoolFilter<"Meal"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"Meal"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Meal"> | Date | string;
+    categoryId?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    providerId?: Prisma.StringFilter<"Meal"> | string;
+    cuisine?: Prisma.XOR<Prisma.CuisineNullableScalarRelationFilter, Prisma.CuisineWhereInput> | null;
+    category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null;
+    provider?: Prisma.XOR<Prisma.ProviderProfileScalarRelationFilter, Prisma.ProviderProfileWhereInput>;
+    orders?: Prisma.OrderListRelationFilter;
+    reviews?: Prisma.ReviewListRelationFilter;
+    cartItems?: Prisma.CartItemListRelationFilter;
+};
+export type MealOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    description?: Prisma.SortOrderInput | Prisma.SortOrder;
+    price?: Prisma.SortOrder;
+    image?: Prisma.SortOrderInput | Prisma.SortOrder;
+    ingredients?: Prisma.SortOrderInput | Prisma.SortOrder;
+    allergens?: Prisma.SortOrderInput | Prisma.SortOrder;
+    prepTime?: Prisma.SortOrderInput | Prisma.SortOrder;
+    cuisineId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    isVegan?: Prisma.SortOrder;
+    isAvailable?: Prisma.SortOrder;
+    isFeatured?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    providerId?: Prisma.SortOrder;
+    cuisine?: Prisma.CuisineOrderByWithRelationInput;
+    category?: Prisma.CategoryOrderByWithRelationInput;
+    provider?: Prisma.ProviderProfileOrderByWithRelationInput;
+    orders?: Prisma.OrderOrderByRelationAggregateInput;
+    reviews?: Prisma.ReviewOrderByRelationAggregateInput;
+    cartItems?: Prisma.CartItemOrderByRelationAggregateInput;
+};
+export type MealWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    AND?: Prisma.MealWhereInput | Prisma.MealWhereInput[];
+    OR?: Prisma.MealWhereInput[];
+    NOT?: Prisma.MealWhereInput | Prisma.MealWhereInput[];
+    name?: Prisma.StringFilter<"Meal"> | string;
+    description?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    price?: Prisma.DecimalFilter<"Meal"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    ingredients?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    allergens?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    prepTime?: Prisma.IntNullableFilter<"Meal"> | number | null;
+    cuisineId?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    isVegan?: Prisma.BoolFilter<"Meal"> | boolean;
+    isAvailable?: Prisma.BoolFilter<"Meal"> | boolean;
+    isFeatured?: Prisma.BoolFilter<"Meal"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"Meal"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Meal"> | Date | string;
+    categoryId?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    providerId?: Prisma.StringFilter<"Meal"> | string;
+    cuisine?: Prisma.XOR<Prisma.CuisineNullableScalarRelationFilter, Prisma.CuisineWhereInput> | null;
+    category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null;
+    provider?: Prisma.XOR<Prisma.ProviderProfileScalarRelationFilter, Prisma.ProviderProfileWhereInput>;
+    orders?: Prisma.OrderListRelationFilter;
+    reviews?: Prisma.ReviewListRelationFilter;
+    cartItems?: Prisma.CartItemListRelationFilter;
+}, "id">;
+export type MealOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    description?: Prisma.SortOrderInput | Prisma.SortOrder;
+    price?: Prisma.SortOrder;
+    image?: Prisma.SortOrderInput | Prisma.SortOrder;
+    ingredients?: Prisma.SortOrderInput | Prisma.SortOrder;
+    allergens?: Prisma.SortOrderInput | Prisma.SortOrder;
+    prepTime?: Prisma.SortOrderInput | Prisma.SortOrder;
+    cuisineId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    isVegan?: Prisma.SortOrder;
+    isAvailable?: Prisma.SortOrder;
+    isFeatured?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    providerId?: Prisma.SortOrder;
+    _count?: Prisma.MealCountOrderByAggregateInput;
+    _avg?: Prisma.MealAvgOrderByAggregateInput;
+    _max?: Prisma.MealMaxOrderByAggregateInput;
+    _min?: Prisma.MealMinOrderByAggregateInput;
+    _sum?: Prisma.MealSumOrderByAggregateInput;
+};
+export type MealScalarWhereWithAggregatesInput = {
+    AND?: Prisma.MealScalarWhereWithAggregatesInput | Prisma.MealScalarWhereWithAggregatesInput[];
+    OR?: Prisma.MealScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.MealScalarWhereWithAggregatesInput | Prisma.MealScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"Meal"> | string;
+    name?: Prisma.StringWithAggregatesFilter<"Meal"> | string;
+    description?: Prisma.StringNullableWithAggregatesFilter<"Meal"> | string | null;
+    price?: Prisma.DecimalWithAggregatesFilter<"Meal"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.StringNullableWithAggregatesFilter<"Meal"> | string | null;
+    ingredients?: Prisma.StringNullableWithAggregatesFilter<"Meal"> | string | null;
+    allergens?: Prisma.StringNullableWithAggregatesFilter<"Meal"> | string | null;
+    prepTime?: Prisma.IntNullableWithAggregatesFilter<"Meal"> | number | null;
+    cuisineId?: Prisma.StringNullableWithAggregatesFilter<"Meal"> | string | null;
+    isVegan?: Prisma.BoolWithAggregatesFilter<"Meal"> | boolean;
+    isAvailable?: Prisma.BoolWithAggregatesFilter<"Meal"> | boolean;
+    isFeatured?: Prisma.BoolWithAggregatesFilter<"Meal"> | boolean;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"Meal"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Meal"> | Date | string;
+    categoryId?: Prisma.StringNullableWithAggregatesFilter<"Meal"> | string | null;
+    providerId?: Prisma.StringWithAggregatesFilter<"Meal"> | string;
+};
+export type MealCreateInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    cuisine?: Prisma.CuisineCreateNestedOneWithoutMealsInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutMealsInput;
+    provider: Prisma.ProviderProfileCreateNestedOneWithoutMealsInput;
+    orders?: Prisma.OrderCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemCreateNestedManyWithoutMealInput;
+};
+export type MealUncheckedCreateInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    cuisineId?: string | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId?: string | null;
+    providerId: string;
+    orders?: Prisma.OrderUncheckedCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutMealInput;
+};
+export type MealUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cuisine?: Prisma.CuisineUpdateOneWithoutMealsNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutMealsNestedInput;
+    provider?: Prisma.ProviderProfileUpdateOneRequiredWithoutMealsNestedInput;
+    orders?: Prisma.OrderUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cuisineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    providerId?: Prisma.StringFieldUpdateOperationsInput | string;
+    orders?: Prisma.OrderUncheckedUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutMealNestedInput;
+};
+export type MealCreateManyInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    cuisineId?: string | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId?: string | null;
+    providerId: string;
+};
+export type MealUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type MealUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cuisineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    providerId?: Prisma.StringFieldUpdateOperationsInput | string;
+};
+export type MealListRelationFilter = {
+    every?: Prisma.MealWhereInput;
+    some?: Prisma.MealWhereInput;
+    none?: Prisma.MealWhereInput;
+};
+export type MealOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type MealCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    description?: Prisma.SortOrder;
+    price?: Prisma.SortOrder;
+    image?: Prisma.SortOrder;
+    ingredients?: Prisma.SortOrder;
+    allergens?: Prisma.SortOrder;
+    prepTime?: Prisma.SortOrder;
+    cuisineId?: Prisma.SortOrder;
+    isVegan?: Prisma.SortOrder;
+    isAvailable?: Prisma.SortOrder;
+    isFeatured?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    providerId?: Prisma.SortOrder;
+};
+export type MealAvgOrderByAggregateInput = {
+    price?: Prisma.SortOrder;
+    prepTime?: Prisma.SortOrder;
+};
+export type MealMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    description?: Prisma.SortOrder;
+    price?: Prisma.SortOrder;
+    image?: Prisma.SortOrder;
+    ingredients?: Prisma.SortOrder;
+    allergens?: Prisma.SortOrder;
+    prepTime?: Prisma.SortOrder;
+    cuisineId?: Prisma.SortOrder;
+    isVegan?: Prisma.SortOrder;
+    isAvailable?: Prisma.SortOrder;
+    isFeatured?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    providerId?: Prisma.SortOrder;
+};
+export type MealMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    description?: Prisma.SortOrder;
+    price?: Prisma.SortOrder;
+    image?: Prisma.SortOrder;
+    ingredients?: Prisma.SortOrder;
+    allergens?: Prisma.SortOrder;
+    prepTime?: Prisma.SortOrder;
+    cuisineId?: Prisma.SortOrder;
+    isVegan?: Prisma.SortOrder;
+    isAvailable?: Prisma.SortOrder;
+    isFeatured?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    providerId?: Prisma.SortOrder;
+};
+export type MealSumOrderByAggregateInput = {
+    price?: Prisma.SortOrder;
+    prepTime?: Prisma.SortOrder;
+};
+export type MealScalarRelationFilter = {
+    is?: Prisma.MealWhereInput;
+    isNot?: Prisma.MealWhereInput;
+};
+export type MealCreateNestedManyWithoutCategoryInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCategoryInput, Prisma.MealUncheckedCreateWithoutCategoryInput> | Prisma.MealCreateWithoutCategoryInput[] | Prisma.MealUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCategoryInput | Prisma.MealCreateOrConnectWithoutCategoryInput[];
+    createMany?: Prisma.MealCreateManyCategoryInputEnvelope;
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+};
+export type MealUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCategoryInput, Prisma.MealUncheckedCreateWithoutCategoryInput> | Prisma.MealCreateWithoutCategoryInput[] | Prisma.MealUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCategoryInput | Prisma.MealCreateOrConnectWithoutCategoryInput[];
+    createMany?: Prisma.MealCreateManyCategoryInputEnvelope;
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+};
+export type MealUpdateManyWithoutCategoryNestedInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCategoryInput, Prisma.MealUncheckedCreateWithoutCategoryInput> | Prisma.MealCreateWithoutCategoryInput[] | Prisma.MealUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCategoryInput | Prisma.MealCreateOrConnectWithoutCategoryInput[];
+    upsert?: Prisma.MealUpsertWithWhereUniqueWithoutCategoryInput | Prisma.MealUpsertWithWhereUniqueWithoutCategoryInput[];
+    createMany?: Prisma.MealCreateManyCategoryInputEnvelope;
+    set?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    disconnect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    delete?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    update?: Prisma.MealUpdateWithWhereUniqueWithoutCategoryInput | Prisma.MealUpdateWithWhereUniqueWithoutCategoryInput[];
+    updateMany?: Prisma.MealUpdateManyWithWhereWithoutCategoryInput | Prisma.MealUpdateManyWithWhereWithoutCategoryInput[];
+    deleteMany?: Prisma.MealScalarWhereInput | Prisma.MealScalarWhereInput[];
+};
+export type MealUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCategoryInput, Prisma.MealUncheckedCreateWithoutCategoryInput> | Prisma.MealCreateWithoutCategoryInput[] | Prisma.MealUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCategoryInput | Prisma.MealCreateOrConnectWithoutCategoryInput[];
+    upsert?: Prisma.MealUpsertWithWhereUniqueWithoutCategoryInput | Prisma.MealUpsertWithWhereUniqueWithoutCategoryInput[];
+    createMany?: Prisma.MealCreateManyCategoryInputEnvelope;
+    set?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    disconnect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    delete?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    update?: Prisma.MealUpdateWithWhereUniqueWithoutCategoryInput | Prisma.MealUpdateWithWhereUniqueWithoutCategoryInput[];
+    updateMany?: Prisma.MealUpdateManyWithWhereWithoutCategoryInput | Prisma.MealUpdateManyWithWhereWithoutCategoryInput[];
+    deleteMany?: Prisma.MealScalarWhereInput | Prisma.MealScalarWhereInput[];
+};
+export type MealCreateNestedManyWithoutCuisineInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCuisineInput, Prisma.MealUncheckedCreateWithoutCuisineInput> | Prisma.MealCreateWithoutCuisineInput[] | Prisma.MealUncheckedCreateWithoutCuisineInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCuisineInput | Prisma.MealCreateOrConnectWithoutCuisineInput[];
+    createMany?: Prisma.MealCreateManyCuisineInputEnvelope;
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+};
+export type MealUncheckedCreateNestedManyWithoutCuisineInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCuisineInput, Prisma.MealUncheckedCreateWithoutCuisineInput> | Prisma.MealCreateWithoutCuisineInput[] | Prisma.MealUncheckedCreateWithoutCuisineInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCuisineInput | Prisma.MealCreateOrConnectWithoutCuisineInput[];
+    createMany?: Prisma.MealCreateManyCuisineInputEnvelope;
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+};
+export type MealUpdateManyWithoutCuisineNestedInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCuisineInput, Prisma.MealUncheckedCreateWithoutCuisineInput> | Prisma.MealCreateWithoutCuisineInput[] | Prisma.MealUncheckedCreateWithoutCuisineInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCuisineInput | Prisma.MealCreateOrConnectWithoutCuisineInput[];
+    upsert?: Prisma.MealUpsertWithWhereUniqueWithoutCuisineInput | Prisma.MealUpsertWithWhereUniqueWithoutCuisineInput[];
+    createMany?: Prisma.MealCreateManyCuisineInputEnvelope;
+    set?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    disconnect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    delete?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    update?: Prisma.MealUpdateWithWhereUniqueWithoutCuisineInput | Prisma.MealUpdateWithWhereUniqueWithoutCuisineInput[];
+    updateMany?: Prisma.MealUpdateManyWithWhereWithoutCuisineInput | Prisma.MealUpdateManyWithWhereWithoutCuisineInput[];
+    deleteMany?: Prisma.MealScalarWhereInput | Prisma.MealScalarWhereInput[];
+};
+export type MealUncheckedUpdateManyWithoutCuisineNestedInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCuisineInput, Prisma.MealUncheckedCreateWithoutCuisineInput> | Prisma.MealCreateWithoutCuisineInput[] | Prisma.MealUncheckedCreateWithoutCuisineInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCuisineInput | Prisma.MealCreateOrConnectWithoutCuisineInput[];
+    upsert?: Prisma.MealUpsertWithWhereUniqueWithoutCuisineInput | Prisma.MealUpsertWithWhereUniqueWithoutCuisineInput[];
+    createMany?: Prisma.MealCreateManyCuisineInputEnvelope;
+    set?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    disconnect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    delete?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    update?: Prisma.MealUpdateWithWhereUniqueWithoutCuisineInput | Prisma.MealUpdateWithWhereUniqueWithoutCuisineInput[];
+    updateMany?: Prisma.MealUpdateManyWithWhereWithoutCuisineInput | Prisma.MealUpdateManyWithWhereWithoutCuisineInput[];
+    deleteMany?: Prisma.MealScalarWhereInput | Prisma.MealScalarWhereInput[];
+};
+export type DecimalFieldUpdateOperationsInput = {
+    set?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    increment?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    divide?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+};
+export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+};
+export type MealCreateNestedOneWithoutOrdersInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutOrdersInput, Prisma.MealUncheckedCreateWithoutOrdersInput>;
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutOrdersInput;
+    connect?: Prisma.MealWhereUniqueInput;
+};
+export type MealUpdateOneRequiredWithoutOrdersNestedInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutOrdersInput, Prisma.MealUncheckedCreateWithoutOrdersInput>;
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutOrdersInput;
+    upsert?: Prisma.MealUpsertWithoutOrdersInput;
+    connect?: Prisma.MealWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MealUpdateToOneWithWhereWithoutOrdersInput, Prisma.MealUpdateWithoutOrdersInput>, Prisma.MealUncheckedUpdateWithoutOrdersInput>;
+};
+export type MealCreateNestedManyWithoutProviderInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutProviderInput, Prisma.MealUncheckedCreateWithoutProviderInput> | Prisma.MealCreateWithoutProviderInput[] | Prisma.MealUncheckedCreateWithoutProviderInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutProviderInput | Prisma.MealCreateOrConnectWithoutProviderInput[];
+    createMany?: Prisma.MealCreateManyProviderInputEnvelope;
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+};
+export type MealUncheckedCreateNestedManyWithoutProviderInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutProviderInput, Prisma.MealUncheckedCreateWithoutProviderInput> | Prisma.MealCreateWithoutProviderInput[] | Prisma.MealUncheckedCreateWithoutProviderInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutProviderInput | Prisma.MealCreateOrConnectWithoutProviderInput[];
+    createMany?: Prisma.MealCreateManyProviderInputEnvelope;
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+};
+export type MealUpdateManyWithoutProviderNestedInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutProviderInput, Prisma.MealUncheckedCreateWithoutProviderInput> | Prisma.MealCreateWithoutProviderInput[] | Prisma.MealUncheckedCreateWithoutProviderInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutProviderInput | Prisma.MealCreateOrConnectWithoutProviderInput[];
+    upsert?: Prisma.MealUpsertWithWhereUniqueWithoutProviderInput | Prisma.MealUpsertWithWhereUniqueWithoutProviderInput[];
+    createMany?: Prisma.MealCreateManyProviderInputEnvelope;
+    set?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    disconnect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    delete?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    update?: Prisma.MealUpdateWithWhereUniqueWithoutProviderInput | Prisma.MealUpdateWithWhereUniqueWithoutProviderInput[];
+    updateMany?: Prisma.MealUpdateManyWithWhereWithoutProviderInput | Prisma.MealUpdateManyWithWhereWithoutProviderInput[];
+    deleteMany?: Prisma.MealScalarWhereInput | Prisma.MealScalarWhereInput[];
+};
+export type MealUncheckedUpdateManyWithoutProviderNestedInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutProviderInput, Prisma.MealUncheckedCreateWithoutProviderInput> | Prisma.MealCreateWithoutProviderInput[] | Prisma.MealUncheckedCreateWithoutProviderInput[];
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutProviderInput | Prisma.MealCreateOrConnectWithoutProviderInput[];
+    upsert?: Prisma.MealUpsertWithWhereUniqueWithoutProviderInput | Prisma.MealUpsertWithWhereUniqueWithoutProviderInput[];
+    createMany?: Prisma.MealCreateManyProviderInputEnvelope;
+    set?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    disconnect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    delete?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    connect?: Prisma.MealWhereUniqueInput | Prisma.MealWhereUniqueInput[];
+    update?: Prisma.MealUpdateWithWhereUniqueWithoutProviderInput | Prisma.MealUpdateWithWhereUniqueWithoutProviderInput[];
+    updateMany?: Prisma.MealUpdateManyWithWhereWithoutProviderInput | Prisma.MealUpdateManyWithWhereWithoutProviderInput[];
+    deleteMany?: Prisma.MealScalarWhereInput | Prisma.MealScalarWhereInput[];
+};
+export type MealCreateNestedOneWithoutReviewsInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutReviewsInput, Prisma.MealUncheckedCreateWithoutReviewsInput>;
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutReviewsInput;
+    connect?: Prisma.MealWhereUniqueInput;
+};
+export type MealUpdateOneRequiredWithoutReviewsNestedInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutReviewsInput, Prisma.MealUncheckedCreateWithoutReviewsInput>;
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutReviewsInput;
+    upsert?: Prisma.MealUpsertWithoutReviewsInput;
+    connect?: Prisma.MealWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MealUpdateToOneWithWhereWithoutReviewsInput, Prisma.MealUpdateWithoutReviewsInput>, Prisma.MealUncheckedUpdateWithoutReviewsInput>;
+};
+export type MealCreateNestedOneWithoutCartItemsInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCartItemsInput, Prisma.MealUncheckedCreateWithoutCartItemsInput>;
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCartItemsInput;
+    connect?: Prisma.MealWhereUniqueInput;
+};
+export type MealUpdateOneRequiredWithoutCartItemsNestedInput = {
+    create?: Prisma.XOR<Prisma.MealCreateWithoutCartItemsInput, Prisma.MealUncheckedCreateWithoutCartItemsInput>;
+    connectOrCreate?: Prisma.MealCreateOrConnectWithoutCartItemsInput;
+    upsert?: Prisma.MealUpsertWithoutCartItemsInput;
+    connect?: Prisma.MealWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MealUpdateToOneWithWhereWithoutCartItemsInput, Prisma.MealUpdateWithoutCartItemsInput>, Prisma.MealUncheckedUpdateWithoutCartItemsInput>;
+};
+export type MealCreateWithoutCategoryInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    cuisine?: Prisma.CuisineCreateNestedOneWithoutMealsInput;
+    provider: Prisma.ProviderProfileCreateNestedOneWithoutMealsInput;
+    orders?: Prisma.OrderCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemCreateNestedManyWithoutMealInput;
+};
+export type MealUncheckedCreateWithoutCategoryInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    cuisineId?: string | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    providerId: string;
+    orders?: Prisma.OrderUncheckedCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutMealInput;
+};
+export type MealCreateOrConnectWithoutCategoryInput = {
+    where: Prisma.MealWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MealCreateWithoutCategoryInput, Prisma.MealUncheckedCreateWithoutCategoryInput>;
+};
+export type MealCreateManyCategoryInputEnvelope = {
+    data: Prisma.MealCreateManyCategoryInput | Prisma.MealCreateManyCategoryInput[];
+    skipDuplicates?: boolean;
+};
+export type MealUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: Prisma.MealWhereUniqueInput;
+    update: Prisma.XOR<Prisma.MealUpdateWithoutCategoryInput, Prisma.MealUncheckedUpdateWithoutCategoryInput>;
+    create: Prisma.XOR<Prisma.MealCreateWithoutCategoryInput, Prisma.MealUncheckedCreateWithoutCategoryInput>;
+};
+export type MealUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: Prisma.MealWhereUniqueInput;
+    data: Prisma.XOR<Prisma.MealUpdateWithoutCategoryInput, Prisma.MealUncheckedUpdateWithoutCategoryInput>;
+};
+export type MealUpdateManyWithWhereWithoutCategoryInput = {
+    where: Prisma.MealScalarWhereInput;
+    data: Prisma.XOR<Prisma.MealUpdateManyMutationInput, Prisma.MealUncheckedUpdateManyWithoutCategoryInput>;
+};
+export type MealScalarWhereInput = {
+    AND?: Prisma.MealScalarWhereInput | Prisma.MealScalarWhereInput[];
+    OR?: Prisma.MealScalarWhereInput[];
+    NOT?: Prisma.MealScalarWhereInput | Prisma.MealScalarWhereInput[];
+    id?: Prisma.StringFilter<"Meal"> | string;
+    name?: Prisma.StringFilter<"Meal"> | string;
+    description?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    price?: Prisma.DecimalFilter<"Meal"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    ingredients?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    allergens?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    prepTime?: Prisma.IntNullableFilter<"Meal"> | number | null;
+    cuisineId?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    isVegan?: Prisma.BoolFilter<"Meal"> | boolean;
+    isAvailable?: Prisma.BoolFilter<"Meal"> | boolean;
+    isFeatured?: Prisma.BoolFilter<"Meal"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"Meal"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Meal"> | Date | string;
+    categoryId?: Prisma.StringNullableFilter<"Meal"> | string | null;
+    providerId?: Prisma.StringFilter<"Meal"> | string;
+};
+export type MealCreateWithoutCuisineInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    category?: Prisma.CategoryCreateNestedOneWithoutMealsInput;
+    provider: Prisma.ProviderProfileCreateNestedOneWithoutMealsInput;
+    orders?: Prisma.OrderCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemCreateNestedManyWithoutMealInput;
+};
+export type MealUncheckedCreateWithoutCuisineInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId?: string | null;
+    providerId: string;
+    orders?: Prisma.OrderUncheckedCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutMealInput;
+};
+export type MealCreateOrConnectWithoutCuisineInput = {
+    where: Prisma.MealWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MealCreateWithoutCuisineInput, Prisma.MealUncheckedCreateWithoutCuisineInput>;
+};
+export type MealCreateManyCuisineInputEnvelope = {
+    data: Prisma.MealCreateManyCuisineInput | Prisma.MealCreateManyCuisineInput[];
+    skipDuplicates?: boolean;
+};
+export type MealUpsertWithWhereUniqueWithoutCuisineInput = {
+    where: Prisma.MealWhereUniqueInput;
+    update: Prisma.XOR<Prisma.MealUpdateWithoutCuisineInput, Prisma.MealUncheckedUpdateWithoutCuisineInput>;
+    create: Prisma.XOR<Prisma.MealCreateWithoutCuisineInput, Prisma.MealUncheckedCreateWithoutCuisineInput>;
+};
+export type MealUpdateWithWhereUniqueWithoutCuisineInput = {
+    where: Prisma.MealWhereUniqueInput;
+    data: Prisma.XOR<Prisma.MealUpdateWithoutCuisineInput, Prisma.MealUncheckedUpdateWithoutCuisineInput>;
+};
+export type MealUpdateManyWithWhereWithoutCuisineInput = {
+    where: Prisma.MealScalarWhereInput;
+    data: Prisma.XOR<Prisma.MealUpdateManyMutationInput, Prisma.MealUncheckedUpdateManyWithoutCuisineInput>;
+};
+export type MealCreateWithoutOrdersInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    cuisine?: Prisma.CuisineCreateNestedOneWithoutMealsInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutMealsInput;
+    provider: Prisma.ProviderProfileCreateNestedOneWithoutMealsInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemCreateNestedManyWithoutMealInput;
+};
+export type MealUncheckedCreateWithoutOrdersInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    cuisineId?: string | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId?: string | null;
+    providerId: string;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutMealInput;
+};
+export type MealCreateOrConnectWithoutOrdersInput = {
+    where: Prisma.MealWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MealCreateWithoutOrdersInput, Prisma.MealUncheckedCreateWithoutOrdersInput>;
+};
+export type MealUpsertWithoutOrdersInput = {
+    update: Prisma.XOR<Prisma.MealUpdateWithoutOrdersInput, Prisma.MealUncheckedUpdateWithoutOrdersInput>;
+    create: Prisma.XOR<Prisma.MealCreateWithoutOrdersInput, Prisma.MealUncheckedCreateWithoutOrdersInput>;
+    where?: Prisma.MealWhereInput;
+};
+export type MealUpdateToOneWithWhereWithoutOrdersInput = {
+    where?: Prisma.MealWhereInput;
+    data: Prisma.XOR<Prisma.MealUpdateWithoutOrdersInput, Prisma.MealUncheckedUpdateWithoutOrdersInput>;
+};
+export type MealUpdateWithoutOrdersInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cuisine?: Prisma.CuisineUpdateOneWithoutMealsNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutMealsNestedInput;
+    provider?: Prisma.ProviderProfileUpdateOneRequiredWithoutMealsNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateWithoutOrdersInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cuisineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    providerId?: Prisma.StringFieldUpdateOperationsInput | string;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutMealNestedInput;
+};
+export type MealCreateWithoutProviderInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    cuisine?: Prisma.CuisineCreateNestedOneWithoutMealsInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutMealsInput;
+    orders?: Prisma.OrderCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemCreateNestedManyWithoutMealInput;
+};
+export type MealUncheckedCreateWithoutProviderInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    cuisineId?: string | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId?: string | null;
+    orders?: Prisma.OrderUncheckedCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutMealInput;
+};
+export type MealCreateOrConnectWithoutProviderInput = {
+    where: Prisma.MealWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MealCreateWithoutProviderInput, Prisma.MealUncheckedCreateWithoutProviderInput>;
+};
+export type MealCreateManyProviderInputEnvelope = {
+    data: Prisma.MealCreateManyProviderInput | Prisma.MealCreateManyProviderInput[];
+    skipDuplicates?: boolean;
+};
+export type MealUpsertWithWhereUniqueWithoutProviderInput = {
+    where: Prisma.MealWhereUniqueInput;
+    update: Prisma.XOR<Prisma.MealUpdateWithoutProviderInput, Prisma.MealUncheckedUpdateWithoutProviderInput>;
+    create: Prisma.XOR<Prisma.MealCreateWithoutProviderInput, Prisma.MealUncheckedCreateWithoutProviderInput>;
+};
+export type MealUpdateWithWhereUniqueWithoutProviderInput = {
+    where: Prisma.MealWhereUniqueInput;
+    data: Prisma.XOR<Prisma.MealUpdateWithoutProviderInput, Prisma.MealUncheckedUpdateWithoutProviderInput>;
+};
+export type MealUpdateManyWithWhereWithoutProviderInput = {
+    where: Prisma.MealScalarWhereInput;
+    data: Prisma.XOR<Prisma.MealUpdateManyMutationInput, Prisma.MealUncheckedUpdateManyWithoutProviderInput>;
+};
+export type MealCreateWithoutReviewsInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    cuisine?: Prisma.CuisineCreateNestedOneWithoutMealsInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutMealsInput;
+    provider: Prisma.ProviderProfileCreateNestedOneWithoutMealsInput;
+    orders?: Prisma.OrderCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemCreateNestedManyWithoutMealInput;
+};
+export type MealUncheckedCreateWithoutReviewsInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    cuisineId?: string | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId?: string | null;
+    providerId: string;
+    orders?: Prisma.OrderUncheckedCreateNestedManyWithoutMealInput;
+    cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutMealInput;
+};
+export type MealCreateOrConnectWithoutReviewsInput = {
+    where: Prisma.MealWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MealCreateWithoutReviewsInput, Prisma.MealUncheckedCreateWithoutReviewsInput>;
+};
+export type MealUpsertWithoutReviewsInput = {
+    update: Prisma.XOR<Prisma.MealUpdateWithoutReviewsInput, Prisma.MealUncheckedUpdateWithoutReviewsInput>;
+    create: Prisma.XOR<Prisma.MealCreateWithoutReviewsInput, Prisma.MealUncheckedCreateWithoutReviewsInput>;
+    where?: Prisma.MealWhereInput;
+};
+export type MealUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: Prisma.MealWhereInput;
+    data: Prisma.XOR<Prisma.MealUpdateWithoutReviewsInput, Prisma.MealUncheckedUpdateWithoutReviewsInput>;
+};
+export type MealUpdateWithoutReviewsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cuisine?: Prisma.CuisineUpdateOneWithoutMealsNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutMealsNestedInput;
+    provider?: Prisma.ProviderProfileUpdateOneRequiredWithoutMealsNestedInput;
+    orders?: Prisma.OrderUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateWithoutReviewsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cuisineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    providerId?: Prisma.StringFieldUpdateOperationsInput | string;
+    orders?: Prisma.OrderUncheckedUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutMealNestedInput;
+};
+export type MealCreateWithoutCartItemsInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    cuisine?: Prisma.CuisineCreateNestedOneWithoutMealsInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutMealsInput;
+    provider: Prisma.ProviderProfileCreateNestedOneWithoutMealsInput;
+    orders?: Prisma.OrderCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutMealInput;
+};
+export type MealUncheckedCreateWithoutCartItemsInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    cuisineId?: string | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId?: string | null;
+    providerId: string;
+    orders?: Prisma.OrderUncheckedCreateNestedManyWithoutMealInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutMealInput;
+};
+export type MealCreateOrConnectWithoutCartItemsInput = {
+    where: Prisma.MealWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MealCreateWithoutCartItemsInput, Prisma.MealUncheckedCreateWithoutCartItemsInput>;
+};
+export type MealUpsertWithoutCartItemsInput = {
+    update: Prisma.XOR<Prisma.MealUpdateWithoutCartItemsInput, Prisma.MealUncheckedUpdateWithoutCartItemsInput>;
+    create: Prisma.XOR<Prisma.MealCreateWithoutCartItemsInput, Prisma.MealUncheckedCreateWithoutCartItemsInput>;
+    where?: Prisma.MealWhereInput;
+};
+export type MealUpdateToOneWithWhereWithoutCartItemsInput = {
+    where?: Prisma.MealWhereInput;
+    data: Prisma.XOR<Prisma.MealUpdateWithoutCartItemsInput, Prisma.MealUncheckedUpdateWithoutCartItemsInput>;
+};
+export type MealUpdateWithoutCartItemsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cuisine?: Prisma.CuisineUpdateOneWithoutMealsNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutMealsNestedInput;
+    provider?: Prisma.ProviderProfileUpdateOneRequiredWithoutMealsNestedInput;
+    orders?: Prisma.OrderUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateWithoutCartItemsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cuisineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    providerId?: Prisma.StringFieldUpdateOperationsInput | string;
+    orders?: Prisma.OrderUncheckedUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMealNestedInput;
+};
+export type MealCreateManyCategoryInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    cuisineId?: string | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    providerId: string;
+};
+export type MealUpdateWithoutCategoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cuisine?: Prisma.CuisineUpdateOneWithoutMealsNestedInput;
+    provider?: Prisma.ProviderProfileUpdateOneRequiredWithoutMealsNestedInput;
+    orders?: Prisma.OrderUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateWithoutCategoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cuisineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    providerId?: Prisma.StringFieldUpdateOperationsInput | string;
+    orders?: Prisma.OrderUncheckedUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateManyWithoutCategoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cuisineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    providerId?: Prisma.StringFieldUpdateOperationsInput | string;
+};
+export type MealCreateManyCuisineInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId?: string | null;
+    providerId: string;
+};
+export type MealUpdateWithoutCuisineInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    category?: Prisma.CategoryUpdateOneWithoutMealsNestedInput;
+    provider?: Prisma.ProviderProfileUpdateOneRequiredWithoutMealsNestedInput;
+    orders?: Prisma.OrderUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateWithoutCuisineInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    providerId?: Prisma.StringFieldUpdateOperationsInput | string;
+    orders?: Prisma.OrderUncheckedUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateManyWithoutCuisineInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    providerId?: Prisma.StringFieldUpdateOperationsInput | string;
+};
+export type MealCreateManyProviderInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    price: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: string | null;
+    ingredients?: string | null;
+    allergens?: string | null;
+    prepTime?: number | null;
+    cuisineId?: string | null;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categoryId?: string | null;
+};
+export type MealUpdateWithoutProviderInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    cuisine?: Prisma.CuisineUpdateOneWithoutMealsNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutMealsNestedInput;
+    orders?: Prisma.OrderUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateWithoutProviderInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cuisineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    orders?: Prisma.OrderUncheckedUpdateManyWithoutMealNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutMealNestedInput;
+    cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutMealNestedInput;
+};
+export type MealUncheckedUpdateManyWithoutProviderInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ingredients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    allergens?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prepTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cuisineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isVegan?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+};
+/**
+ * Count Type MealCountOutputType
+ */
+export type MealCountOutputType = {
+    orders: number;
+    reviews: number;
+    cartItems: number;
+};
+export type MealCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    orders?: boolean | MealCountOutputTypeCountOrdersArgs;
+    reviews?: boolean | MealCountOutputTypeCountReviewsArgs;
+    cartItems?: boolean | MealCountOutputTypeCountCartItemsArgs;
+};
+/**
+ * MealCountOutputType without action
+ */
+export type MealCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MealCountOutputType
+     */
+    select?: Prisma.MealCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * MealCountOutputType without action
+ */
+export type MealCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.OrderWhereInput;
+};
+/**
+ * MealCountOutputType without action
+ */
+export type MealCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ReviewWhereInput;
+};
+/**
+ * MealCountOutputType without action
+ */
+export type MealCountOutputTypeCountCartItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.CartItemWhereInput;
+};
+export type MealSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    name?: boolean;
+    description?: boolean;
+    price?: boolean;
+    image?: boolean;
+    ingredients?: boolean;
+    allergens?: boolean;
+    prepTime?: boolean;
+    cuisineId?: boolean;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    categoryId?: boolean;
+    providerId?: boolean;
+    cuisine?: boolean | Prisma.Meal$cuisineArgs<ExtArgs>;
+    category?: boolean | Prisma.Meal$categoryArgs<ExtArgs>;
+    provider?: boolean | Prisma.ProviderProfileDefaultArgs<ExtArgs>;
+    orders?: boolean | Prisma.Meal$ordersArgs<ExtArgs>;
+    reviews?: boolean | Prisma.Meal$reviewsArgs<ExtArgs>;
+    cartItems?: boolean | Prisma.Meal$cartItemsArgs<ExtArgs>;
+    _count?: boolean | Prisma.MealCountOutputTypeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["meal"]>;
+export type MealSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    name?: boolean;
+    description?: boolean;
+    price?: boolean;
+    image?: boolean;
+    ingredients?: boolean;
+    allergens?: boolean;
+    prepTime?: boolean;
+    cuisineId?: boolean;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    categoryId?: boolean;
+    providerId?: boolean;
+    cuisine?: boolean | Prisma.Meal$cuisineArgs<ExtArgs>;
+    category?: boolean | Prisma.Meal$categoryArgs<ExtArgs>;
+    provider?: boolean | Prisma.ProviderProfileDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["meal"]>;
+export type MealSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    name?: boolean;
+    description?: boolean;
+    price?: boolean;
+    image?: boolean;
+    ingredients?: boolean;
+    allergens?: boolean;
+    prepTime?: boolean;
+    cuisineId?: boolean;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    categoryId?: boolean;
+    providerId?: boolean;
+    cuisine?: boolean | Prisma.Meal$cuisineArgs<ExtArgs>;
+    category?: boolean | Prisma.Meal$categoryArgs<ExtArgs>;
+    provider?: boolean | Prisma.ProviderProfileDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["meal"]>;
+export type MealSelectScalar = {
+    id?: boolean;
+    name?: boolean;
+    description?: boolean;
+    price?: boolean;
+    image?: boolean;
+    ingredients?: boolean;
+    allergens?: boolean;
+    prepTime?: boolean;
+    cuisineId?: boolean;
+    isVegan?: boolean;
+    isAvailable?: boolean;
+    isFeatured?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    categoryId?: boolean;
+    providerId?: boolean;
+};
+export type MealOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "price" | "image" | "ingredients" | "allergens" | "prepTime" | "cuisineId" | "isVegan" | "isAvailable" | "isFeatured" | "createdAt" | "updatedAt" | "categoryId" | "providerId", ExtArgs["result"]["meal"]>;
+export type MealInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    cuisine?: boolean | Prisma.Meal$cuisineArgs<ExtArgs>;
+    category?: boolean | Prisma.Meal$categoryArgs<ExtArgs>;
+    provider?: boolean | Prisma.ProviderProfileDefaultArgs<ExtArgs>;
+    orders?: boolean | Prisma.Meal$ordersArgs<ExtArgs>;
+    reviews?: boolean | Prisma.Meal$reviewsArgs<ExtArgs>;
+    cartItems?: boolean | Prisma.Meal$cartItemsArgs<ExtArgs>;
+    _count?: boolean | Prisma.MealCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type MealIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    cuisine?: boolean | Prisma.Meal$cuisineArgs<ExtArgs>;
+    category?: boolean | Prisma.Meal$categoryArgs<ExtArgs>;
+    provider?: boolean | Prisma.ProviderProfileDefaultArgs<ExtArgs>;
+};
+export type MealIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    cuisine?: boolean | Prisma.Meal$cuisineArgs<ExtArgs>;
+    category?: boolean | Prisma.Meal$categoryArgs<ExtArgs>;
+    provider?: boolean | Prisma.ProviderProfileDefaultArgs<ExtArgs>;
+};
+export type $MealPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "Meal";
+    objects: {
+        cuisine: Prisma.$CuisinePayload<ExtArgs> | null;
+        category: Prisma.$CategoryPayload<ExtArgs> | null;
+        provider: Prisma.$ProviderProfilePayload<ExtArgs>;
+        orders: Prisma.$OrderPayload<ExtArgs>[];
+        reviews: Prisma.$ReviewPayload<ExtArgs>[];
+        cartItems: Prisma.$CartItemPayload<ExtArgs>[];
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        name: string;
+        description: string | null;
+        price: runtime.Decimal;
+        image: string | null;
+        ingredients: string | null;
+        allergens: string | null;
+        prepTime: number | null;
+        cuisineId: string | null;
+        isVegan: boolean;
+        isAvailable: boolean;
+        isFeatured: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        categoryId: string | null;
+        providerId: string;
+    }, ExtArgs["result"]["meal"]>;
+    composites: {};
+};
+export type MealGetPayload<S extends boolean | null | undefined | MealDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$MealPayload, S>;
+export type MealCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<MealFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: MealCountAggregateInputType | true;
+};
+export interface MealDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['Meal'];
+        meta: {
+            name: 'Meal';
+        };
+    };
+    /**
+     * Find zero or one Meal that matches the filter.
+     * @param {MealFindUniqueArgs} args - Arguments to find a Meal
+     * @example
+     * // Get one Meal
+     * const meal = await prisma.meal.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MealFindUniqueArgs>(args: Prisma.SelectSubset<T, MealFindUniqueArgs<ExtArgs>>): Prisma.Prisma__MealClient<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one Meal that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MealFindUniqueOrThrowArgs} args - Arguments to find a Meal
+     * @example
+     * // Get one Meal
+     * const meal = await prisma.meal.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MealFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, MealFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__MealClient<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Meal that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MealFindFirstArgs} args - Arguments to find a Meal
+     * @example
+     * // Get one Meal
+     * const meal = await prisma.meal.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MealFindFirstArgs>(args?: Prisma.SelectSubset<T, MealFindFirstArgs<ExtArgs>>): Prisma.Prisma__MealClient<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Meal that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MealFindFirstOrThrowArgs} args - Arguments to find a Meal
+     * @example
+     * // Get one Meal
+     * const meal = await prisma.meal.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MealFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, MealFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__MealClient<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more Meals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MealFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Meals
+     * const meals = await prisma.meal.findMany()
+     *
+     * // Get first 10 Meals
+     * const meals = await prisma.meal.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const mealWithIdOnly = await prisma.meal.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends MealFindManyArgs>(args?: Prisma.SelectSubset<T, MealFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a Meal.
+     * @param {MealCreateArgs} args - Arguments to create a Meal.
+     * @example
+     * // Create one Meal
+     * const Meal = await prisma.meal.create({
+     *   data: {
+     *     // ... data to create a Meal
+     *   }
+     * })
+     *
+     */
+    create<T extends MealCreateArgs>(args: Prisma.SelectSubset<T, MealCreateArgs<ExtArgs>>): Prisma.Prisma__MealClient<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many Meals.
+     * @param {MealCreateManyArgs} args - Arguments to create many Meals.
+     * @example
+     * // Create many Meals
+     * const meal = await prisma.meal.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends MealCreateManyArgs>(args?: Prisma.SelectSubset<T, MealCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many Meals and returns the data saved in the database.
+     * @param {MealCreateManyAndReturnArgs} args - Arguments to create many Meals.
+     * @example
+     * // Create many Meals
+     * const meal = await prisma.meal.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many Meals and only return the `id`
+     * const mealWithIdOnly = await prisma.meal.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends MealCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, MealCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a Meal.
+     * @param {MealDeleteArgs} args - Arguments to delete one Meal.
+     * @example
+     * // Delete one Meal
+     * const Meal = await prisma.meal.delete({
+     *   where: {
+     *     // ... filter to delete one Meal
+     *   }
+     * })
+     *
+     */
+    delete<T extends MealDeleteArgs>(args: Prisma.SelectSubset<T, MealDeleteArgs<ExtArgs>>): Prisma.Prisma__MealClient<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one Meal.
+     * @param {MealUpdateArgs} args - Arguments to update one Meal.
+     * @example
+     * // Update one Meal
+     * const meal = await prisma.meal.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends MealUpdateArgs>(args: Prisma.SelectSubset<T, MealUpdateArgs<ExtArgs>>): Prisma.Prisma__MealClient<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more Meals.
+     * @param {MealDeleteManyArgs} args - Arguments to filter Meals to delete.
+     * @example
+     * // Delete a few Meals
+     * const { count } = await prisma.meal.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends MealDeleteManyArgs>(args?: Prisma.SelectSubset<T, MealDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Meals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MealUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Meals
+     * const meal = await prisma.meal.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends MealUpdateManyArgs>(args: Prisma.SelectSubset<T, MealUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Meals and returns the data updated in the database.
+     * @param {MealUpdateManyAndReturnArgs} args - Arguments to update many Meals.
+     * @example
+     * // Update many Meals
+     * const meal = await prisma.meal.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more Meals and only return the `id`
+     * const mealWithIdOnly = await prisma.meal.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends MealUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, MealUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one Meal.
+     * @param {MealUpsertArgs} args - Arguments to update or create a Meal.
+     * @example
+     * // Update or create a Meal
+     * const meal = await prisma.meal.upsert({
+     *   create: {
+     *     // ... data to create a Meal
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Meal we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MealUpsertArgs>(args: Prisma.SelectSubset<T, MealUpsertArgs<ExtArgs>>): Prisma.Prisma__MealClient<runtime.Types.Result.GetResult<Prisma.$MealPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of Meals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MealCountArgs} args - Arguments to filter Meals to count.
+     * @example
+     * // Count the number of Meals
+     * const count = await prisma.meal.count({
+     *   where: {
+     *     // ... the filter for the Meals we want to count
+     *   }
+     * })
+    **/
+    count<T extends MealCountArgs>(args?: Prisma.Subset<T, MealCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], MealCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a Meal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MealAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MealAggregateArgs>(args: Prisma.Subset<T, MealAggregateArgs>): Prisma.PrismaPromise<GetMealAggregateType<T>>;
+    /**
+     * Group by Meal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MealGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends MealGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: MealGroupByArgs['orderBy'];
+    } : {
+        orderBy?: MealGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, MealGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMealGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the Meal model
+     */
+    readonly fields: MealFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for Meal.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__MealClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    cuisine<T extends Prisma.Meal$cuisineArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meal$cuisineArgs<ExtArgs>>): Prisma.Prisma__CuisineClient<runtime.Types.Result.GetResult<Prisma.$CuisinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    category<T extends Prisma.Meal$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meal$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    provider<T extends Prisma.ProviderProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProviderProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__ProviderProfileClient<runtime.Types.Result.GetResult<Prisma.$ProviderProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    orders<T extends Prisma.Meal$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meal$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    reviews<T extends Prisma.Meal$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meal$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    cartItems<T extends Prisma.Meal$cartItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meal$cartItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the Meal model
+ */
+export interface MealFieldRefs {
+    readonly id: Prisma.FieldRef<"Meal", 'String'>;
+    readonly name: Prisma.FieldRef<"Meal", 'String'>;
+    readonly description: Prisma.FieldRef<"Meal", 'String'>;
+    readonly price: Prisma.FieldRef<"Meal", 'Decimal'>;
+    readonly image: Prisma.FieldRef<"Meal", 'String'>;
+    readonly ingredients: Prisma.FieldRef<"Meal", 'String'>;
+    readonly allergens: Prisma.FieldRef<"Meal", 'String'>;
+    readonly prepTime: Prisma.FieldRef<"Meal", 'Int'>;
+    readonly cuisineId: Prisma.FieldRef<"Meal", 'String'>;
+    readonly isVegan: Prisma.FieldRef<"Meal", 'Boolean'>;
+    readonly isAvailable: Prisma.FieldRef<"Meal", 'Boolean'>;
+    readonly isFeatured: Prisma.FieldRef<"Meal", 'Boolean'>;
+    readonly createdAt: Prisma.FieldRef<"Meal", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"Meal", 'DateTime'>;
+    readonly categoryId: Prisma.FieldRef<"Meal", 'String'>;
+    readonly providerId: Prisma.FieldRef<"Meal", 'String'>;
+}
+/**
+ * Meal findUnique
+ */
+export type MealFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+    /**
+     * Filter, which Meal to fetch.
+     */
+    where: Prisma.MealWhereUniqueInput;
+};
+/**
+ * Meal findUniqueOrThrow
+ */
+export type MealFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+    /**
+     * Filter, which Meal to fetch.
+     */
+    where: Prisma.MealWhereUniqueInput;
+};
+/**
+ * Meal findFirst
+ */
+export type MealFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+    /**
+     * Filter, which Meal to fetch.
+     */
+    where?: Prisma.MealWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Meals to fetch.
+     */
+    orderBy?: Prisma.MealOrderByWithRelationInput | Prisma.MealOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Meals.
+     */
+    cursor?: Prisma.MealWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Meals from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Meals.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Meals.
+     */
+    distinct?: Prisma.MealScalarFieldEnum | Prisma.MealScalarFieldEnum[];
+};
+/**
+ * Meal findFirstOrThrow
+ */
+export type MealFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+    /**
+     * Filter, which Meal to fetch.
+     */
+    where?: Prisma.MealWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Meals to fetch.
+     */
+    orderBy?: Prisma.MealOrderByWithRelationInput | Prisma.MealOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Meals.
+     */
+    cursor?: Prisma.MealWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Meals from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Meals.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Meals.
+     */
+    distinct?: Prisma.MealScalarFieldEnum | Prisma.MealScalarFieldEnum[];
+};
+/**
+ * Meal findMany
+ */
+export type MealFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+    /**
+     * Filter, which Meals to fetch.
+     */
+    where?: Prisma.MealWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Meals to fetch.
+     */
+    orderBy?: Prisma.MealOrderByWithRelationInput | Prisma.MealOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing Meals.
+     */
+    cursor?: Prisma.MealWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Meals from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Meals.
+     */
+    skip?: number;
+    distinct?: Prisma.MealScalarFieldEnum | Prisma.MealScalarFieldEnum[];
+};
+/**
+ * Meal create
+ */
+export type MealCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a Meal.
+     */
+    data: Prisma.XOR<Prisma.MealCreateInput, Prisma.MealUncheckedCreateInput>;
+};
+/**
+ * Meal createMany
+ */
+export type MealCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Meals.
+     */
+    data: Prisma.MealCreateManyInput | Prisma.MealCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * Meal createManyAndReturn
+ */
+export type MealCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * The data used to create many Meals.
+     */
+    data: Prisma.MealCreateManyInput | Prisma.MealCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * Meal update
+ */
+export type MealUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a Meal.
+     */
+    data: Prisma.XOR<Prisma.MealUpdateInput, Prisma.MealUncheckedUpdateInput>;
+    /**
+     * Choose, which Meal to update.
+     */
+    where: Prisma.MealWhereUniqueInput;
+};
+/**
+ * Meal updateMany
+ */
+export type MealUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Meals.
+     */
+    data: Prisma.XOR<Prisma.MealUpdateManyMutationInput, Prisma.MealUncheckedUpdateManyInput>;
+    /**
+     * Filter which Meals to update
+     */
+    where?: Prisma.MealWhereInput;
+    /**
+     * Limit how many Meals to update.
+     */
+    limit?: number;
+};
+/**
+ * Meal updateManyAndReturn
+ */
+export type MealUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * The data used to update Meals.
+     */
+    data: Prisma.XOR<Prisma.MealUpdateManyMutationInput, Prisma.MealUncheckedUpdateManyInput>;
+    /**
+     * Filter which Meals to update
+     */
+    where?: Prisma.MealWhereInput;
+    /**
+     * Limit how many Meals to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * Meal upsert
+ */
+export type MealUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the Meal to update in case it exists.
+     */
+    where: Prisma.MealWhereUniqueInput;
+    /**
+     * In case the Meal found by the `where` argument doesn't exist, create a new Meal with this data.
+     */
+    create: Prisma.XOR<Prisma.MealCreateInput, Prisma.MealUncheckedCreateInput>;
+    /**
+     * In case the Meal was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.MealUpdateInput, Prisma.MealUncheckedUpdateInput>;
+};
+/**
+ * Meal delete
+ */
+export type MealDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+    /**
+     * Filter which Meal to delete.
+     */
+    where: Prisma.MealWhereUniqueInput;
+};
+/**
+ * Meal deleteMany
+ */
+export type MealDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Meals to delete
+     */
+    where?: Prisma.MealWhereInput;
+    /**
+     * Limit how many Meals to delete.
+     */
+    limit?: number;
+};
+/**
+ * Meal.cuisine
+ */
+export type Meal$cuisineArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cuisine
+     */
+    select?: Prisma.CuisineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Cuisine
+     */
+    omit?: Prisma.CuisineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.CuisineInclude<ExtArgs> | null;
+    where?: Prisma.CuisineWhereInput;
+};
+/**
+ * Meal.category
+ */
+export type Meal$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Category
+     */
+    select?: Prisma.CategorySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Category
+     */
+    omit?: Prisma.CategoryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.CategoryInclude<ExtArgs> | null;
+    where?: Prisma.CategoryWhereInput;
+};
+/**
+ * Meal.orders
+ */
+export type Meal$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: Prisma.OrderSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: Prisma.OrderOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.OrderInclude<ExtArgs> | null;
+    where?: Prisma.OrderWhereInput;
+    orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[];
+    cursor?: Prisma.OrderWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[];
+};
+/**
+ * Meal.reviews
+ */
+export type Meal$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: Prisma.ReviewSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: Prisma.ReviewOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ReviewInclude<ExtArgs> | null;
+    where?: Prisma.ReviewWhereInput;
+    orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[];
+    cursor?: Prisma.ReviewWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[];
+};
+/**
+ * Meal.cartItems
+ */
+export type Meal$cartItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: Prisma.CartItemSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: Prisma.CartItemOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.CartItemInclude<ExtArgs> | null;
+    where?: Prisma.CartItemWhereInput;
+    orderBy?: Prisma.CartItemOrderByWithRelationInput | Prisma.CartItemOrderByWithRelationInput[];
+    cursor?: Prisma.CartItemWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.CartItemScalarFieldEnum | Prisma.CartItemScalarFieldEnum[];
+};
+/**
+ * Meal without action
+ */
+export type MealDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meal
+     */
+    select?: Prisma.MealSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Meal
+     */
+    omit?: Prisma.MealOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MealInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=Meal.d.ts.map

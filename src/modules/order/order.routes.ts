@@ -29,6 +29,12 @@ router.get(
 )
 
 router.get(
+    "/provider/orders",
+    auth(UserRole.PROVIDER),
+    orderController.getProviderOrders
+)
+
+router.get(
     "/all",
     (req, res, next) => {
         console.log("Getting all orders");
