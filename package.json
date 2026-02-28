@@ -2,7 +2,7 @@
   "name": "foodhub-backend",
   "version": "1.0.0",
   "description": "FoodHub Backend is a food delivery API that allows users to order food from their favorite restaurants.",
-  "main": "server.js",
+  "main": "dist/src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "prisma generate && npx tsc",
