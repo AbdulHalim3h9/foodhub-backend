@@ -1,15 +1,18 @@
-import { auth as betterAuth } from '../lib/auth';
-export var UserRole;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRole = void 0;
+const auth_1 = require("../lib/auth");
+var UserRole;
 (function (UserRole) {
     UserRole["CUSTOMER"] = "CUSTOMER";
     UserRole["PROVIDER"] = "PROVIDER";
     UserRole["ADMIN"] = "ADMIN";
-})(UserRole || (UserRole = {}));
+})(UserRole || (exports.UserRole = UserRole = {}));
 const auth = (...roles) => {
     return async (req, res, next) => {
         try {
             // get user session
-            const session = await betterAuth.api.getSession({
+            const session = await auth_1.auth.api.getSession({
                 headers: req.headers
             });
             if (!session) {
@@ -45,5 +48,5 @@ const auth = (...roles) => {
         }
     };
 };
-export default auth;
+exports.default = auth;
 //# sourceMappingURL=auth.js.map

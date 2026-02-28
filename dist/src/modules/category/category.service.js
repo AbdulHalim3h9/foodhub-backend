@@ -1,5 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.categoryService = void 0;
 // Category service - Public category listing
-import { prisma } from "../../lib/prisma";
+const prisma_1 = require("../../lib/prisma");
 const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, isActive }) => {
     const where = {};
     // Apply filters
@@ -22,7 +25,7 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
     if (isActive !== undefined) {
         where.isActive = isActive;
     }
-    const categories = await prisma.category.findMany({
+    const categories = await prisma_1.prisma.category.findMany({
         take: limit,
         skip,
         where,
@@ -37,7 +40,7 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
             }
         }
     });
-    const total = await prisma.category.count({ where });
+    const total = await prisma_1.prisma.category.count({ where });
     return {
         data: categories,
         pagination: {
@@ -48,7 +51,7 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
         }
     };
 };
-export const categoryService = {
+exports.categoryService = {
     getAllCategories
 };
 //# sourceMappingURL=category.service.js.map

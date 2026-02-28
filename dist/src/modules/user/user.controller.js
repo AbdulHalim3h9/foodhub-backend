@@ -1,4 +1,7 @@
-import { userService } from "./user.service";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.userController = void 0;
+const user_service_1 = require("./user.service");
 const getMyProfile = async (req, res, next) => {
     try {
         const user = req.user;
@@ -7,7 +10,7 @@ const getMyProfile = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const result = await userService.getMyProfile(user.id);
+        const result = await user_service_1.userService.getMyProfile(user.id);
         res.status(200).json(result);
     }
     catch (e) {
@@ -22,7 +25,7 @@ const applyForProvider = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const result = await userService.applyForProvider(user.id, req.body);
+        const result = await user_service_1.userService.applyForProvider(user.id, req.body);
         res.status(201).json({
             success: true,
             message: "Provider application submitted successfully! Your profile is now pending admin approval.",
@@ -43,7 +46,7 @@ const updateProviderProfile = async (req, res, next) => {
         }
         console.log("🔧 [USER CONTROLLER] Updating provider profile for user:", user.email);
         console.log("📝 [USER CONTROLLER] Request body:", req.body);
-        const result = await userService.updateProviderProfile(user.id, req.body);
+        const result = await user_service_1.userService.updateProviderProfile(user.id, req.body);
         console.log("✅ [USER CONTROLLER] Provider profile updated successfully");
         res.status(200).json({
             success: true,
@@ -64,7 +67,7 @@ const updateProfile = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const result = await userService.updateProfile(user.id, req.body);
+        const result = await user_service_1.userService.updateProfile(user.id, req.body);
         res.status(200).json({
             success: true,
             message: "Profile updated successfully!",
@@ -75,7 +78,7 @@ const updateProfile = async (req, res, next) => {
         next(e);
     }
 };
-export const userController = {
+exports.userController = {
     getMyProfile,
     updateProfile,
     updateProviderProfile,

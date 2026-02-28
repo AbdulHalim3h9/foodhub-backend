@@ -1,8 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.providerService = void 0;
 // Provider service - Provider-specific actions: menu management, order handling dashboard
-import { prisma } from "../../lib/prisma";
+const prisma_1 = require("../../lib/prisma");
 const createProviderProfile = async (providerData) => {
     try {
-        const providerProfile = await prisma.providerProfile.create({
+        const providerProfile = await prisma_1.prisma.providerProfile.create({
             data: {
                 userId: providerData.userId,
                 businessName: providerData.businessName,
@@ -44,7 +47,7 @@ const getAllProviders = async ({ search, isActive, page, limit, skip, sortBy, so
             isActive
         });
     }
-    const providers = await prisma.providerProfile.findMany({
+    const providers = await prisma_1.prisma.providerProfile.findMany({
         take: limit,
         skip,
         where: {
@@ -70,7 +73,7 @@ const getAllProviders = async ({ search, isActive, page, limit, skip, sortBy, so
             }
         }
     });
-    const total = await prisma.providerProfile.count({
+    const total = await prisma_1.prisma.providerProfile.count({
         where: {
             AND: andConditions
         }
@@ -87,7 +90,7 @@ const getAllProviders = async ({ search, isActive, page, limit, skip, sortBy, so
 };
 const createMenuItem = async (providerId, mealData) => {
     // Verify provider exists and is active
-    const provider = await prisma.providerProfile.findUnique({
+    const provider = await prisma_1.prisma.providerProfile.findUnique({
         where: {
             id: providerId,
             isActive: true
@@ -97,7 +100,7 @@ const createMenuItem = async (providerId, mealData) => {
         throw new Error("Provider not found or inactive!");
     }
     // Verify category exists (admin-managed)
-    const category = await prisma.category.findFirst({
+    const category = await prisma_1.prisma.category.findFirst({
         where: {
             id: mealData.categoryId,
             isActive: true
@@ -107,7 +110,7 @@ const createMenuItem = async (providerId, mealData) => {
         throw new Error("Category not found or inactive!");
     }
     // Create meal
-    const result = await prisma.meal.create({
+    const result = await prisma_1.prisma.meal.create({
         data: {
             name: mealData.name,
             description: mealData.description || null,
@@ -124,7 +127,7 @@ const createMenuItem = async (providerId, mealData) => {
     return result;
 };
 const getProviderById = async (providerId) => {
-    const provider = await prisma.providerProfile.findFirst({
+    const provider = await prisma_1.prisma.providerProfile.findFirst({
         where: {
             id: providerId,
             isActive: true
@@ -159,7 +162,7 @@ const getProviderById = async (providerId) => {
 };
 const updateMenuItem = async (providerId, mealId, mealData) => {
     // Verify provider exists and is active
-    const provider = await prisma.providerProfile.findUnique({
+    const provider = await prisma_1.prisma.providerProfile.findUnique({
         where: {
             id: providerId,
             isActive: true
@@ -169,7 +172,7 @@ const updateMenuItem = async (providerId, mealId, mealData) => {
         throw new Error("Provider not found or inactive!");
     }
     // Check if meal exists and belongs to this provider
-    const existingMeal = await prisma.meal.findFirst({
+    const existingMeal = await prisma_1.prisma.meal.findFirst({
         where: {
             id: mealId,
             providerId
@@ -180,7 +183,7 @@ const updateMenuItem = async (providerId, mealId, mealData) => {
     }
     // If updating category, verify it exists (admin-managed)
     if (mealData.categoryId && mealData.categoryId !== existingMeal.categoryId) {
-        const category = await prisma.category.findFirst({
+        const category = await prisma_1.prisma.category.findFirst({
             where: {
                 id: mealData.categoryId,
                 isActive: true
@@ -191,7 +194,7 @@ const updateMenuItem = async (providerId, mealId, mealData) => {
         }
     }
     // Update meal
-    const result = await prisma.meal.update({
+    const result = await prisma_1.prisma.meal.update({
         where: {
             id: mealId
         },
@@ -211,7 +214,7 @@ const updateMenuItem = async (providerId, mealId, mealData) => {
 };
 const deleteMenuItem = async (providerId, mealId) => {
     // Verify provider exists and is active
-    const provider = await prisma.providerProfile.findUnique({
+    const provider = await prisma_1.prisma.providerProfile.findUnique({
         where: {
             id: providerId,
             isActive: true
@@ -221,7 +224,7 @@ const deleteMenuItem = async (providerId, mealId) => {
         throw new Error("Provider not found or inactive!");
     }
     // Check if meal exists and belongs to this provider
-    const existingMeal = await prisma.meal.findFirst({
+    const existingMeal = await prisma_1.prisma.meal.findFirst({
         where: {
             id: mealId,
             providerId
@@ -231,7 +234,7 @@ const deleteMenuItem = async (providerId, mealId) => {
         throw new Error("Meal not found or doesn't belong to this provider!");
     }
     // Check if meal has any orders
-    const ordersCount = await prisma.order.count({
+    const ordersCount = await prisma_1.prisma.order.count({
         where: {
             mealId: mealId
         }
@@ -240,14 +243,14 @@ const deleteMenuItem = async (providerId, mealId) => {
         throw new Error("Cannot delete meal with existing orders!");
     }
     // Delete meal
-    const result = await prisma.meal.delete({
+    const result = await prisma_1.prisma.meal.delete({
         where: {
             id: mealId
         }
     });
     return result;
 };
-export const providerService = {
+exports.providerService = {
     getAllProviders,
     createProviderProfile,
     createMenuItem,

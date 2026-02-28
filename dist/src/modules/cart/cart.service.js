@@ -1,8 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.cartService = void 0;
 // Cart service - Cart management for users
-import { prisma } from "../../lib/prisma";
+const prisma_1 = require("../../lib/prisma");
 const getCart = async (userId) => {
     // Validate user exists and is active
-    const user = await prisma.user.findUnique({
+    const user = await prisma_1.prisma.user.findUnique({
         where: {
             id: userId,
             isActive: true
@@ -12,7 +15,7 @@ const getCart = async (userId) => {
         throw new Error("User not found or inactive!");
     }
     // Get cart items with meal details
-    const cartItems = await prisma.cartItem.findMany({
+    const cartItems = await prisma_1.prisma.cartItem.findMany({
         where: {
             userId: userId
         },
@@ -59,7 +62,7 @@ const getCart = async (userId) => {
 };
 const addItemToCart = async (userId, itemData) => {
     // Validate user exists and is active
-    const user = await prisma.user.findUnique({
+    const user = await prisma_1.prisma.user.findUnique({
         where: {
             id: userId,
             isActive: true
@@ -69,7 +72,7 @@ const addItemToCart = async (userId, itemData) => {
         throw new Error("User not found or inactive!");
     }
     // Validate meal exists and is available
-    const meal = await prisma.meal.findUnique({
+    const meal = await prisma_1.prisma.meal.findUnique({
         where: {
             id: itemData.mealId,
             isAvailable: true
@@ -79,7 +82,7 @@ const addItemToCart = async (userId, itemData) => {
         throw new Error("Meal not found or not available!");
     }
     // Check if item already exists in cart
-    const existingCartItem = await prisma.cartItem.findUnique({
+    const existingCartItem = await prisma_1.prisma.cartItem.findUnique({
         where: {
             userId_mealId: {
                 userId: userId,
@@ -89,7 +92,7 @@ const addItemToCart = async (userId, itemData) => {
     });
     if (existingCartItem) {
         // Update quantity if item exists
-        const updatedItem = await prisma.cartItem.update({
+        const updatedItem = await prisma_1.prisma.cartItem.update({
             where: {
                 id: existingCartItem.id
             },
@@ -112,7 +115,7 @@ const addItemToCart = async (userId, itemData) => {
     }
     else {
         // Create new cart item
-        const newCartItem = await prisma.cartItem.create({
+        const newCartItem = await prisma_1.prisma.cartItem.create({
             data: {
                 userId: userId,
                 mealId: itemData.mealId,
@@ -139,7 +142,7 @@ const updateItemQuantity = async (userId, mealId, quantity) => {
         throw new Error("Quantity must be greater than 0!");
     }
     // Check if cart item exists
-    const cartItem = await prisma.cartItem.findUnique({
+    const cartItem = await prisma_1.prisma.cartItem.findUnique({
         where: {
             userId_mealId: {
                 userId: userId,
@@ -162,7 +165,7 @@ const updateItemQuantity = async (userId, mealId, quantity) => {
         throw new Error("Item not found in cart!");
     }
     // Update quantity
-    const updatedItem = await prisma.cartItem.update({
+    const updatedItem = await prisma_1.prisma.cartItem.update({
         where: {
             id: cartItem.id
         },
@@ -185,7 +188,7 @@ const updateItemQuantity = async (userId, mealId, quantity) => {
 };
 const removeItemFromCart = async (userId, mealId) => {
     // Check if cart item exists
-    const cartItem = await prisma.cartItem.findUnique({
+    const cartItem = await prisma_1.prisma.cartItem.findUnique({
         where: {
             userId_mealId: {
                 userId: userId,
@@ -197,7 +200,7 @@ const removeItemFromCart = async (userId, mealId) => {
         throw new Error("Item not found in cart!");
     }
     // Remove item
-    await prisma.cartItem.delete({
+    await prisma_1.prisma.cartItem.delete({
         where: {
             id: cartItem.id
         }
@@ -206,7 +209,7 @@ const removeItemFromCart = async (userId, mealId) => {
 };
 const clearCart = async (userId) => {
     // Delete all cart items for user
-    const result = await prisma.cartItem.deleteMany({
+    const result = await prisma_1.prisma.cartItem.deleteMany({
         where: {
             userId: userId
         }
@@ -216,7 +219,7 @@ const clearCart = async (userId) => {
         itemsRemoved: result.count
     };
 };
-export const cartService = {
+exports.cartService = {
     getCart,
     addItemToCart,
     updateItemQuantity,

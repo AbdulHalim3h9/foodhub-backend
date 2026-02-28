@@ -1,5 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.adminService = void 0;
 // Admin service - Admin-only: manage users, view all orders, manage categories
-import { prisma } from "../../lib/prisma";
+const prisma_1 = require("../../lib/prisma");
 const getAllUsers = async ({ page, limit, skip, sortBy, sortOrder, search, role, status }) => {
     const where = {};
     // Apply filters
@@ -15,7 +18,7 @@ const getAllUsers = async ({ page, limit, skip, sortBy, sortOrder, search, role,
     if (status) {
         where.status = status;
     }
-    const users = await prisma.user.findMany({
+    const users = await prisma_1.prisma.user.findMany({
         take: limit,
         skip,
         where,
@@ -49,7 +52,7 @@ const getAllUsers = async ({ page, limit, skip, sortBy, sortOrder, search, role,
             }
         }
     });
-    const total = await prisma.user.count({ where });
+    const total = await prisma_1.prisma.user.count({ where });
     return {
         data: users,
         pagination: {
@@ -62,7 +65,7 @@ const getAllUsers = async ({ page, limit, skip, sortBy, sortOrder, search, role,
 };
 const updateUser = async (userId, updateData) => {
     // Check if user exists
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma_1.prisma.user.findUnique({
         where: { id: userId }
     });
     if (!existingUser) {
@@ -96,7 +99,7 @@ const updateUser = async (userId, updateData) => {
         data.status = updateData.status;
     if (updateData.isActive !== undefined)
         data.isActive = updateData.isActive;
-    const result = await prisma.user.update({
+    const result = await prisma_1.prisma.user.update({
         where: { id: userId },
         data,
         select: {
@@ -126,7 +129,7 @@ const updateUser = async (userId, updateData) => {
 // Category management methods
 const createCategory = async (categoryData) => {
     // Check if category with same name already exists
-    const existingCategory = await prisma.category.findFirst({
+    const existingCategory = await prisma_1.prisma.category.findFirst({
         where: {
             name: categoryData.name
         }
@@ -134,7 +137,7 @@ const createCategory = async (categoryData) => {
     if (existingCategory) {
         throw new Error("Category with this name already exists!");
     }
-    const result = await prisma.category.create({
+    const result = await prisma_1.prisma.category.create({
         data: {
             name: categoryData.name,
             description: categoryData.description || null,
@@ -146,7 +149,7 @@ const createCategory = async (categoryData) => {
 };
 const updateCategory = async (categoryId, categoryData) => {
     // Check if category exists
-    const existingCategory = await prisma.category.findUnique({
+    const existingCategory = await prisma_1.prisma.category.findUnique({
         where: {
             id: categoryId
         }
@@ -156,7 +159,7 @@ const updateCategory = async (categoryId, categoryData) => {
     }
     // If updating name, check for duplicates
     if (categoryData.name && categoryData.name !== existingCategory.name) {
-        const duplicateCategory = await prisma.category.findFirst({
+        const duplicateCategory = await prisma_1.prisma.category.findFirst({
             where: {
                 name: categoryData.name
             }
@@ -165,7 +168,7 @@ const updateCategory = async (categoryId, categoryData) => {
             throw new Error("Category with this name already exists!");
         }
     }
-    const result = await prisma.category.update({
+    const result = await prisma_1.prisma.category.update({
         where: {
             id: categoryId
         },
@@ -180,7 +183,7 @@ const updateCategory = async (categoryId, categoryData) => {
 };
 const deleteCategory = async (categoryId) => {
     // Check if category exists
-    const existingCategory = await prisma.category.findUnique({
+    const existingCategory = await prisma_1.prisma.category.findUnique({
         where: {
             id: categoryId
         }
@@ -189,7 +192,7 @@ const deleteCategory = async (categoryId) => {
         throw new Error("Category not found!");
     }
     // Check if category has meals associated with it
-    const mealsCount = await prisma.meal.count({
+    const mealsCount = await prisma_1.prisma.meal.count({
         where: {
             categoryId: categoryId
         }
@@ -198,7 +201,7 @@ const deleteCategory = async (categoryId) => {
         throw new Error("Cannot delete category with associated meals!");
     }
     // Delete category
-    const result = await prisma.category.delete({
+    const result = await prisma_1.prisma.category.delete({
         where: {
             id: categoryId
         }
@@ -229,7 +232,7 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
     }
     if (providerId) {
         // Filter categories that have meals from this provider
-        const categoryIdsWithProviderMeals = await prisma.meal.findMany({
+        const categoryIdsWithProviderMeals = await prisma_1.prisma.meal.findMany({
             where: { providerId },
             select: { categoryId: true }
         });
@@ -241,7 +244,7 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
             where.id = { in: [] }; // No categories for this provider
         }
     }
-    const categories = await prisma.category.findMany({
+    const categories = await prisma_1.prisma.category.findMany({
         take: limit,
         skip,
         where,
@@ -256,7 +259,7 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
             }
         }
     });
-    const total = await prisma.category.count({ where });
+    const total = await prisma_1.prisma.category.count({ where });
     return {
         data: categories,
         pagination: {
@@ -304,7 +307,7 @@ const getAllProviders = async ({ page, limit, skip, sortBy, sortOrder, search, i
             status: status
         };
     }
-    const providers = await prisma.providerProfile.findMany({
+    const providers = await prisma_1.prisma.providerProfile.findMany({
         take: limit,
         skip,
         where,
@@ -330,7 +333,7 @@ const getAllProviders = async ({ page, limit, skip, sortBy, sortOrder, search, i
             }
         }
     });
-    const total = await prisma.providerProfile.count({ where });
+    const total = await prisma_1.prisma.providerProfile.count({ where });
     return {
         data: providers,
         pagination: {
@@ -344,7 +347,7 @@ const getAllProviders = async ({ page, limit, skip, sortBy, sortOrder, search, i
 const deleteUser = async (userId) => {
     console.log("Backend: Attempting to delete user:", userId);
     // Check if user exists
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma_1.prisma.user.findUnique({
         where: { id: userId }
     });
     if (!existingUser) {
@@ -353,7 +356,7 @@ const deleteUser = async (userId) => {
     }
     console.log("Backend: User exists:", existingUser.name);
     // Check if user has associated orders
-    const ordersCount = await prisma.order.count({
+    const ordersCount = await prisma_1.prisma.order.count({
         where: {
             customerId: userId
         }
@@ -365,13 +368,13 @@ const deleteUser = async (userId) => {
     }
     // Delete user
     console.log("Backend: Deleting user record:", userId);
-    const result = await prisma.user.delete({
+    const result = await prisma_1.prisma.user.delete({
         where: { id: userId }
     });
     console.log("Backend: User deleted successfully:", userId);
     return result;
 };
-export const adminService = {
+exports.adminService = {
     getAllUsers,
     updateUser,
     deleteUser,

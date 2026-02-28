@@ -1,5 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.mealService = void 0;
 // Meal service - Meal listing (public + filtered), single meal, provider CRUD on own meals
-import { prisma } from "../../lib/prisma";
+const prisma_1 = require("../../lib/prisma");
 // Get meals for specific provider (for provider dashboard)
 const getProviderMeals = async ({ page, limit, skip, sortBy, sortOrder, category, categoryIds, priceMin, priceMax, search, cuisine, providerId, }) => {
     const where = {
@@ -42,7 +45,7 @@ const getProviderMeals = async ({ page, limit, skip, sortBy, sortOrder, category
     // Remove this line to show inactive meals too
     // where.isAvailable = true;
     const [meals, total] = await Promise.all([
-        prisma.meal.findMany({
+        prisma_1.prisma.meal.findMany({
             where,
             skip,
             take: limit,
@@ -65,11 +68,11 @@ const getProviderMeals = async ({ page, limit, skip, sortBy, sortOrder, category
                 },
             },
         }),
-        prisma.meal.count({ where }),
+        prisma_1.prisma.meal.count({ where }),
     ]);
     // Calculate average rating for each meal
     const mealsWithRatings = await Promise.all(meals.map(async (meal) => {
-        const reviews = await prisma.review.findMany({
+        const reviews = await prisma_1.prisma.review.findMany({
             where: { mealId: meal.id },
             select: { rating: true },
         });
@@ -135,7 +138,7 @@ const getAllMeals = async ({ page, limit, skip, sortBy, sortOrder, category, cat
         { categoryId: null },
     ];
     const [meals, total] = await Promise.all([
-        prisma.meal.findMany({
+        prisma_1.prisma.meal.findMany({
             where,
             skip,
             take: limit,
@@ -158,11 +161,11 @@ const getAllMeals = async ({ page, limit, skip, sortBy, sortOrder, category, cat
                 },
             },
         }),
-        prisma.meal.count({ where }),
+        prisma_1.prisma.meal.count({ where }),
     ]);
     // Calculate average rating for each meal
     const mealsWithRatings = await Promise.all(meals.map(async (meal) => {
-        const reviews = await prisma.review.findMany({
+        const reviews = await prisma_1.prisma.review.findMany({
             where: { mealId: meal.id },
             select: { rating: true },
         });
@@ -186,7 +189,7 @@ const getAllMeals = async ({ page, limit, skip, sortBy, sortOrder, category, cat
     };
 };
 const getMealById = async (mealId) => {
-    const meal = await prisma.meal.findUnique({
+    const meal = await prisma_1.prisma.meal.findUnique({
         where: { id: mealId },
         include: {
             category: {
@@ -232,7 +235,7 @@ const getMealById = async (mealId) => {
         throw new Error("Meal not found or not available!");
     }
     // Calculate rating summary
-    const allReviews = await prisma.review.findMany({
+    const allReviews = await prisma_1.prisma.review.findMany({
         where: { mealId: mealId },
         select: { rating: true },
     });
@@ -277,7 +280,7 @@ const createMeal = async (mealData) => {
     // Verify category exists if categoryId is provided
     if (mealData.categoryId) {
         console.log(`🔍 [MEAL SERVICE] Verifying category exists: ${mealData.categoryId}`);
-        const category = await prisma.category.findUnique({
+        const category = await prisma_1.prisma.category.findUnique({
             where: { id: mealData.categoryId },
         });
         if (!category) {
@@ -289,7 +292,7 @@ const createMeal = async (mealData) => {
     // Verify cuisine exists if provided
     if (mealData.cuisineId) {
         console.log(`🔍 [MEAL SERVICE] Verifying cuisine exists: ${mealData.cuisineId}`);
-        const cuisine = await prisma.cuisine.findUnique({
+        const cuisine = await prisma_1.prisma.cuisine.findUnique({
             where: { id: mealData.cuisineId },
         });
         if (!cuisine) {
@@ -304,7 +307,7 @@ const createMeal = async (mealData) => {
     // Create meal
     console.log("🍳 [MEAL SERVICE] Creating meal in database");
     try {
-        const meal = await prisma.meal.create({
+        const meal = await prisma_1.prisma.meal.create({
             data: {
                 name: mealData.name,
                 description: mealData.description,
@@ -356,7 +359,7 @@ const createMeal = async (mealData) => {
 };
 const updateMeal = async (mealId, updateData, providerProfileId) => {
     // First check if meal exists and user owns it
-    const existingMeal = await prisma.meal.findUnique({
+    const existingMeal = await prisma_1.prisma.meal.findUnique({
         where: { id: mealId },
     });
     if (!existingMeal) {
@@ -367,7 +370,7 @@ const updateMeal = async (mealId, updateData, providerProfileId) => {
     }
     // If categoryId is provided, verify it exists
     if (updateData.categoryId) {
-        const category = await prisma.category.findUnique({
+        const category = await prisma_1.prisma.category.findUnique({
             where: { id: updateData.categoryId },
         });
         if (!category) {
@@ -375,7 +378,7 @@ const updateMeal = async (mealId, updateData, providerProfileId) => {
         }
     }
     // Update meal
-    const updatedMeal = await prisma.meal.update({
+    const updatedMeal = await prisma_1.prisma.meal.update({
         where: { id: mealId },
         data: updateData,
         include: {
@@ -398,7 +401,7 @@ const updateMeal = async (mealId, updateData, providerProfileId) => {
 };
 const deleteMeal = async (mealId, providerProfileId) => {
     // First check if meal exists and user owns it
-    const existingMeal = await prisma.meal.findUnique({
+    const existingMeal = await prisma_1.prisma.meal.findUnique({
         where: { id: mealId },
     });
     if (!existingMeal) {
@@ -408,19 +411,19 @@ const deleteMeal = async (mealId, providerProfileId) => {
         throw new Error("You can only delete your own meals!");
     }
     // Check if meal has any orders
-    const orderCount = await prisma.order.count({
+    const orderCount = await prisma_1.prisma.order.count({
         where: { mealId },
     });
     if (orderCount > 0) {
         throw new Error("Cannot delete meal that has been ordered!");
     }
     // Delete meal
-    await prisma.meal.delete({
+    await prisma_1.prisma.meal.delete({
         where: { id: mealId },
     });
     return { message: "Meal deleted successfully!" };
 };
-export const mealService = {
+exports.mealService = {
     getAllMeals,
     getProviderMeals,
     getMealById,

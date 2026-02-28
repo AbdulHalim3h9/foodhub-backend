@@ -1,4 +1,7 @@
-import { cartService } from "./cart.service";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.cartController = void 0;
+const cart_service_1 = require("./cart.service");
 const getCart = async (req, res, next) => {
     try {
         const user = req.user;
@@ -7,7 +10,7 @@ const getCart = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const result = await cartService.getCart(user.id);
+        const result = await cart_service_1.cartService.getCart(user.id);
         res.status(200).json(result);
     }
     catch (e) {
@@ -22,7 +25,7 @@ const addItemToCart = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const result = await cartService.addItemToCart(user.id, req.body);
+        const result = await cart_service_1.cartService.addItemToCart(user.id, req.body);
         res.status(201).json({
             success: true,
             message: "Item added to cart successfully!",
@@ -53,7 +56,7 @@ const updateItemQuantity = async (req, res, next) => {
                 error: "Valid quantity greater than 0 is required!"
             });
         }
-        const result = await cartService.updateItemQuantity(user.id, mealId, quantity);
+        const result = await cart_service_1.cartService.updateItemQuantity(user.id, mealId, quantity);
         res.status(200).json({
             success: true,
             message: "Item quantity updated successfully!",
@@ -78,7 +81,7 @@ const removeItemFromCart = async (req, res, next) => {
                 error: "Valid meal ID is required!"
             });
         }
-        const result = await cartService.removeItemFromCart(user.id, mealId);
+        const result = await cart_service_1.cartService.removeItemFromCart(user.id, mealId);
         res.status(200).json({
             success: true,
             message: "Item removed from cart successfully!",
@@ -97,7 +100,7 @@ const clearCart = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const result = await cartService.clearCart(user.id);
+        const result = await cart_service_1.cartService.clearCart(user.id);
         res.status(200).json({
             success: true,
             message: "Cart cleared successfully!",
@@ -108,7 +111,7 @@ const clearCart = async (req, res, next) => {
         next(e);
     }
 };
-export const cartController = {
+exports.cartController = {
     getCart,
     addItemToCart,
     updateItemQuantity,

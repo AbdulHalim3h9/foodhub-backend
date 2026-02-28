@@ -1,11 +1,14 @@
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import { customSession } from "better-auth/plugins";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.auth = void 0;
+const better_auth_1 = require("better-auth");
+const prisma_1 = require("better-auth/adapters/prisma");
+const plugins_1 = require("better-auth/plugins");
 // If your Prisma file is located elsewhere, you can change the path
-import { prisma } from "./prisma";
-export const auth = betterAuth({
+const prisma_2 = require("./prisma");
+exports.auth = (0, better_auth_1.betterAuth)({
     trustedOrigins: ["http://localhost:3000", "https://localhost:3000"],
-    database: prismaAdapter(prisma, {
+    database: (0, prisma_1.prismaAdapter)(prisma_2.prisma, {
         provider: "postgresql", // or "mysql", "postgresql", ...etc
     }),
     user: {
@@ -75,7 +78,7 @@ export const auth = betterAuth({
         },
     },
     plugins: [
-        customSession(async ({ user, session }) => {
+        (0, plugins_1.customSession)(async ({ user, session }) => {
             return {
                 user: {
                     id: user.id,

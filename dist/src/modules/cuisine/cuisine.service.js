@@ -1,4 +1,7 @@
-import { prisma } from "../../lib/prisma";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.cuisineService = void 0;
+const prisma_1 = require("../../lib/prisma");
 const getAllCuisines = async ({ page, limit, skip, sortBy, sortOrder, search, }) => {
     const where = {};
     if (search) {
@@ -7,7 +10,7 @@ const getAllCuisines = async ({ page, limit, skip, sortBy, sortOrder, search, })
             mode: "insensitive",
         };
     }
-    const cuisines = await prisma.cuisine.findMany({
+    const cuisines = await prisma_1.prisma.cuisine.findMany({
         take: limit,
         skip,
         where,
@@ -22,7 +25,7 @@ const getAllCuisines = async ({ page, limit, skip, sortBy, sortOrder, search, })
             },
         },
     });
-    const total = await prisma.cuisine.count({ where });
+    const total = await prisma_1.prisma.cuisine.count({ where });
     return {
         data: cuisines,
         pagination: {
@@ -33,7 +36,7 @@ const getAllCuisines = async ({ page, limit, skip, sortBy, sortOrder, search, })
         },
     };
 };
-export const cuisineService = {
+exports.cuisineService = {
     getAllCuisines,
 };
 //# sourceMappingURL=cuisine.service.js.map

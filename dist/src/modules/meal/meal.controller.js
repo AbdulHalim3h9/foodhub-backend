@@ -1,5 +1,44 @@
-import { mealService } from "./meal.service";
-import paginationSortingHelper from "../../helpers/paginationSortingHelper";
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.mealController = void 0;
+const meal_service_1 = require("./meal.service");
+const paginationSortingHelper_1 = __importDefault(require("../../helpers/paginationSortingHelper"));
 const getProviderMeals = async (req, res, next) => {
     try {
         const user = req.user;
@@ -10,7 +49,7 @@ const getProviderMeals = async (req, res, next) => {
         }
         console.log(`📋 [PROVIDER MEALS] Fetching meals for provider: ${user.email} (Role: ${user.role})`);
         // Get the provider profile for this user
-        const { prisma } = await import("../../lib/prisma");
+        const { prisma } = await Promise.resolve().then(() => __importStar(require("../../lib/prisma")));
         const providerProfile = await prisma.providerProfile.findUnique({
             where: { userId: user.id },
         });
@@ -44,7 +83,7 @@ const getProviderMeals = async (req, res, next) => {
             search,
             cuisine,
         });
-        const result = await mealService.getProviderMeals({
+        const result = await meal_service_1.mealService.getProviderMeals({
             page,
             limit,
             skip,
@@ -68,10 +107,10 @@ const getProviderMeals = async (req, res, next) => {
 };
 const getAllMeals = async (req, res, next) => {
     try {
-        const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationSortingHelper_1.default)(req.query);
         // Extract additional filters
         const { category, categoryIds, priceMin, priceMax, search, cuisine } = req.query;
-        const result = await mealService.getAllMeals({
+        const result = await meal_service_1.mealService.getAllMeals({
             page,
             limit,
             skip,
@@ -98,7 +137,7 @@ const getMealById = async (req, res, next) => {
                 error: "Valid meal ID is required!",
             });
         }
-        const result = await mealService.getMealById(mealId);
+        const result = await meal_service_1.mealService.getMealById(mealId);
         res.status(200).json(result);
     }
     catch (e) {
@@ -141,7 +180,7 @@ const createMeal = async (req, res, next) => {
         }
         console.log("✅ [CREATE MEAL] Basic validation passed");
         // Get the provider profile for this user
-        const { prisma } = await import("../../lib/prisma");
+        const { prisma } = await Promise.resolve().then(() => __importStar(require("../../lib/prisma")));
         console.log(`🔍 [CREATE MEAL] Looking up provider profile for user: ${user.id}`);
         const providerProfile = await prisma.providerProfile.findUnique({
             where: { userId: user.id },
@@ -178,7 +217,7 @@ const createMeal = async (req, res, next) => {
             providerId: providerProfile.id,
         });
         console.log("🚀 [CREATE MEAL] Calling meal service to create meal");
-        const result = await mealService.createMeal(mealData);
+        const result = await meal_service_1.mealService.createMeal(mealData);
         console.log(`✅ [CREATE MEAL] Meal created successfully:`, {
             mealId: result.id,
             mealName: result.name,
@@ -207,7 +246,7 @@ const updateMeal = async (req, res, next) => {
             });
         }
         // Get the provider profile for this user
-        const { prisma } = await import("../../lib/prisma");
+        const { prisma } = await Promise.resolve().then(() => __importStar(require("../../lib/prisma")));
         const providerProfile = await prisma.providerProfile.findUnique({
             where: { userId: user.id },
         });
@@ -224,7 +263,7 @@ const updateMeal = async (req, res, next) => {
         if (updateData.prepTime) {
             updateData.prepTime = parseInt(updateData.prepTime);
         }
-        const result = await mealService.updateMeal(mealId, updateData, providerProfile.id);
+        const result = await meal_service_1.mealService.updateMeal(mealId, updateData, providerProfile.id);
         res.status(200).json(result);
     }
     catch (e) {
@@ -246,7 +285,7 @@ const deleteMeal = async (req, res, next) => {
             });
         }
         // Get the provider profile for this user
-        const { prisma } = await import("../../lib/prisma");
+        const { prisma } = await Promise.resolve().then(() => __importStar(require("../../lib/prisma")));
         const providerProfile = await prisma.providerProfile.findUnique({
             where: { userId: user.id },
         });
@@ -255,14 +294,14 @@ const deleteMeal = async (req, res, next) => {
                 error: "Provider profile not found! Please apply for provider status first.",
             });
         }
-        const result = await mealService.deleteMeal(mealId, providerProfile.id);
+        const result = await meal_service_1.mealService.deleteMeal(mealId, providerProfile.id);
         res.status(200).json(result);
     }
     catch (e) {
         next(e);
     }
 };
-export const mealController = {
+exports.mealController = {
     getAllMeals,
     getProviderMeals,
     getMealById,

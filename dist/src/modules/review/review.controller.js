@@ -1,5 +1,11 @@
-import { reviewService } from "./review.service";
-import paginationSortingHelper from "../../helpers/paginationSortingHelper";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.reviewController = void 0;
+const review_service_1 = require("./review.service");
+const paginationSortingHelper_1 = __importDefault(require("../../helpers/paginationSortingHelper"));
 const getMealReviews = async (req, res, next) => {
     try {
         const { mealId } = req.params;
@@ -8,8 +14,8 @@ const getMealReviews = async (req, res, next) => {
                 error: "Valid meal ID is required!"
             });
         }
-        const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query);
-        const result = await reviewService.getMealReviews({
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationSortingHelper_1.default)(req.query);
+        const result = await review_service_1.reviewService.getMealReviews({
             mealId,
             page,
             limit,
@@ -37,7 +43,7 @@ const createReview = async (req, res, next) => {
                 error: "Valid meal ID is required!"
             });
         }
-        const result = await reviewService.createReview(user.id, mealId, req.body);
+        const result = await review_service_1.reviewService.createReview(user.id, mealId, req.body);
         res.status(201).json({
             success: true,
             message: "Review submitted successfully!",
@@ -67,7 +73,7 @@ const updateReview = async (req, res, next) => {
                 error: "Valid review ID is required!"
             });
         }
-        const result = await reviewService.updateReview(user.id, reviewId, req.body);
+        const result = await review_service_1.reviewService.updateReview(user.id, reviewId, req.body);
         res.status(200).json({
             success: true,
             message: "Review updated successfully!",
@@ -97,7 +103,7 @@ const deleteReview = async (req, res, next) => {
                 error: "Valid review ID is required!"
             });
         }
-        const result = await reviewService.deleteReview(user.id, reviewId);
+        const result = await review_service_1.reviewService.deleteReview(user.id, reviewId);
         res.status(200).json({
             success: true,
             message: "Review deleted successfully!",
@@ -108,7 +114,7 @@ const deleteReview = async (req, res, next) => {
         next(e);
     }
 };
-export const reviewController = {
+exports.reviewController = {
     getMealReviews,
     createReview,
     updateReview,

@@ -1,8 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.reviewService = void 0;
 // Review service - Submit review, get reviews for a meal (post-order only)
-import { prisma } from "../../lib/prisma";
+const prisma_1 = require("../../lib/prisma");
 const getMealReviews = async ({ mealId, page, limit, skip, sortBy, sortOrder }) => {
     // Check if meal exists
-    const meal = await prisma.meal.findFirst({
+    const meal = await prisma_1.prisma.meal.findFirst({
         where: {
             id: mealId
         }
@@ -10,7 +13,7 @@ const getMealReviews = async ({ mealId, page, limit, skip, sortBy, sortOrder }) 
     if (!meal) {
         throw new Error("Meal not found!");
     }
-    const reviews = await prisma.review.findMany({
+    const reviews = await prisma_1.prisma.review.findMany({
         take: limit,
         skip,
         where: {
@@ -29,7 +32,7 @@ const getMealReviews = async ({ mealId, page, limit, skip, sortBy, sortOrder }) 
             }
         }
     });
-    const total = await prisma.review.count({
+    const total = await prisma_1.prisma.review.count({
         where: {
             mealId: mealId
         }
@@ -50,7 +53,7 @@ const createReview = async (customerId, mealId, reviewData) => {
         throw new Error("Rating must be between 1 and 5!");
     }
     // Check if meal exists
-    const meal = await prisma.meal.findFirst({
+    const meal = await prisma_1.prisma.meal.findFirst({
         where: {
             id: mealId
         }
@@ -59,7 +62,7 @@ const createReview = async (customerId, mealId, reviewData) => {
         throw new Error("Meal not found!");
     }
     // Check if customer has ordered this meal and the order is delivered
-    const order = await prisma.order.findFirst({
+    const order = await prisma_1.prisma.order.findFirst({
         where: {
             mealId: mealId,
             customerId: customerId,
@@ -73,7 +76,7 @@ const createReview = async (customerId, mealId, reviewData) => {
         throw new Error("You can only review meals from delivered orders!");
     }
     // Check if customer has already reviewed this meal
-    const existingReview = await prisma.review.findFirst({
+    const existingReview = await prisma_1.prisma.review.findFirst({
         where: {
             customerId: customerId,
             mealId: mealId
@@ -82,7 +85,7 @@ const createReview = async (customerId, mealId, reviewData) => {
     if (existingReview) {
         throw new Error("You have already reviewed this meal!");
     }
-    const result = await prisma.review.create({
+    const result = await prisma_1.prisma.review.create({
         data: {
             rating: reviewData.rating,
             comment: reviewData.comment || null,
@@ -113,7 +116,7 @@ const updateReview = async (customerId, reviewId, reviewData) => {
         throw new Error("Rating must be between 1 and 5!");
     }
     // Check if review exists and belongs to customer
-    const existingReview = await prisma.review.findFirst({
+    const existingReview = await prisma_1.prisma.review.findFirst({
         where: {
             id: reviewId,
             customerId: customerId
@@ -122,7 +125,7 @@ const updateReview = async (customerId, reviewId, reviewData) => {
     if (!existingReview) {
         throw new Error("Review not found or doesn't belong to you!");
     }
-    const result = await prisma.review.update({
+    const result = await prisma_1.prisma.review.update({
         where: {
             id: reviewId
         },
@@ -144,7 +147,7 @@ const updateReview = async (customerId, reviewId, reviewData) => {
 };
 const deleteReview = async (customerId, reviewId) => {
     // Check if review exists and belongs to customer
-    const existingReview = await prisma.review.findFirst({
+    const existingReview = await prisma_1.prisma.review.findFirst({
         where: {
             id: reviewId,
             customerId: customerId
@@ -153,14 +156,14 @@ const deleteReview = async (customerId, reviewId) => {
     if (!existingReview) {
         throw new Error("Review not found or doesn't belong to you!");
     }
-    const result = await prisma.review.delete({
+    const result = await prisma_1.prisma.review.delete({
         where: {
             id: reviewId
         }
     });
     return result;
 };
-export const reviewService = {
+exports.reviewService = {
     getMealReviews,
     createReview,
     updateReview,

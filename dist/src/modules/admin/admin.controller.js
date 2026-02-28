@@ -1,5 +1,11 @@
-import { adminService } from "./admin.service";
-import paginationSortingHelper from "../../helpers/paginationSortingHelper";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.adminController = void 0;
+const admin_service_1 = require("./admin.service");
+const paginationSortingHelper_1 = __importDefault(require("../../helpers/paginationSortingHelper"));
 const getAllUsers = async (req, res, next) => {
     try {
         const user = req.user;
@@ -8,10 +14,10 @@ const getAllUsers = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationSortingHelper_1.default)(req.query);
         // Extract additional filters
         const { search, role, status } = req.query;
-        const result = await adminService.getAllUsers({
+        const result = await admin_service_1.adminService.getAllUsers({
             page,
             limit,
             skip,
@@ -41,7 +47,7 @@ const updateUser = async (req, res, next) => {
                 error: "Valid user ID is required!"
             });
         }
-        const result = await adminService.updateUser(userId, req.body);
+        const result = await admin_service_1.adminService.updateUser(userId, req.body);
         res.status(200).json({
             success: true,
             message: "User updated successfully!",
@@ -60,7 +66,7 @@ const createCategory = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const result = await adminService.createCategory(req.body);
+        const result = await admin_service_1.adminService.createCategory(req.body);
         res.status(201).json({
             success: true,
             message: "Category created successfully!",
@@ -85,7 +91,7 @@ const updateCategory = async (req, res, next) => {
                 error: "Valid category ID is required!"
             });
         }
-        const result = await adminService.updateCategory(categoryId, req.body);
+        const result = await admin_service_1.adminService.updateCategory(categoryId, req.body);
         res.status(200).json({
             success: true,
             message: "Category updated successfully!",
@@ -110,7 +116,7 @@ const deleteCategory = async (req, res, next) => {
                 error: "Valid category ID is required!"
             });
         }
-        const result = await adminService.deleteCategory(categoryId);
+        const result = await admin_service_1.adminService.deleteCategory(categoryId);
         res.status(200).json({
             success: true,
             message: "Category deleted successfully!",
@@ -129,10 +135,10 @@ const getAllCategories = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationSortingHelper_1.default)(req.query);
         // Extract additional filters
         const { search, isActive, providerId } = req.query;
-        const result = await adminService.getAllCategories({
+        const result = await admin_service_1.adminService.getAllCategories({
             page,
             limit,
             skip,
@@ -156,10 +162,10 @@ const getAllProviders = async (req, res, next) => {
                 error: "Unauthorized!",
             });
         }
-        const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationSortingHelper_1.default)(req.query);
         // Extract additional filters
         const { search, isActive, status } = req.query;
-        const result = await adminService.getAllProviders({
+        const result = await admin_service_1.adminService.getAllProviders({
             page,
             limit,
             skip,
@@ -195,7 +201,7 @@ const updateUserStatus = async (req, res, next) => {
                 error: "Status is required!"
             });
         }
-        const result = await adminService.updateUser(userId, { status });
+        const result = await admin_service_1.adminService.updateUser(userId, { status });
         res.status(200).json({
             success: true,
             message: "User status updated successfully!",
@@ -220,7 +226,7 @@ const deleteUser = async (req, res, next) => {
                 error: "Valid user ID is required!"
             });
         }
-        const result = await adminService.deleteUser(userId);
+        const result = await admin_service_1.adminService.deleteUser(userId);
         res.status(200).json({
             success: true,
             message: "User deleted successfully!",
@@ -231,7 +237,7 @@ const deleteUser = async (req, res, next) => {
         next(e);
     }
 };
-export const adminController = {
+exports.adminController = {
     getAllUsers,
     updateUser,
     updateUserStatus,

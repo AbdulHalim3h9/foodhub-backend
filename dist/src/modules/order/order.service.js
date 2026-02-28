@@ -1,9 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.orderService = void 0;
 // Order service - Create order, list my orders, get order details, update status (provider)
-import { prisma } from "../../lib/prisma";
-import { Prisma } from "../../../prisma/generated/prisma/client";
+const prisma_1 = require("../../lib/prisma");
+const client_1 = require("../../../prisma/generated/prisma/client");
 const createOrder = async (userId, orderData) => {
     // Validate user exists and is active
-    const user = await prisma.user.findUnique({
+    const user = await prisma_1.prisma.user.findUnique({
         where: {
             id: userId,
             isActive: true
@@ -17,19 +20,19 @@ const createOrder = async (userId, orderData) => {
         throw new Error("Quantity must be greater than 0!");
     }
     // Get meal details and validate it exists
-    const meal = await prisma.meal.findUnique({
+    const meal = await prisma_1.prisma.meal.findUnique({
         where: { id: orderData.mealId }
     });
     if (!meal) {
         throw new Error("Meal not found!");
     }
     // Calculate total amount using Decimal
-    const pricePerItem = new Prisma.Decimal(meal.price.toString());
+    const pricePerItem = new client_1.Prisma.Decimal(meal.price.toString());
     const totalAmount = pricePerItem.mul(orderData.quantity);
     // Generate order number
     const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
     // Create order
-    const result = await prisma.order.create({
+    const result = await prisma_1.prisma.order.create({
         data: {
             orderNumber,
             customerId: userId,
@@ -75,7 +78,7 @@ const createOrder = async (userId, orderData) => {
     return result;
 };
 const getMyOrders = async (userId, { page, limit, skip, sortBy, sortOrder }) => {
-    const orders = await prisma.order.findMany({
+    const orders = await prisma_1.prisma.order.findMany({
         take: limit,
         skip,
         where: {
@@ -109,7 +112,7 @@ const getMyOrders = async (userId, { page, limit, skip, sortBy, sortOrder }) => 
             }
         }
     });
-    const total = await prisma.order.count({
+    const total = await prisma_1.prisma.order.count({
         where: {
             customerId: userId
         }
@@ -135,7 +138,7 @@ const getProviderOrders = async (providerId, { page, limit, skip, sortBy, sortOr
         where.status = status;
     }
     console.log(`🔍 [PROVIDER ORDERS] Query where clause:`, where);
-    const orders = await prisma.order.findMany({
+    const orders = await prisma_1.prisma.order.findMany({
         take: limit,
         skip,
         where,
@@ -164,7 +167,7 @@ const getProviderOrders = async (providerId, { page, limit, skip, sortBy, sortOr
         }
     });
     console.log(`🔍 [PROVIDER ORDERS] Found ${orders.length} orders`);
-    const total = await prisma.order.count({
+    const total = await prisma_1.prisma.order.count({
         where
     });
     console.log(`🔍 [PROVIDER ORDERS] Total orders count: ${total}`);
@@ -179,7 +182,7 @@ const getProviderOrders = async (providerId, { page, limit, skip, sortBy, sortOr
     };
 };
 const getOrderById = async (orderId, userId) => {
-    const order = await prisma.order.findFirst({
+    const order = await prisma_1.prisma.order.findFirst({
         where: {
             id: orderId,
             customerId: userId
@@ -235,7 +238,7 @@ const getAllOrders = async ({ limit, skip, sortBy, sortOrder, search, status, cu
     if (providerId) {
         where.providerId = providerId;
     }
-    const orders = await prisma.order.findMany({
+    const orders = await prisma_1.prisma.order.findMany({
         take: limit,
         skip,
         where,
@@ -268,7 +271,7 @@ const getAllOrders = async ({ limit, skip, sortBy, sortOrder, search, status, cu
             }
         }
     });
-    const total = await prisma.order.count({ where });
+    const total = await prisma_1.prisma.order.count({ where });
     return {
         data: orders,
         pagination: {
@@ -281,7 +284,7 @@ const getAllOrders = async ({ limit, skip, sortBy, sortOrder, search, status, cu
 };
 const updateOrderStatus = async (orderId, status) => {
     // Check if order exists
-    const existingOrder = await prisma.order.findUnique({
+    const existingOrder = await prisma_1.prisma.order.findUnique({
         where: { id: orderId }
     });
     if (!existingOrder) {
@@ -295,13 +298,13 @@ const updateOrderStatus = async (orderId, status) => {
     if (!validStatuses.includes(status)) {
         throw new Error("Invalid status! Must be one of: PENDING, CONFIRMED, PREPARING, READY, OUT_FOR_DELIVERY, DELIVERED, CANCELLED");
     }
-    const result = await prisma.order.update({
+    const result = await prisma_1.prisma.order.update({
         where: { id: orderId },
         data: { status: status }
     });
     return result;
 };
-export const orderService = {
+exports.orderService = {
     createOrder,
     getMyOrders,
     getProviderOrders,

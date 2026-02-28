@@ -1,6 +1,12 @@
-import { providerService } from "./provider.service";
-import { prisma } from "../../lib/prisma";
-import paginationSortingHelper from "../../helpers/paginationSortingHelper";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.providerController = void 0;
+const provider_service_1 = require("./provider.service");
+const prisma_1 = require("../../lib/prisma");
+const paginationSortingHelper_1 = __importDefault(require("../../helpers/paginationSortingHelper"));
 const createProviderProfile = async (req, res, next) => {
     try {
         const { userId, businessName, description, phone, address, website, cuisine, deliveryRadius, openingHours } = req.body;
@@ -10,7 +16,7 @@ const createProviderProfile = async (req, res, next) => {
                 message: "Missing required fields: userId, businessName, phone, address"
             });
         }
-        const result = await providerService.createProviderProfile({
+        const result = await provider_service_1.providerService.createProviderProfile({
             userId,
             businessName,
             description,
@@ -49,7 +55,7 @@ const getAllProviders = async (req, res, next) => {
                     ? false
                     : undefined
             : undefined;
-        const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationSortingHelper_1.default)(req.query);
         const params = {
             page,
             limit,
@@ -63,7 +69,7 @@ const getAllProviders = async (req, res, next) => {
         if (typeof isActive === 'boolean') {
             params.isActive = isActive;
         }
-        const result = await providerService.getAllProviders(params);
+        const result = await provider_service_1.providerService.getAllProviders(params);
         res.status(200).json(result);
     }
     catch (e) {
@@ -79,7 +85,7 @@ const createMenuItem = async (req, res, next) => {
             });
         }
         // Get provider profile for this user
-        const providerProfile = await prisma.providerProfile.findFirst({
+        const providerProfile = await prisma_1.prisma.providerProfile.findFirst({
             where: {
                 userId: user.id,
                 isActive: true
@@ -90,7 +96,7 @@ const createMenuItem = async (req, res, next) => {
                 error: "Provider profile not found or inactive!",
             });
         }
-        const result = await providerService.createMenuItem(providerProfile.id, req.body);
+        const result = await provider_service_1.providerService.createMenuItem(providerProfile.id, req.body);
         res.status(201).json({
             success: true,
             message: "Menu item created successfully!",
@@ -109,7 +115,7 @@ const getProviderById = async (req, res, next) => {
                 error: "Valid provider ID is required!"
             });
         }
-        const result = await providerService.getProviderById(providerId);
+        const result = await provider_service_1.providerService.getProviderById(providerId);
         res.status(200).json(result);
     }
     catch (e) {
@@ -131,7 +137,7 @@ const updateMenuItem = async (req, res, next) => {
             });
         }
         // Get provider profile for this user
-        const providerProfile = await prisma.providerProfile.findFirst({
+        const providerProfile = await prisma_1.prisma.providerProfile.findFirst({
             where: {
                 userId: user.id,
                 isActive: true
@@ -142,7 +148,7 @@ const updateMenuItem = async (req, res, next) => {
                 error: "Provider profile not found or inactive!",
             });
         }
-        const result = await providerService.updateMenuItem(providerProfile.id, mealId, req.body);
+        const result = await provider_service_1.providerService.updateMenuItem(providerProfile.id, mealId, req.body);
         res.status(200).json({
             success: true,
             message: "Menu item updated successfully!",
@@ -168,7 +174,7 @@ const deleteMenuItem = async (req, res, next) => {
             });
         }
         // Get provider profile for this user
-        const providerProfile = await prisma.providerProfile.findFirst({
+        const providerProfile = await prisma_1.prisma.providerProfile.findFirst({
             where: {
                 userId: user.id,
                 isActive: true
@@ -179,7 +185,7 @@ const deleteMenuItem = async (req, res, next) => {
                 error: "Provider profile not found or inactive!",
             });
         }
-        const result = await providerService.deleteMenuItem(providerProfile.id, mealId);
+        const result = await provider_service_1.providerService.deleteMenuItem(providerProfile.id, mealId);
         res.status(200).json({
             success: true,
             message: "Menu item deleted successfully!",
@@ -190,7 +196,7 @@ const deleteMenuItem = async (req, res, next) => {
         next(e);
     }
 };
-export const providerController = {
+exports.providerController = {
     createProviderProfile,
     getAllProviders,
     createMenuItem,

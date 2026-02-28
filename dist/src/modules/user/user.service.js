@@ -1,6 +1,9 @@
-import { prisma } from "../../lib/prisma";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.userService = void 0;
+const prisma_1 = require("../../lib/prisma");
 const getMyProfile = async (userId) => {
-    const result = await prisma.user.findUnique({
+    const result = await prisma_1.prisma.user.findUnique({
         where: {
             id: userId,
             isActive: true
@@ -38,7 +41,7 @@ const getMyProfile = async (userId) => {
 };
 const applyForProvider = async (userId, providerData) => {
     // Check if user already has a provider profile
-    const existingProfile = await prisma.providerProfile.findFirst({
+    const existingProfile = await prisma_1.prisma.providerProfile.findFirst({
         where: {
             userId
         }
@@ -47,7 +50,7 @@ const applyForProvider = async (userId, providerData) => {
         throw new Error("You already have a provider profile!");
     }
     // Create provider profile
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma_1.prisma.$transaction(async (tx) => {
         // Update user role to PROVIDER
         await tx.user.update({
             where: {
@@ -77,14 +80,14 @@ const updateProviderProfile = async (userId, updateData) => {
     console.log("🔧 [USER SERVICE] Updating provider profile for user:", userId);
     console.log("📝 [USER SERVICE] Update data:", updateData);
     // Get provider profile first
-    const providerProfile = await prisma.providerProfile.findFirst({
+    const providerProfile = await prisma_1.prisma.providerProfile.findFirst({
         where: { userId }
     });
     let result;
     if (!providerProfile) {
         console.log("📝 [USER SERVICE] Provider profile not found, creating new one...");
         // Create provider profile if it doesn't exist
-        result = await prisma.providerProfile.create({
+        result = await prisma_1.prisma.providerProfile.create({
             data: {
                 userId,
                 businessName: updateData.businessName || "",
@@ -99,7 +102,7 @@ const updateProviderProfile = async (userId, updateData) => {
     else {
         console.log("✅ [USER SERVICE] Found provider profile:", providerProfile.id);
         // Update existing provider profile
-        result = await prisma.providerProfile.update({
+        result = await prisma_1.prisma.providerProfile.update({
             where: { id: providerProfile.id },
             data: {
                 ...(updateData.businessName !== undefined && { businessName: updateData.businessName }),
@@ -125,7 +128,7 @@ const updateProviderProfile = async (userId, updateData) => {
         userData.image = updateData.image;
     console.log("👤 [USER SERVICE] User data to update:", userData);
     // Update user profile
-    const finalResult = await prisma.$transaction(async (tx) => {
+    const finalResult = await prisma_1.prisma.$transaction(async (tx) => {
         // Update user profile if there's data
         let updatedUser = null;
         if (Object.keys(userData).length > 0) {
@@ -200,7 +203,7 @@ const updateProviderProfile = async (userId, updateData) => {
     return result;
 };
 const updateProfile = async (userId, updateData) => {
-    const result = await prisma.user.update({
+    const result = await prisma_1.prisma.user.update({
         where: {
             id: userId,
             isActive: true
@@ -234,7 +237,7 @@ const updateProfile = async (userId, updateData) => {
     }
     return result;
 };
-export const userService = {
+exports.userService = {
     getMyProfile,
     updateProfile,
     updateProviderProfile,

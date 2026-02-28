@@ -71,7 +71,7 @@ export declare const auth: import("better-auth").Auth<{
         hooks: {
             after: {
                 matcher: (ctx: import("better-auth").HookEndpointContext) => boolean;
-                handler: (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<{
+                handler: (inputContext: import("better-auth").MiddlewareInputContext<import("better-auth").MiddlewareOptions>) => Promise<{
                     user: {
                         id: string;
                         name: string;
@@ -93,11 +93,11 @@ export declare const auth: import("better-auth").Auth<{
             }[];
         };
         endpoints: {
-            getSession: import("better-call").StrictEndpoint<"/get-session", {
+            getSession: import("better-auth").StrictEndpoint<"/get-session", {
                 method: "GET";
-                query: import("zod").ZodOptional<import("zod").ZodObject<{
-                    disableCookieCache: import("zod").ZodOptional<import("zod").ZodUnion<[import("zod").ZodBoolean, import("zod").ZodPipe<import("zod").ZodString, import("zod").ZodTransform<boolean, string>>]>>;
-                    disableRefresh: import("zod").ZodOptional<import("zod").ZodBoolean>;
+                query: import("better-auth").ZodOptional<import("better-auth").ZodObject<{
+                    disableCookieCache: import("better-auth").ZodOptional<import("better-auth").ZodUnion<[import("better-auth").ZodBoolean, import("better-auth").ZodPipe<import("better-auth").ZodString, import("better-auth").ZodTransform<boolean, string>>]>>;
+                    disableRefresh: import("better-auth").ZodOptional<import("better-auth").ZodBoolean>;
                 }, import("better-auth").$strip>>;
                 metadata: {
                     CUSTOM_SESSION: boolean;
