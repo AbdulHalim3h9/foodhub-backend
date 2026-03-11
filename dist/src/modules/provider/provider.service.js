@@ -22,7 +22,7 @@ const createProviderProfile = async (providerData) => {
         return { success: false, error: "Failed to create provider profile" };
     }
 };
-const getAllProviders = async ({ search, isActive, page, limit, skip, sortBy, sortOrder }) => {
+const getAllProviders = async ({ search, isActive, page, limit, skip, sortBy, sortOrder, }) => {
     const andConditions = [];
     if (search) {
         andConditions.push({
@@ -30,31 +30,31 @@ const getAllProviders = async ({ search, isActive, page, limit, skip, sortBy, so
                 {
                     businessName: {
                         contains: search,
-                        mode: "insensitive"
-                    }
+                        mode: "insensitive",
+                    },
                 },
                 {
                     description: {
                         contains: search,
-                        mode: "insensitive"
-                    }
-                }
-            ]
+                        mode: "insensitive",
+                    },
+                },
+            ],
         });
     }
-    if (typeof isActive === 'boolean') {
+    if (typeof isActive === "boolean") {
         andConditions.push({
-            isActive
+            isActive,
         });
     }
     const providers = await prisma_1.prisma.providerProfile.findMany({
         take: limit,
         skip,
         where: {
-            AND: andConditions
+            AND: andConditions,
         },
         orderBy: {
-            [sortBy]: sortOrder
+            [sortBy]: sortOrder,
         },
         include: {
             user: {
@@ -62,21 +62,21 @@ const getAllProviders = async ({ search, isActive, page, limit, skip, sortBy, so
                     id: true,
                     name: true,
                     email: true,
-                    image: true
-                }
+                    image: true,
+                },
             },
             _count: {
                 select: {
                     meals: true,
-                    orders: true
-                }
-            }
-        }
+                    orders: true,
+                },
+            },
+        },
     });
     const total = await prisma_1.prisma.providerProfile.count({
         where: {
-            AND: andConditions
-        }
+            AND: andConditions,
+        },
     });
     return {
         data: providers,
@@ -84,8 +84,8 @@ const getAllProviders = async ({ search, isActive, page, limit, skip, sortBy, so
             total,
             page,
             limit,
-            totalPages: Math.ceil(total / limit)
-        }
+            totalPages: Math.ceil(total / limit),
+        },
     };
 };
 const createMenuItem = async (providerId, mealData) => {
@@ -93,8 +93,8 @@ const createMenuItem = async (providerId, mealData) => {
     const provider = await prisma_1.prisma.providerProfile.findUnique({
         where: {
             id: providerId,
-            isActive: true
-        }
+            isActive: true,
+        },
     });
     if (!provider) {
         throw new Error("Provider not found or inactive!");
@@ -103,8 +103,8 @@ const createMenuItem = async (providerId, mealData) => {
     const category = await prisma_1.prisma.category.findFirst({
         where: {
             id: mealData.categoryId,
-            isActive: true
-        }
+            isActive: true,
+        },
     });
     if (!category) {
         throw new Error("Category not found or inactive!");
@@ -121,8 +121,8 @@ const createMenuItem = async (providerId, mealData) => {
             prepTime: mealData.prepTime || null,
             cuisineId: mealData.cuisineId || null,
             categoryId: mealData.categoryId,
-            providerId
-        }
+            providerId,
+        },
     });
     return result;
 };
@@ -130,7 +130,7 @@ const getProviderById = async (providerId) => {
     const provider = await prisma_1.prisma.providerProfile.findFirst({
         where: {
             id: providerId,
-            isActive: true
+            isActive: true,
         },
         include: {
             user: {
@@ -139,16 +139,16 @@ const getProviderById = async (providerId) => {
                     name: true,
                     email: true,
                     image: true,
-                    createdAt: true
-                }
+                    createdAt: true,
+                },
             },
             _count: {
                 select: {
                     meals: true,
-                    orders: true
-                }
-            }
-        }
+                    orders: true,
+                },
+            },
+        },
     });
     if (!provider) {
         throw new Error("Provider not found or inactive!");
@@ -157,7 +157,7 @@ const getProviderById = async (providerId) => {
         ...provider,
         meals: [], // Return empty array for now since meals relation was removed
         overallRating: 0,
-        totalReviews: 0
+        totalReviews: 0,
     };
 };
 const updateMenuItem = async (providerId, mealId, mealData) => {
@@ -165,8 +165,8 @@ const updateMenuItem = async (providerId, mealId, mealData) => {
     const provider = await prisma_1.prisma.providerProfile.findUnique({
         where: {
             id: providerId,
-            isActive: true
-        }
+            isActive: true,
+        },
     });
     if (!provider) {
         throw new Error("Provider not found or inactive!");
@@ -175,8 +175,8 @@ const updateMenuItem = async (providerId, mealId, mealData) => {
     const existingMeal = await prisma_1.prisma.meal.findFirst({
         where: {
             id: mealId,
-            providerId
-        }
+            providerId,
+        },
     });
     if (!existingMeal) {
         throw new Error("Meal not found or doesn't belong to this provider!");
@@ -186,8 +186,8 @@ const updateMenuItem = async (providerId, mealId, mealData) => {
         const category = await prisma_1.prisma.category.findFirst({
             where: {
                 id: mealData.categoryId,
-                isActive: true
-            }
+                isActive: true,
+            },
         });
         if (!category) {
             throw new Error("Category not found or inactive!");
@@ -196,19 +196,27 @@ const updateMenuItem = async (providerId, mealId, mealData) => {
     // Update meal
     const result = await prisma_1.prisma.meal.update({
         where: {
-            id: mealId
+            id: mealId,
         },
         data: {
             ...(mealData.name && { name: mealData.name }),
-            ...(mealData.description !== undefined && { description: mealData.description }),
+            ...(mealData.description !== undefined && {
+                description: mealData.description,
+            }),
             ...(mealData.price !== undefined && { price: mealData.price }),
             ...(mealData.image !== undefined && { image: mealData.image }),
-            ...(mealData.ingredients !== undefined && { ingredients: mealData.ingredients }),
-            ...(mealData.allergens !== undefined && { allergens: mealData.allergens }),
+            ...(mealData.ingredients !== undefined && {
+                ingredients: mealData.ingredients,
+            }),
+            ...(mealData.allergens !== undefined && {
+                allergens: mealData.allergens,
+            }),
             ...(mealData.prepTime !== undefined && { prepTime: mealData.prepTime }),
-            ...(mealData.cuisineId !== undefined && { cuisineId: mealData.cuisineId }),
-            ...(mealData.categoryId && { categoryId: mealData.categoryId })
-        }
+            ...(mealData.cuisineId !== undefined && {
+                cuisineId: mealData.cuisineId,
+            }),
+            ...(mealData.categoryId && { categoryId: mealData.categoryId }),
+        },
     });
     return result;
 };
@@ -217,8 +225,8 @@ const deleteMenuItem = async (providerId, mealId) => {
     const provider = await prisma_1.prisma.providerProfile.findUnique({
         where: {
             id: providerId,
-            isActive: true
-        }
+            isActive: true,
+        },
     });
     if (!provider) {
         throw new Error("Provider not found or inactive!");
@@ -227,8 +235,8 @@ const deleteMenuItem = async (providerId, mealId) => {
     const existingMeal = await prisma_1.prisma.meal.findFirst({
         where: {
             id: mealId,
-            providerId
-        }
+            providerId,
+        },
     });
     if (!existingMeal) {
         throw new Error("Meal not found or doesn't belong to this provider!");
@@ -236,8 +244,8 @@ const deleteMenuItem = async (providerId, mealId) => {
     // Check if meal has any orders
     const ordersCount = await prisma_1.prisma.order.count({
         where: {
-            mealId: mealId
-        }
+            mealId: mealId,
+        },
     });
     if (ordersCount > 0) {
         throw new Error("Cannot delete meal with existing orders!");
@@ -245,8 +253,8 @@ const deleteMenuItem = async (providerId, mealId) => {
     // Delete meal
     const result = await prisma_1.prisma.meal.delete({
         where: {
-            id: mealId
-        }
+            id: mealId,
+        },
     });
     return result;
 };
@@ -256,6 +264,5 @@ exports.providerService = {
     createMenuItem,
     getProviderById,
     updateMenuItem,
-    deleteMenuItem
+    deleteMenuItem,
 };
-//# sourceMappingURL=provider.service.js.map

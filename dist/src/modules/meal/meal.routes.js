@@ -35,6 +35,9 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mealRouter = void 0;
 // Provider / Admin (authenticated)
@@ -42,7 +45,7 @@ exports.mealRouter = void 0;
 // PUT /api/meals/:id - Update meal (provider/admin only)
 // DELETE /api/meals/:id - Delete meal (provider/admin only)
 // GET /api/meals/provider/meals - Get provider's own meals
-const express_1 = __importStar(require("express"));
+const express_1 = __importDefault(require("express"));
 const meal_controller_1 = require("./meal.controller");
 const auth_1 = __importStar(require("../../middlewares/auth"));
 const router = express_1.default.Router();
@@ -55,4 +58,3 @@ router.post("/", (0, auth_1.default)(auth_1.UserRole.PROVIDER), meal_controller_
 router.put("/:mealId", (0, auth_1.default)(auth_1.UserRole.PROVIDER, auth_1.UserRole.ADMIN), meal_controller_1.mealController.updateMeal);
 router.delete("/:mealId", (0, auth_1.default)(auth_1.UserRole.PROVIDER, auth_1.UserRole.ADMIN), meal_controller_1.mealController.deleteMeal);
 exports.mealRouter = router;
-//# sourceMappingURL=meal.routes.js.map

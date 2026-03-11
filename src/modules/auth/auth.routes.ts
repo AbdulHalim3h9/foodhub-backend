@@ -1,6 +1,9 @@
-// Auth Module
+import express from "express";
+import { authController } from "./auth.controller";
 
-// POST /api/auth/register - Create new user (customer/provider)
-// POST /api/auth/login - Login + receive token
-// GET /api/auth/me - Get current user (authenticated)
-// POST /api/auth/logout - Optional: invalidate session (if using tokens)
+const router = express.Router();
+
+router.post("/register", authController.register);
+router.post("/login", authController.login);
+
+export const authRoutes = router;

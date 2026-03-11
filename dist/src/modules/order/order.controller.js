@@ -52,7 +52,7 @@ const createOrder = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "Order created successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -73,7 +73,7 @@ const getMyOrders = async (req, res, next) => {
             limit,
             skip,
             sortBy,
-            sortOrder
+            sortOrder,
         });
         res.status(200).json(result);
     }
@@ -90,9 +90,9 @@ const getOrderById = async (req, res, next) => {
             });
         }
         const { orderId } = req.params;
-        if (!orderId || typeof orderId !== 'string') {
+        if (!orderId || typeof orderId !== "string") {
             return res.status(400).json({
-                error: "Valid order ID is required!"
+                error: "Valid order ID is required!",
             });
         }
         const result = await order_service_1.orderService.getOrderById(orderId, user.id);
@@ -111,7 +111,7 @@ const getProviderOrders = async (req, res, next) => {
             });
         }
         // Get provider profile for this user
-        const { prisma } = await Promise.resolve().then(() => __importStar(require("../../lib/prisma")));
+        const { prisma } = await Promise.resolve().then(() => __importStar(require("../../lib/prisma.js")));
         const providerProfile = await prisma.providerProfile.findUnique({
             where: { userId: user.id },
         });
@@ -131,7 +131,7 @@ const getProviderOrders = async (req, res, next) => {
             skip,
             sortBy,
             sortOrder,
-            ...(status && { status })
+            ...(status && { status }),
         });
         console.log(`🔍 [PROVIDER ORDERS] Final result:`, result);
         res.status(200).json(result);
@@ -160,7 +160,7 @@ const getAllOrders = async (req, res, next) => {
             ...(search && { search }),
             ...(status && { status }),
             ...(customerId && { customerId }),
-            ...(providerId && { providerId })
+            ...(providerId && { providerId }),
         });
         res.status(200).json(result);
     }
@@ -177,22 +177,22 @@ const updateOrderStatus = async (req, res, next) => {
             });
         }
         const { orderId } = req.params;
-        if (!orderId || typeof orderId !== 'string') {
+        if (!orderId || typeof orderId !== "string") {
             return res.status(400).json({
-                error: "Valid order ID is required!"
+                error: "Valid order ID is required!",
             });
         }
         const { status } = req.body;
         if (!status) {
             return res.status(400).json({
-                error: "Status is required!"
+                error: "Status is required!",
             });
         }
         const result = await order_service_1.orderService.updateOrderStatus(orderId, status);
         res.status(200).json({
             success: true,
             message: "Order status updated successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -205,6 +205,5 @@ exports.orderController = {
     getProviderOrders,
     getOrderById,
     getAllOrders,
-    updateOrderStatus
+    updateOrderStatus,
 };
-//# sourceMappingURL=order.controller.js.map

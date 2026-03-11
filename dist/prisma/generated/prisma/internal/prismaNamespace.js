@@ -50,7 +50,6 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defineExtension = exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.CartItemScalarFieldEnum = exports.ReviewScalarFieldEnum = exports.ProviderProfileScalarFieldEnum = exports.OrderScalarFieldEnum = exports.MealScalarFieldEnum = exports.CuisineScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.VerificationScalarFieldEnum = exports.AccountScalarFieldEnum = exports.SessionScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/client"));
-const class_1 = require("./class");
 /**
  * Prisma Errors
  */
@@ -134,6 +133,7 @@ exports.UserScalarFieldEnum = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     role: 'role',
+    password: 'password',
     phone: 'phone',
     status: 'status',
     address: 'address',
@@ -268,4 +268,3 @@ exports.NullsOrder = {
     last: 'last'
 };
 exports.defineExtension = runtime.Extensions.defineExtension;
-//# sourceMappingURL=prismaNamespace.js.map

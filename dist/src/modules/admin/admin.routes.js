@@ -33,6 +33,9 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.adminRouter = void 0;
 // GET /api/admin/users - List all users
@@ -44,7 +47,7 @@ exports.adminRouter = void 0;
 // DELETE /api/admin/categories/:id - Delete category
 // To Do
 // PATCH /api/admin/providers/:id/approve - Approve user becoming a provider
-const express_1 = __importStar(require("express"));
+const express_1 = __importDefault(require("express"));
 const admin_controller_1 = require("./admin.controller");
 const auth_1 = __importStar(require("../../middlewares/auth"));
 const router = express_1.default.Router();
@@ -60,4 +63,3 @@ router.post("/categories", (0, auth_1.default)(auth_1.UserRole.ADMIN), admin_con
 router.put("/categories/:categoryId", (0, auth_1.default)(auth_1.UserRole.ADMIN), admin_controller_1.adminController.updateCategory);
 router.delete("/categories/:categoryId", (0, auth_1.default)(auth_1.UserRole.ADMIN), admin_controller_1.adminController.deleteCategory);
 exports.adminRouter = router;
-//# sourceMappingURL=admin.routes.js.map

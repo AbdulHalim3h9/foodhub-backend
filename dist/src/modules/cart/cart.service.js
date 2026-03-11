@@ -8,8 +8,8 @@ const getCart = async (userId) => {
     const user = await prisma_1.prisma.user.findUnique({
         where: {
             id: userId,
-            isActive: true
-        }
+            isActive: true,
+        },
     });
     if (!user) {
         throw new Error("User not found or inactive!");
@@ -17,7 +17,7 @@ const getCart = async (userId) => {
     // Get cart items with meal details
     const cartItems = await prisma_1.prisma.cartItem.findMany({
         where: {
-            userId: userId
+            userId: userId,
         },
         include: {
             meal: {
@@ -35,29 +35,29 @@ const getCart = async (userId) => {
                             id: true,
                             businessName: true,
                             phone: true,
-                            address: true
-                        }
-                    }
-                }
-            }
+                            address: true,
+                        },
+                    },
+                },
+            },
         },
         orderBy: {
-            createdAt: 'desc'
-        }
+            createdAt: "desc",
+        },
     });
     // Calculate total amount
     const totalAmount = cartItems.reduce((total, item) => {
         if (!item.meal.isAvailable) {
             return total; // Skip unavailable items
         }
-        return total + (Number(item.meal.price) * item.quantity);
+        return total + Number(item.meal.price) * item.quantity;
     }, 0);
     // Filter out unavailable items
     const availableItems = cartItems.filter((item) => item.meal.isAvailable);
     return {
         items: availableItems,
         totalAmount,
-        itemCount: availableItems.reduce((count, item) => count + item.quantity, 0)
+        itemCount: availableItems.reduce((count, item) => count + item.quantity, 0),
     };
 };
 const addItemToCart = async (userId, itemData) => {
@@ -65,8 +65,8 @@ const addItemToCart = async (userId, itemData) => {
     const user = await prisma_1.prisma.user.findUnique({
         where: {
             id: userId,
-            isActive: true
-        }
+            isActive: true,
+        },
     });
     if (!user) {
         throw new Error("User not found or inactive!");
@@ -75,8 +75,8 @@ const addItemToCart = async (userId, itemData) => {
     const meal = await prisma_1.prisma.meal.findUnique({
         where: {
             id: itemData.mealId,
-            isAvailable: true
-        }
+            isAvailable: true,
+        },
     });
     if (!meal) {
         throw new Error("Meal not found or not available!");
@@ -86,18 +86,18 @@ const addItemToCart = async (userId, itemData) => {
         where: {
             userId_mealId: {
                 userId: userId,
-                mealId: itemData.mealId
-            }
-        }
+                mealId: itemData.mealId,
+            },
+        },
     });
     if (existingCartItem) {
         // Update quantity if item exists
         const updatedItem = await prisma_1.prisma.cartItem.update({
             where: {
-                id: existingCartItem.id
+                id: existingCartItem.id,
             },
             data: {
-                quantity: existingCartItem.quantity + itemData.quantity
+                quantity: existingCartItem.quantity + itemData.quantity,
             },
             include: {
                 meal: {
@@ -106,10 +106,10 @@ const addItemToCart = async (userId, itemData) => {
                         name: true,
                         image: true,
                         price: true,
-                        isAvailable: true
-                    }
-                }
-            }
+                        isAvailable: true,
+                    },
+                },
+            },
         });
         return updatedItem;
     }
@@ -119,7 +119,7 @@ const addItemToCart = async (userId, itemData) => {
             data: {
                 userId: userId,
                 mealId: itemData.mealId,
-                quantity: itemData.quantity
+                quantity: itemData.quantity,
             },
             include: {
                 meal: {
@@ -128,10 +128,10 @@ const addItemToCart = async (userId, itemData) => {
                         name: true,
                         image: true,
                         price: true,
-                        isAvailable: true
-                    }
-                }
-            }
+                        isAvailable: true,
+                    },
+                },
+            },
         });
         return newCartItem;
     }
@@ -146,8 +146,8 @@ const updateItemQuantity = async (userId, mealId, quantity) => {
         where: {
             userId_mealId: {
                 userId: userId,
-                mealId: mealId
-            }
+                mealId: mealId,
+            },
         },
         include: {
             meal: {
@@ -156,10 +156,10 @@ const updateItemQuantity = async (userId, mealId, quantity) => {
                     name: true,
                     image: true,
                     price: true,
-                    isAvailable: true
-                }
-            }
-        }
+                    isAvailable: true,
+                },
+            },
+        },
     });
     if (!cartItem) {
         throw new Error("Item not found in cart!");
@@ -167,10 +167,10 @@ const updateItemQuantity = async (userId, mealId, quantity) => {
     // Update quantity
     const updatedItem = await prisma_1.prisma.cartItem.update({
         where: {
-            id: cartItem.id
+            id: cartItem.id,
         },
         data: {
-            quantity: quantity
+            quantity: quantity,
         },
         include: {
             meal: {
@@ -179,10 +179,10 @@ const updateItemQuantity = async (userId, mealId, quantity) => {
                     name: true,
                     image: true,
                     price: true,
-                    isAvailable: true
-                }
-            }
-        }
+                    isAvailable: true,
+                },
+            },
+        },
     });
     return updatedItem;
 };
@@ -192,9 +192,9 @@ const removeItemFromCart = async (userId, mealId) => {
         where: {
             userId_mealId: {
                 userId: userId,
-                mealId: mealId
-            }
-        }
+                mealId: mealId,
+            },
+        },
     });
     if (!cartItem) {
         throw new Error("Item not found in cart!");
@@ -202,8 +202,8 @@ const removeItemFromCart = async (userId, mealId) => {
     // Remove item
     await prisma_1.prisma.cartItem.delete({
         where: {
-            id: cartItem.id
-        }
+            id: cartItem.id,
+        },
     });
     return { message: "Item removed from cart successfully!" };
 };
@@ -211,12 +211,12 @@ const clearCart = async (userId) => {
     // Delete all cart items for user
     const result = await prisma_1.prisma.cartItem.deleteMany({
         where: {
-            userId: userId
-        }
+            userId: userId,
+        },
     });
     return {
         message: "Cart cleared successfully!",
-        itemsRemoved: result.count
+        itemsRemoved: result.count,
     };
 };
 exports.cartService = {
@@ -224,6 +224,5 @@ exports.cartService = {
     addItemToCart,
     updateItemQuantity,
     removeItemFromCart,
-    clearCart
+    clearCart,
 };
-//# sourceMappingURL=cart.service.js.map

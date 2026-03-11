@@ -33,6 +33,9 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.providerRouter = void 0;
 // Public
@@ -46,7 +49,7 @@ exports.providerRouter = void 0;
 // GET /api/provider/orders - List incoming orders for this provider
 // PATCH /api/provider/orders/:id - Update order status (accepted → preparing → ready → delivered)
 // GET /api/provider/dashboard - List statistics for provider (orders, income)
-const express_1 = __importStar(require("express"));
+const express_1 = __importDefault(require("express"));
 const provider_controller_1 = require("./provider.controller");
 const auth_1 = __importStar(require("../../middlewares/auth"));
 const router = express_1.default.Router();
@@ -57,4 +60,3 @@ router.post("/menu", (0, auth_1.default)(auth_1.UserRole.PROVIDER), provider_con
 router.put("/menu/:mealId", (0, auth_1.default)(auth_1.UserRole.PROVIDER), provider_controller_1.providerController.updateMenuItem);
 router.delete("/menu/:mealId", (0, auth_1.default)(auth_1.UserRole.PROVIDER), provider_controller_1.providerController.deleteMenuItem);
 exports.providerRouter = router;
-//# sourceMappingURL=provider.routes.js.map

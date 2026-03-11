@@ -29,4 +29,3 @@ exports.OrderStatus = {
     DELIVERED: 'DELIVERED',
     CANCELLED: 'CANCELLED'
 };
-//# sourceMappingURL=enums.js.map

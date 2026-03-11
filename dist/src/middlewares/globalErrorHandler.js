@@ -11,4 +11,3 @@ function errorHandler(err, req, res, next) {
     });
 }
 exports.default = errorHandler;
-//# sourceMappingURL=globalErrorHandler.js.map

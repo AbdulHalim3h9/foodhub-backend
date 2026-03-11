@@ -39,4 +39,3 @@ const getAllCuisines = async ({ page, limit, skip, sortBy, sortOrder, search, })
 exports.cuisineService = {
     getAllCuisines,
 };
-//# sourceMappingURL=cuisine.service.js.map

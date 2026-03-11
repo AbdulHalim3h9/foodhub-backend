@@ -1,8 +1,7 @@
 import express from "express";
 import type { Application } from "express";
 import cors from "cors";
-import { toNodeHandler } from "better-auth/node";
-import { auth } from "./lib/auth";
+import { authRoutes } from "./modules/auth/auth.routes";
 import { adminRouter } from "./modules/admin/admin.routes";
 import { userRouter } from "./modules/user/user.routes";
 import { providerRouter } from "./modules/provider/provider.routes";
@@ -23,12 +22,12 @@ app.use(
   }),
 );
 app.use(express.json());
-app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
 app.use("/api/provider", providerRouter);

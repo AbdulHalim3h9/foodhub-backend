@@ -5,8 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const node_1 = require("better-auth/node");
-const auth_1 = require("./lib/auth");
+const auth_routes_1 = require("./modules/auth/auth.routes");
 const admin_routes_1 = require("./modules/admin/admin.routes");
 const user_routes_1 = require("./modules/user/user.routes");
 const provider_routes_1 = require("./modules/provider/provider.routes");
@@ -23,10 +22,10 @@ app.use((0, cors_1.default)({
     credentials: true,
 }));
 app.use(express_1.default.json());
-app.all("/api/auth/*splat", (0, node_1.toNodeHandler)(auth_1.auth));
 app.get("/", (req, res) => {
     res.send("Hello, World!");
 });
+app.use("/api/auth", auth_routes_1.authRoutes);
 app.use("/api/admin", admin_routes_1.adminRouter);
 app.use("/api/user", user_routes_1.userRouter);
 app.use("/api/provider", provider_routes_1.providerRouter);
@@ -39,4 +38,3 @@ app.use("/api", review_routes_1.reviewRouter); // Review routes have their own p
 // Global error handler (must be last)
 app.use(globalErrorHandler_1.default);
 exports.default = app;
-//# sourceMappingURL=app.js.map

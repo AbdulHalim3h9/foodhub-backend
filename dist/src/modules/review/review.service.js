@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.reviewService = void 0;
 // Review service - Submit review, get reviews for a meal (post-order only)
 const prisma_1 = require("../../lib/prisma");
-const getMealReviews = async ({ mealId, page, limit, skip, sortBy, sortOrder }) => {
+const getMealReviews = async ({ mealId, page, limit, skip, sortBy, sortOrder, }) => {
     // Check if meal exists
     const meal = await prisma_1.prisma.meal.findFirst({
         where: {
-            id: mealId
-        }
+            id: mealId,
+        },
     });
     if (!meal) {
         throw new Error("Meal not found!");
@@ -17,25 +17,25 @@ const getMealReviews = async ({ mealId, page, limit, skip, sortBy, sortOrder }) 
         take: limit,
         skip,
         where: {
-            mealId: mealId
+            mealId: mealId,
         },
         orderBy: {
-            [sortBy]: sortOrder
+            [sortBy]: sortOrder,
         },
         include: {
             customer: {
                 select: {
                     id: true,
                     name: true,
-                    image: true
-                }
-            }
-        }
+                    image: true,
+                },
+            },
+        },
     });
     const total = await prisma_1.prisma.review.count({
         where: {
-            mealId: mealId
-        }
+            mealId: mealId,
+        },
     });
     return {
         data: reviews,
@@ -43,8 +43,8 @@ const getMealReviews = async ({ mealId, page, limit, skip, sortBy, sortOrder }) 
             total,
             page,
             limit,
-            totalPages: Math.ceil(total / limit)
-        }
+            totalPages: Math.ceil(total / limit),
+        },
     };
 };
 const createReview = async (customerId, mealId, reviewData) => {
@@ -55,8 +55,8 @@ const createReview = async (customerId, mealId, reviewData) => {
     // Check if meal exists
     const meal = await prisma_1.prisma.meal.findFirst({
         where: {
-            id: mealId
-        }
+            id: mealId,
+        },
     });
     if (!meal) {
         throw new Error("Meal not found!");
@@ -66,11 +66,11 @@ const createReview = async (customerId, mealId, reviewData) => {
         where: {
             mealId: mealId,
             customerId: customerId,
-            status: "DELIVERED"
+            status: "DELIVERED",
         },
         include: {
-            customer: true
-        }
+            customer: true,
+        },
     });
     if (!order) {
         throw new Error("You can only review meals from delivered orders!");
@@ -79,8 +79,8 @@ const createReview = async (customerId, mealId, reviewData) => {
     const existingReview = await prisma_1.prisma.review.findFirst({
         where: {
             customerId: customerId,
-            mealId: mealId
-        }
+            mealId: mealId,
+        },
     });
     if (existingReview) {
         throw new Error("You have already reviewed this meal!");
@@ -90,58 +90,59 @@ const createReview = async (customerId, mealId, reviewData) => {
             rating: reviewData.rating,
             comment: reviewData.comment || null,
             customerId: customerId,
-            mealId: mealId
+            mealId: mealId,
         },
         include: {
             customer: {
                 select: {
                     id: true,
                     name: true,
-                    image: true
-                }
+                    image: true,
+                },
             },
             meal: {
                 select: {
                     id: true,
-                    name: true
-                }
-            }
-        }
+                    name: true,
+                },
+            },
+        },
     });
     return result;
 };
 const updateReview = async (customerId, reviewId, reviewData) => {
     // Validate rating if provided
-    if (reviewData.rating !== undefined && (reviewData.rating < 1 || reviewData.rating > 5)) {
+    if (reviewData.rating !== undefined &&
+        (reviewData.rating < 1 || reviewData.rating > 5)) {
         throw new Error("Rating must be between 1 and 5!");
     }
     // Check if review exists and belongs to customer
     const existingReview = await prisma_1.prisma.review.findFirst({
         where: {
             id: reviewId,
-            customerId: customerId
-        }
+            customerId: customerId,
+        },
     });
     if (!existingReview) {
         throw new Error("Review not found or doesn't belong to you!");
     }
     const result = await prisma_1.prisma.review.update({
         where: {
-            id: reviewId
+            id: reviewId,
         },
         data: {
             ...(reviewData.rating !== undefined && { rating: reviewData.rating }),
-            ...(reviewData.comment !== undefined && { comment: reviewData.comment })
+            ...(reviewData.comment !== undefined && { comment: reviewData.comment }),
         },
         include: {
             customer: {
                 select: {
                     id: true,
                     name: true,
-                    image: true
-                }
-            }
-        }
+                    image: true,
+                },
+            },
+        },
     });
     return result;
 };
@@ -150,16 +151,16 @@ const deleteReview = async (customerId, reviewId) => {
     const existingReview = await prisma_1.prisma.review.findFirst({
         where: {
             id: reviewId,
-            customerId: customerId
-        }
+            customerId: customerId,
+        },
     });
     if (!existingReview) {
         throw new Error("Review not found or doesn't belong to you!");
     }
     const result = await prisma_1.prisma.review.delete({
         where: {
-            id: reviewId
-        }
+            id: reviewId,
+        },
     });
     return result;
 };
@@ -167,6 +168,5 @@ exports.reviewService = {
     getMealReviews,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
 };
-//# sourceMappingURL=review.service.js.map

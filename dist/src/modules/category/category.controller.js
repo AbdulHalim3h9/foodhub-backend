@@ -9,12 +9,12 @@ const paginationSortingHelper_1 = __importDefault(require("../../helpers/paginat
 const getAllCategories = async (req, res, next) => {
     try {
         const { search } = req.query;
-        const searchString = typeof search === 'string' ? search : undefined;
+        const searchString = typeof search === "string" ? search : undefined;
         // true or false
         const isActive = req.query.isActive
-            ? req.query.isActive === 'true'
+            ? req.query.isActive === "true"
                 ? true
-                : req.query.isActive === 'false'
+                : req.query.isActive === "false"
                     ? false
                     : undefined
             : undefined;
@@ -24,12 +24,12 @@ const getAllCategories = async (req, res, next) => {
             limit,
             skip,
             sortBy,
-            sortOrder
+            sortOrder,
         };
         if (searchString) {
             params.search = searchString;
         }
-        if (typeof isActive === 'boolean') {
+        if (typeof isActive === "boolean") {
             params.isActive = isActive;
         }
         const result = await category_service_1.categoryService.getAllCategories(params);
@@ -40,6 +40,5 @@ const getAllCategories = async (req, res, next) => {
     }
 };
 exports.categoryController = {
-    getAllCategories
+    getAllCategories,
 };
-//# sourceMappingURL=category.controller.js.map

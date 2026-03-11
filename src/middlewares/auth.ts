@@ -1,69 +1,77 @@
 import type { NextFunction, Request, Response } from "express";
-import { auth as betterAuth } from '../lib/auth'
+import jwt from "jsonwebtoken";
+import type { JwtPayload } from "jsonwebtoken";
+import { prisma } from "../lib/prisma";
 
 export enum UserRole {
-    CUSTOMER = "CUSTOMER",
-    PROVIDER = "PROVIDER",
-    ADMIN = "ADMIN"
+  CUSTOMER = "CUSTOMER",
+  PROVIDER = "PROVIDER",
+  ADMIN = "ADMIN",
 }
 
 declare global {
-    namespace Express {
-        interface Request {
-            user?: {
-                id: string;
-                email: string;
-                name: string;
-                role: string;
-                emailVerified: boolean;
-            }
-        }
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+        email: string;
+        role: string;
+      };
     }
+  }
 }
 
 const auth = (...roles: UserRole[]) => {
-    return async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            // get user session
-            const session = await betterAuth.api.getSession({
-                headers: req.headers as any
-            })
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.headers.authorization;
 
-            if (!session) {
-                return res.status(401).json({
-                    success: false,
-                    message: "You are not authorized!"
-                })
-            }
+      if (!token) {
+        return res.status(401).json({
+          success: false,
+          message: "You are not authorized!",
+        });
+      }
 
-            // if (!session.user.emailVerified) {
-            //     return res.status(403).json({
-            //         success: false,
-            //         message: "Email verification required. Please verfiy your email!"
-            //     })
-            // }
+      const decoded = jwt.verify(
+        token,
+        (process.env.JWT_ACCESS_SECRET as string) || "secret",
+      ) as JwtPayload;
 
-            req.user = {
-                id: session.user.id,
-                email: session.user.email,
-                name: session.user.name,
-                role: session.user.role as string,
-                emailVerified: session.user.emailVerified
-            }
-            console.log(roles,req.user.role)
-            if (roles.length && !roles.includes(req.user.role as UserRole)) {
-                return res.status(403).json({
-                    success: false,
-                    message: "Forbidden! You don't have permission to access this resources!"
-                })
-            }
+      const userData = await prisma.user.findUnique({
+        where: {
+          email: decoded.email,
+        },
+      });
 
-            next()
-        } catch (err) {
-            next(err);
-        }
+      if (!userData) {
+        return res.status(401).json({
+          success: false,
+          message: "User not found!",
+        });
+      }
 
+      if (userData.status !== "ACTIVE") {
+        return res.status(401).json({
+          success: false,
+          message: "User is not active!",
+        });
+      }
+
+      if (roles.length && !roles.includes(userData.role as UserRole)) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Forbidden! You don't have permission to access this resource!",
+        });
+      }
+
+      req.user = decoded as { id: string; email: string; role: string };
+      next();
+    } catch (err) {
+      next(err);
     }
+  };
 };
 
 export default auth;

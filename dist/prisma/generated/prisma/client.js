@@ -47,10 +47,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Prisma = exports.PrismaClient = exports.$Enums = void 0;
-const process = __importStar(require("node:process"));
-const path = __importStar(require("node:path"));
-const runtime = __importStar(require("@prisma/client/runtime/client"));
-const $Enums = __importStar(require("./enums"));
 const $Class = __importStar(require("./internal/class"));
 const Prisma = __importStar(require("./internal/prismaNamespace"));
 exports.Prisma = Prisma;
@@ -70,4 +66,3 @@ __exportStar(require("./enums"), exports);
  * Read more in our [docs](https://pris.ly/d/client).
  */
 exports.PrismaClient = $Class.getPrismaClientClass();
-//# sourceMappingURL=client.js.map

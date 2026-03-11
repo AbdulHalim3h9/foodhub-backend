@@ -33,13 +33,16 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reviewRouter = void 0;
 // GET /api/meals/:id/reviews - Get all reviews for a meal
 // POST /api/meals/:id/reviews - Submit a review (after order delivered)
 // PUT /api/meals/:id/reviews/:rid - Update own review
 // DELETE /api/meals/:id/reviews/:rid - Delete own review
-const express_1 = __importStar(require("express"));
+const express_1 = __importDefault(require("express"));
 const review_controller_1 = require("./review.controller");
 const auth_1 = __importStar(require("../../middlewares/auth"));
 const router = express_1.default.Router();
@@ -50,4 +53,3 @@ router.post("/meals/:mealId/reviews", (0, auth_1.default)(auth_1.UserRole.CUSTOM
 router.put("/meals/:mealId/reviews/:reviewId", (0, auth_1.default)(auth_1.UserRole.CUSTOMER), review_controller_1.reviewController.updateReview);
 router.delete("/meals/:mealId/reviews/:reviewId", (0, auth_1.default)(auth_1.UserRole.CUSTOMER), review_controller_1.reviewController.deleteReview);
 exports.reviewRouter = router;
-//# sourceMappingURL=review.routes.js.map

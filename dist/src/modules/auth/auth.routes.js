@@ -1,8 +1,12 @@
 "use strict";
-// Auth Module
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-// POST /api/auth/register - Create new user (customer/provider)
-// POST /api/auth/login - Login + receive token
-// GET /api/auth/me - Get current user (authenticated)
-// POST /api/auth/logout - Optional: invalidate session (if using tokens)
-//# sourceMappingURL=auth.routes.js.map
+exports.authRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const auth_controller_1 = require("./auth.controller");
+const router = express_1.default.Router();
+router.post("/register", auth_controller_1.authController.register);
+router.post("/login", auth_controller_1.authController.login);
+exports.authRoutes = router;

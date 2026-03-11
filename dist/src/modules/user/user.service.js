@@ -6,7 +6,7 @@ const getMyProfile = async (userId) => {
     const result = await prisma_1.prisma.user.findUnique({
         where: {
             id: userId,
-            isActive: true
+            isActive: true,
         },
         select: {
             id: true,
@@ -29,10 +29,10 @@ const getMyProfile = async (userId) => {
                     website: true,
                     cuisine: true,
                     openingHours: true,
-                    isActive: true
-                }
-            }
-        }
+                    isActive: true,
+                },
+            },
+        },
     });
     if (!result) {
         throw new Error("User not found!");
@@ -43,8 +43,8 @@ const applyForProvider = async (userId, providerData) => {
     // Check if user already has a provider profile
     const existingProfile = await prisma_1.prisma.providerProfile.findFirst({
         where: {
-            userId
-        }
+            userId,
+        },
     });
     if (existingProfile) {
         throw new Error("You already have a provider profile!");
@@ -54,11 +54,11 @@ const applyForProvider = async (userId, providerData) => {
         // Update user role to PROVIDER
         await tx.user.update({
             where: {
-                id: userId
+                id: userId,
             },
             data: {
-                role: "PROVIDER"
-            }
+                role: "PROVIDER",
+            },
         });
         // Create provider profile
         const providerProfile = await tx.providerProfile.create({
@@ -69,8 +69,8 @@ const applyForProvider = async (userId, providerData) => {
                 phone: providerData.phone,
                 address: providerData.address,
                 logo: providerData.logo || null,
-                isActive: false // Default to inactive, requires admin approval
-            }
+                isActive: false, // Default to inactive, requires admin approval
+            },
         });
         return providerProfile;
     });
@@ -81,7 +81,7 @@ const updateProviderProfile = async (userId, updateData) => {
     console.log("📝 [USER SERVICE] Update data:", updateData);
     // Get provider profile first
     const providerProfile = await prisma_1.prisma.providerProfile.findFirst({
-        where: { userId }
+        where: { userId },
     });
     let result;
     if (!providerProfile) {
@@ -95,7 +95,7 @@ const updateProviderProfile = async (userId, updateData) => {
                 phone: updateData.providerPhone || "",
                 address: updateData.providerAddress || "",
                 isActive: true,
-            }
+            },
         });
         console.log("✅ [USER SERVICE] Created new provider profile:", result.id);
     }
@@ -105,14 +105,28 @@ const updateProviderProfile = async (userId, updateData) => {
         result = await prisma_1.prisma.providerProfile.update({
             where: { id: providerProfile.id },
             data: {
-                ...(updateData.businessName !== undefined && { businessName: updateData.businessName }),
-                ...(updateData.description !== undefined && { description: updateData.description }),
-                ...(updateData.providerPhone !== undefined && { phone: updateData.providerPhone }),
-                ...(updateData.providerAddress !== undefined && { address: updateData.providerAddress }),
-                ...(updateData.website !== undefined && { website: updateData.website }),
-                ...(updateData.cuisine !== undefined && { cuisine: updateData.cuisine }),
-                ...(updateData.openingHours !== undefined && { openingHours: updateData.openingHours }),
-            }
+                ...(updateData.businessName !== undefined && {
+                    businessName: updateData.businessName,
+                }),
+                ...(updateData.description !== undefined && {
+                    description: updateData.description,
+                }),
+                ...(updateData.providerPhone !== undefined && {
+                    phone: updateData.providerPhone,
+                }),
+                ...(updateData.providerAddress !== undefined && {
+                    address: updateData.providerAddress,
+                }),
+                ...(updateData.website !== undefined && {
+                    website: updateData.website,
+                }),
+                ...(updateData.cuisine !== undefined && {
+                    cuisine: updateData.cuisine,
+                }),
+                ...(updateData.openingHours !== undefined && {
+                    openingHours: updateData.openingHours,
+                }),
+            },
         });
         console.log("✅ [USER SERVICE] Updated provider profile:", result.id);
     }
@@ -135,7 +149,7 @@ const updateProviderProfile = async (userId, updateData) => {
             updatedUser = await tx.user.update({
                 where: {
                     id: userId,
-                    isActive: true
+                    isActive: true,
                 },
                 data: userData,
                 select: {
@@ -156,17 +170,17 @@ const updateProviderProfile = async (userId, updateData) => {
                             logo: true,
                             phone: true,
                             address: true,
-                            isActive: true
-                        }
-                    }
-                }
+                            isActive: true,
+                        },
+                    },
+                },
             });
         }
         // Return the complete updated profile
         const finalProfile = await tx.user.findUnique({
             where: {
                 id: userId,
-                isActive: true
+                isActive: true,
             },
             select: {
                 id: true,
@@ -189,10 +203,10 @@ const updateProviderProfile = async (userId, updateData) => {
                         website: true,
                         cuisine: true,
                         openingHours: true,
-                        isActive: true
-                    }
-                }
-            }
+                        isActive: true,
+                    },
+                },
+            },
         });
         if (!finalProfile) {
             throw new Error("Failed to retrieve updated profile!");
@@ -206,7 +220,7 @@ const updateProfile = async (userId, updateData) => {
     const result = await prisma_1.prisma.user.update({
         where: {
             id: userId,
-            isActive: true
+            isActive: true,
         },
         data: updateData,
         select: {
@@ -227,10 +241,10 @@ const updateProfile = async (userId, updateData) => {
                     logo: true,
                     phone: true,
                     address: true,
-                    isActive: true
-                }
-            }
-        }
+                    isActive: true,
+                },
+            },
+        },
     });
     if (!result) {
         throw new Error("User not found!");
@@ -241,6 +255,5 @@ exports.userService = {
     getMyProfile,
     updateProfile,
     updateProviderProfile,
-    applyForProvider
+    applyForProvider,
 };
-//# sourceMappingURL=user.service.js.map

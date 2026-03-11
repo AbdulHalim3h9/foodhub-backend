@@ -31,4 +31,3 @@ const getAllCuisines = async (req, res, next) => {
 exports.cuisineController = {
     getAllCuisines,
 };
-//# sourceMappingURL=cuisine.controller.js.map

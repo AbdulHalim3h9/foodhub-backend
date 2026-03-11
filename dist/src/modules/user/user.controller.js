@@ -29,7 +29,7 @@ const applyForProvider = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "Provider application submitted successfully! Your profile is now pending admin approval.",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -51,7 +51,7 @@ const updateProviderProfile = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Provider profile updated successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -71,7 +71,7 @@ const updateProfile = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Profile updated successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -82,6 +82,5 @@ exports.userController = {
     getMyProfile,
     updateProfile,
     updateProviderProfile,
-    applyForProvider
+    applyForProvider,
 };
-//# sourceMappingURL=user.controller.js.map

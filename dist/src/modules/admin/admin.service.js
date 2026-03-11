@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.adminService = void 0;
 // Admin service - Admin-only: manage users, view all orders, manage categories
 const prisma_1 = require("../../lib/prisma");
-const getAllUsers = async ({ page, limit, skip, sortBy, sortOrder, search, role, status }) => {
+const getAllUsers = async ({ page, limit, skip, sortBy, sortOrder, search, role, status, }) => {
     const where = {};
     // Apply filters
     if (search) {
         where.OR = [
-            { name: { contains: search, mode: 'insensitive' } },
-            { email: { contains: search, mode: 'insensitive' } }
+            { name: { contains: search, mode: "insensitive" } },
+            { email: { contains: search, mode: "insensitive" } },
         ];
     }
     if (role) {
@@ -23,7 +23,7 @@ const getAllUsers = async ({ page, limit, skip, sortBy, sortOrder, search, role,
         skip,
         where,
         orderBy: {
-            [sortBy]: sortOrder
+            [sortBy]: sortOrder,
         },
         select: {
             id: true,
@@ -41,16 +41,16 @@ const getAllUsers = async ({ page, limit, skip, sortBy, sortOrder, search, role,
                     id: true,
                     businessName: true,
                     isActive: true,
-                    createdAt: true
-                }
+                    createdAt: true,
+                },
             },
             _count: {
                 select: {
                     orders: true,
-                    reviews: true
-                }
-            }
-        }
+                    reviews: true,
+                },
+            },
+        },
     });
     const total = await prisma_1.prisma.user.count({ where });
     return {
@@ -59,28 +59,28 @@ const getAllUsers = async ({ page, limit, skip, sortBy, sortOrder, search, role,
             total,
             page,
             limit,
-            totalPages: Math.ceil(total / limit)
-        }
+            totalPages: Math.ceil(total / limit),
+        },
     };
 };
 const updateUser = async (userId, updateData) => {
     // Check if user exists
     const existingUser = await prisma_1.prisma.user.findUnique({
-        where: { id: userId }
+        where: { id: userId },
     });
     if (!existingUser) {
         throw new Error("User not found!");
     }
     // Validate role if provided
     if (updateData.role) {
-        const validRoles = ['CUSTOMER', 'PROVIDER', 'ADMIN'];
+        const validRoles = ["CUSTOMER", "PROVIDER", "ADMIN"];
         if (!validRoles.includes(updateData.role)) {
             throw new Error("Invalid role! Must be one of: CUSTOMER, PROVIDER, ADMIN");
         }
     }
     // Validate status if provided
     if (updateData.status) {
-        const validStatuses = ['ACTIVE', 'INACTIVE', 'SUSPENDED'];
+        const validStatuses = ["ACTIVE", "INACTIVE", "SUSPENDED"];
         if (!validStatuses.includes(updateData.status)) {
             throw new Error("Invalid status! Must be one of: ACTIVE, INACTIVE, SUSPENDED");
         }
@@ -119,10 +119,10 @@ const updateUser = async (userId, updateData) => {
                     id: true,
                     businessName: true,
                     isActive: true,
-                    createdAt: true
-                }
-            }
-        }
+                    createdAt: true,
+                },
+            },
+        },
     });
     return result;
 };
@@ -131,8 +131,8 @@ const createCategory = async (categoryData) => {
     // Check if category with same name already exists
     const existingCategory = await prisma_1.prisma.category.findFirst({
         where: {
-            name: categoryData.name
-        }
+            name: categoryData.name,
+        },
     });
     if (existingCategory) {
         throw new Error("Category with this name already exists!");
@@ -142,8 +142,8 @@ const createCategory = async (categoryData) => {
             name: categoryData.name,
             description: categoryData.description || null,
             image: categoryData.image || null,
-            isActive: categoryData.isActive !== undefined ? categoryData.isActive : true
-        }
+            isActive: categoryData.isActive !== undefined ? categoryData.isActive : true,
+        },
     });
     return result;
 };
@@ -151,8 +151,8 @@ const updateCategory = async (categoryId, categoryData) => {
     // Check if category exists
     const existingCategory = await prisma_1.prisma.category.findUnique({
         where: {
-            id: categoryId
-        }
+            id: categoryId,
+        },
     });
     if (!existingCategory) {
         throw new Error("Category not found!");
@@ -161,8 +161,8 @@ const updateCategory = async (categoryId, categoryData) => {
     if (categoryData.name && categoryData.name !== existingCategory.name) {
         const duplicateCategory = await prisma_1.prisma.category.findFirst({
             where: {
-                name: categoryData.name
-            }
+                name: categoryData.name,
+            },
         });
         if (duplicateCategory) {
             throw new Error("Category with this name already exists!");
@@ -170,14 +170,18 @@ const updateCategory = async (categoryId, categoryData) => {
     }
     const result = await prisma_1.prisma.category.update({
         where: {
-            id: categoryId
+            id: categoryId,
         },
         data: {
             ...(categoryData.name && { name: categoryData.name }),
-            ...(categoryData.description !== undefined && { description: categoryData.description }),
+            ...(categoryData.description !== undefined && {
+                description: categoryData.description,
+            }),
             ...(categoryData.image !== undefined && { image: categoryData.image }),
-            ...(categoryData.isActive !== undefined && { isActive: categoryData.isActive })
-        }
+            ...(categoryData.isActive !== undefined && {
+                isActive: categoryData.isActive,
+            }),
+        },
     });
     return result;
 };
@@ -185,8 +189,8 @@ const deleteCategory = async (categoryId) => {
     // Check if category exists
     const existingCategory = await prisma_1.prisma.category.findUnique({
         where: {
-            id: categoryId
-        }
+            id: categoryId,
+        },
     });
     if (!existingCategory) {
         throw new Error("Category not found!");
@@ -194,8 +198,8 @@ const deleteCategory = async (categoryId) => {
     // Check if category has meals associated with it
     const mealsCount = await prisma_1.prisma.meal.count({
         where: {
-            categoryId: categoryId
-        }
+            categoryId: categoryId,
+        },
     });
     if (mealsCount > 0) {
         throw new Error("Cannot delete category with associated meals!");
@@ -203,12 +207,12 @@ const deleteCategory = async (categoryId) => {
     // Delete category
     const result = await prisma_1.prisma.category.delete({
         where: {
-            id: categoryId
-        }
+            id: categoryId,
+        },
     });
     return result;
 };
-const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, isActive, providerId }) => {
+const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, isActive, providerId, }) => {
     const where = {};
     // Apply filters
     if (search) {
@@ -216,27 +220,29 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
             {
                 name: {
                     contains: search,
-                    mode: "insensitive"
-                }
+                    mode: "insensitive",
+                },
             },
             {
                 description: {
                     contains: search,
-                    mode: "insensitive"
-                }
-            }
+                    mode: "insensitive",
+                },
+            },
         ];
     }
     if (isActive !== undefined) {
-        where.isActive = isActive === 'true';
+        where.isActive = isActive === "true";
     }
     if (providerId) {
         // Filter categories that have meals from this provider
         const categoryIdsWithProviderMeals = await prisma_1.prisma.meal.findMany({
             where: { providerId },
-            select: { categoryId: true }
+            select: { categoryId: true },
         });
-        const uniqueCategoryIds = [...new Set(categoryIdsWithProviderMeals.map(m => m.categoryId).filter(Boolean))];
+        const uniqueCategoryIds = [
+            ...new Set(categoryIdsWithProviderMeals.map((m) => m.categoryId).filter(Boolean)),
+        ];
         if (uniqueCategoryIds.length > 0) {
             where.id = { in: uniqueCategoryIds };
         }
@@ -249,15 +255,15 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
         skip,
         where,
         orderBy: {
-            [sortBy]: sortOrder
+            [sortBy]: sortOrder,
         },
         include: {
             _count: {
                 select: {
-                    meals: true
-                }
-            }
-        }
+                    meals: true,
+                },
+            },
+        },
     });
     const total = await prisma_1.prisma.category.count({ where });
     return {
@@ -266,11 +272,11 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
             total,
             page,
             limit,
-            totalPages: Math.ceil(total / limit)
-        }
+            totalPages: Math.ceil(total / limit),
+        },
     };
 };
-const getAllProviders = async ({ page, limit, skip, sortBy, sortOrder, search, isActive, status }) => {
+const getAllProviders = async ({ page, limit, skip, sortBy, sortOrder, search, isActive, status, }) => {
     const where = {};
     // Apply filters
     if (search) {
@@ -278,33 +284,33 @@ const getAllProviders = async ({ page, limit, skip, sortBy, sortOrder, search, i
             {
                 businessName: {
                     contains: search,
-                    mode: "insensitive"
-                }
+                    mode: "insensitive",
+                },
             },
             {
                 user: {
                     name: {
                         contains: search,
-                        mode: "insensitive"
-                    }
-                }
+                        mode: "insensitive",
+                    },
+                },
             },
             {
                 user: {
                     email: {
                         contains: search,
-                        mode: "insensitive"
-                    }
-                }
-            }
+                        mode: "insensitive",
+                    },
+                },
+            },
         ];
     }
     if (isActive !== undefined) {
-        where.isActive = isActive === 'true';
+        where.isActive = isActive === "true";
     }
     if (status) {
         where.user = {
-            status: status
+            status: status,
         };
     }
     const providers = await prisma_1.prisma.providerProfile.findMany({
@@ -312,7 +318,7 @@ const getAllProviders = async ({ page, limit, skip, sortBy, sortOrder, search, i
         skip,
         where,
         orderBy: {
-            [sortBy]: sortOrder
+            [sortBy]: sortOrder,
         },
         include: {
             user: {
@@ -323,15 +329,15 @@ const getAllProviders = async ({ page, limit, skip, sortBy, sortOrder, search, i
                     image: true,
                     status: true,
                     isActive: true,
-                    createdAt: true
-                }
+                    createdAt: true,
+                },
             },
             _count: {
                 select: {
-                    meals: true
-                }
-            }
-        }
+                    meals: true,
+                },
+            },
+        },
     });
     const total = await prisma_1.prisma.providerProfile.count({ where });
     return {
@@ -340,15 +346,15 @@ const getAllProviders = async ({ page, limit, skip, sortBy, sortOrder, search, i
             total,
             page,
             limit,
-            totalPages: Math.ceil(total / limit)
-        }
+            totalPages: Math.ceil(total / limit),
+        },
     };
 };
 const deleteUser = async (userId) => {
     console.log("Backend: Attempting to delete user:", userId);
     // Check if user exists
     const existingUser = await prisma_1.prisma.user.findUnique({
-        where: { id: userId }
+        where: { id: userId },
     });
     if (!existingUser) {
         console.log("Backend: User not found:", userId);
@@ -358,8 +364,8 @@ const deleteUser = async (userId) => {
     // Check if user has associated orders
     const ordersCount = await prisma_1.prisma.order.count({
         where: {
-            customerId: userId
-        }
+            customerId: userId,
+        },
     });
     console.log("Backend: User has", ordersCount, "orders");
     if (ordersCount > 0) {
@@ -369,7 +375,7 @@ const deleteUser = async (userId) => {
     // Delete user
     console.log("Backend: Deleting user record:", userId);
     const result = await prisma_1.prisma.user.delete({
-        where: { id: userId }
+        where: { id: userId },
     });
     console.log("Backend: User deleted successfully:", userId);
     return result;
@@ -384,4 +390,3 @@ exports.adminService = {
     getAllProviders,
     getAllCategories,
 };
-//# sourceMappingURL=admin.service.js.map

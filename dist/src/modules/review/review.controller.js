@@ -9,9 +9,9 @@ const paginationSortingHelper_1 = __importDefault(require("../../helpers/paginat
 const getMealReviews = async (req, res, next) => {
     try {
         const { mealId } = req.params;
-        if (!mealId || typeof mealId !== 'string') {
+        if (!mealId || typeof mealId !== "string") {
             return res.status(400).json({
-                error: "Valid meal ID is required!"
+                error: "Valid meal ID is required!",
             });
         }
         const { page, limit, skip, sortBy, sortOrder } = (0, paginationSortingHelper_1.default)(req.query);
@@ -21,7 +21,7 @@ const getMealReviews = async (req, res, next) => {
             limit,
             skip,
             sortBy,
-            sortOrder
+            sortOrder,
         });
         res.status(200).json(result);
     }
@@ -38,16 +38,16 @@ const createReview = async (req, res, next) => {
             });
         }
         const { mealId } = req.params;
-        if (!mealId || typeof mealId !== 'string') {
+        if (!mealId || typeof mealId !== "string") {
             return res.status(400).json({
-                error: "Valid meal ID is required!"
+                error: "Valid meal ID is required!",
             });
         }
         const result = await review_service_1.reviewService.createReview(user.id, mealId, req.body);
         res.status(201).json({
             success: true,
             message: "Review submitted successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -63,21 +63,21 @@ const updateReview = async (req, res, next) => {
             });
         }
         const { mealId, reviewId } = req.params;
-        if (!mealId || typeof mealId !== 'string') {
+        if (!mealId || typeof mealId !== "string") {
             return res.status(400).json({
-                error: "Valid meal ID is required!"
+                error: "Valid meal ID is required!",
             });
         }
-        if (!reviewId || typeof reviewId !== 'string') {
+        if (!reviewId || typeof reviewId !== "string") {
             return res.status(400).json({
-                error: "Valid review ID is required!"
+                error: "Valid review ID is required!",
             });
         }
         const result = await review_service_1.reviewService.updateReview(user.id, reviewId, req.body);
         res.status(200).json({
             success: true,
             message: "Review updated successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -93,21 +93,21 @@ const deleteReview = async (req, res, next) => {
             });
         }
         const { mealId, reviewId } = req.params;
-        if (!mealId || typeof mealId !== 'string') {
+        if (!mealId || typeof mealId !== "string") {
             return res.status(400).json({
-                error: "Valid meal ID is required!"
+                error: "Valid meal ID is required!",
             });
         }
-        if (!reviewId || typeof reviewId !== 'string') {
+        if (!reviewId || typeof reviewId !== "string") {
             return res.status(400).json({
-                error: "Valid review ID is required!"
+                error: "Valid review ID is required!",
             });
         }
         const result = await review_service_1.reviewService.deleteReview(user.id, reviewId);
         res.status(200).json({
             success: true,
             message: "Review deleted successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -118,6 +118,5 @@ exports.reviewController = {
     getMealReviews,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
 };
-//# sourceMappingURL=review.controller.js.map

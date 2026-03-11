@@ -15,4 +15,3 @@ const paginationSortingHelper = (options) => {
     };
 };
 exports.default = paginationSortingHelper;
-//# sourceMappingURL=paginationSortingHelper.js.map

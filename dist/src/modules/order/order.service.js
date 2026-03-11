@@ -9,8 +9,8 @@ const createOrder = async (userId, orderData) => {
     const user = await prisma_1.prisma.user.findUnique({
         where: {
             id: userId,
-            isActive: true
-        }
+            isActive: true,
+        },
     });
     if (!user) {
         throw new Error("User not found or inactive!");
@@ -21,7 +21,7 @@ const createOrder = async (userId, orderData) => {
     }
     // Get meal details and validate it exists
     const meal = await prisma_1.prisma.meal.findUnique({
-        where: { id: orderData.mealId }
+        where: { id: orderData.mealId },
     });
     if (!meal) {
         throw new Error("Meal not found!");
@@ -54,8 +54,8 @@ const createOrder = async (userId, orderData) => {
                     name: true,
                     description: true,
                     image: true,
-                    price: true
-                }
+                    price: true,
+                },
             },
             customer: {
                 select: {
@@ -63,29 +63,29 @@ const createOrder = async (userId, orderData) => {
                     name: true,
                     email: true,
                     phone: true,
-                    address: true
-                }
+                    address: true,
+                },
             },
             provider: {
                 select: {
                     id: true,
                     businessName: true,
-                    phone: true
-                }
-            }
-        }
+                    phone: true,
+                },
+            },
+        },
     });
     return result;
 };
-const getMyOrders = async (userId, { page, limit, skip, sortBy, sortOrder }) => {
+const getMyOrders = async (userId, { page, limit, skip, sortBy, sortOrder, }) => {
     const orders = await prisma_1.prisma.order.findMany({
         take: limit,
         skip,
         where: {
-            customerId: userId
+            customerId: userId,
         },
         orderBy: {
-            [sortBy]: sortOrder
+            [sortBy]: sortOrder,
         },
         include: {
             meal: {
@@ -97,25 +97,25 @@ const getMyOrders = async (userId, { page, limit, skip, sortBy, sortOrder }) => 
                     price: true,
                     category: {
                         select: {
-                            name: true
-                        }
-                    }
-                }
+                            name: true,
+                        },
+                    },
+                },
             },
             provider: {
                 select: {
                     id: true,
                     businessName: true,
                     phone: true,
-                    address: true
-                }
-            }
-        }
+                    address: true,
+                },
+            },
+        },
     });
     const total = await prisma_1.prisma.order.count({
         where: {
-            customerId: userId
-        }
+            customerId: userId,
+        },
     });
     return {
         data: orders,
@@ -123,15 +123,22 @@ const getMyOrders = async (userId, { page, limit, skip, sortBy, sortOrder }) => 
             total,
             page,
             limit,
-            totalPages: Math.ceil(total / limit)
-        }
+            totalPages: Math.ceil(total / limit),
+        },
     };
 };
-const getProviderOrders = async (providerId, { page, limit, skip, sortBy, sortOrder, status }) => {
+const getProviderOrders = async (providerId, { page, limit, skip, sortBy, sortOrder, status, }) => {
     console.log(`🔍 [PROVIDER ORDERS] Fetching orders for providerId: ${providerId}`);
-    console.log(`🔍 [PROVIDER ORDERS] Filters:`, { page, limit, skip, sortBy, sortOrder, status });
+    console.log(`🔍 [PROVIDER ORDERS] Filters:`, {
+        page,
+        limit,
+        skip,
+        sortBy,
+        sortOrder,
+        status,
+    });
     const where = {
-        providerId
+        providerId,
     };
     // Apply status filter if provided
     if (status) {
@@ -143,7 +150,7 @@ const getProviderOrders = async (providerId, { page, limit, skip, sortBy, sortOr
         skip,
         where,
         orderBy: {
-            [sortBy]: sortOrder
+            [sortBy]: sortOrder,
         },
         include: {
             customer: {
@@ -152,8 +159,8 @@ const getProviderOrders = async (providerId, { page, limit, skip, sortBy, sortOr
                     name: true,
                     email: true,
                     phone: true,
-                    address: true
-                }
+                    address: true,
+                },
             },
             meal: {
                 select: {
@@ -161,14 +168,14 @@ const getProviderOrders = async (providerId, { page, limit, skip, sortBy, sortOr
                     name: true,
                     image: true,
                     price: true,
-                    description: true
-                }
-            }
-        }
+                    description: true,
+                },
+            },
+        },
     });
     console.log(`🔍 [PROVIDER ORDERS] Found ${orders.length} orders`);
     const total = await prisma_1.prisma.order.count({
-        where
+        where,
     });
     console.log(`🔍 [PROVIDER ORDERS] Total orders count: ${total}`);
     return {
@@ -177,15 +184,15 @@ const getProviderOrders = async (providerId, { page, limit, skip, sortBy, sortOr
             total,
             page,
             limit,
-            totalPages: Math.ceil(total / limit)
-        }
+            totalPages: Math.ceil(total / limit),
+        },
     };
 };
 const getOrderById = async (orderId, userId) => {
     const order = await prisma_1.prisma.order.findFirst({
         where: {
             id: orderId,
-            customerId: userId
+            customerId: userId,
         },
         include: {
             meal: {
@@ -197,20 +204,20 @@ const getOrderById = async (orderId, userId) => {
                     price: true,
                     category: {
                         select: {
-                            name: true
-                        }
-                    }
-                }
+                            name: true,
+                        },
+                    },
+                },
             },
             provider: {
                 select: {
                     id: true,
                     businessName: true,
                     phone: true,
-                    address: true
-                }
-            }
-        }
+                    address: true,
+                },
+            },
+        },
     });
     if (!order) {
         throw new Error("Order not found!");
@@ -218,15 +225,15 @@ const getOrderById = async (orderId, userId) => {
     return order;
 };
 // Admin order management methods
-const getAllOrders = async ({ limit, skip, sortBy, sortOrder, search, status, customerId, providerId }) => {
+const getAllOrders = async ({ limit, skip, sortBy, sortOrder, search, status, customerId, providerId, }) => {
     const where = {};
     // Apply filters
     if (search) {
         where.OR = [
-            { id: { contains: search, mode: 'insensitive' } },
-            { customer: { name: { contains: search, mode: 'insensitive' } } },
-            { customer: { email: { contains: search, mode: 'insensitive' } } },
-            { provider: { name: { contains: search, mode: 'insensitive' } } },
+            { id: { contains: search, mode: "insensitive" } },
+            { customer: { name: { contains: search, mode: "insensitive" } } },
+            { customer: { email: { contains: search, mode: "insensitive" } } },
+            { provider: { name: { contains: search, mode: "insensitive" } } },
         ];
     }
     if (status) {
@@ -243,7 +250,7 @@ const getAllOrders = async ({ limit, skip, sortBy, sortOrder, search, status, cu
         skip,
         where,
         orderBy: {
-            [sortBy]: sortOrder
+            [sortBy]: sortOrder,
         },
         include: {
             customer: {
@@ -252,24 +259,24 @@ const getAllOrders = async ({ limit, skip, sortBy, sortOrder, search, status, cu
                     name: true,
                     email: true,
                     phone: true,
-                }
+                },
             },
             provider: {
                 select: {
                     id: true,
                     businessName: true,
-                    phone: true
-                }
+                    phone: true,
+                },
             },
             meal: {
                 select: {
                     id: true,
                     name: true,
                     price: true,
-                    image: true
-                }
-            }
-        }
+                    image: true,
+                },
+            },
+        },
     });
     const total = await prisma_1.prisma.order.count({ where });
     return {
@@ -278,29 +285,37 @@ const getAllOrders = async ({ limit, skip, sortBy, sortOrder, search, status, cu
             total,
             page: Math.floor(skip / limit) + 1,
             limit,
-            totalPages: Math.ceil(total / limit)
-        }
+            totalPages: Math.ceil(total / limit),
+        },
     };
 };
 const updateOrderStatus = async (orderId, status) => {
     // Check if order exists
     const existingOrder = await prisma_1.prisma.order.findUnique({
-        where: { id: orderId }
+        where: { id: orderId },
     });
     if (!existingOrder) {
         throw new Error("Order not found!");
     }
-    if (existingOrder.status === 'DELIVERED') {
+    if (existingOrder.status === "DELIVERED") {
         throw new Error("Delivered orders cannot be updated!");
     }
     // Validate status
-    const validStatuses = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED'];
+    const validStatuses = [
+        "PENDING",
+        "CONFIRMED",
+        "PREPARING",
+        "READY",
+        "OUT_FOR_DELIVERY",
+        "DELIVERED",
+        "CANCELLED",
+    ];
     if (!validStatuses.includes(status)) {
         throw new Error("Invalid status! Must be one of: PENDING, CONFIRMED, PREPARING, READY, OUT_FOR_DELIVERY, DELIVERED, CANCELLED");
     }
     const result = await prisma_1.prisma.order.update({
         where: { id: orderId },
-        data: { status: status }
+        data: { status: status },
     });
     return result;
 };
@@ -310,6 +325,5 @@ exports.orderService = {
     getProviderOrders,
     getOrderById,
     getAllOrders,
-    updateOrderStatus
+    updateOrderStatus,
 };
-//# sourceMappingURL=order.service.js.map

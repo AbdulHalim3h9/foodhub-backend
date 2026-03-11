@@ -9,11 +9,11 @@ const prisma_1 = require("../../lib/prisma");
 const paginationSortingHelper_1 = __importDefault(require("../../helpers/paginationSortingHelper"));
 const createProviderProfile = async (req, res, next) => {
     try {
-        const { userId, businessName, description, phone, address, website, cuisine, deliveryRadius, openingHours } = req.body;
+        const { userId, businessName, description, phone, address, website, cuisine, deliveryRadius, openingHours, } = req.body;
         if (!userId || !businessName || !phone || !address) {
             return res.status(400).json({
                 success: false,
-                message: "Missing required fields: userId, businessName, phone, address"
+                message: "Missing required fields: userId, businessName, phone, address",
             });
         }
         const result = await provider_service_1.providerService.createProviderProfile({
@@ -25,18 +25,18 @@ const createProviderProfile = async (req, res, next) => {
             website,
             cuisine,
             deliveryRadius,
-            openingHours
+            openingHours,
         });
         if (!result.success) {
             return res.status(500).json({
                 success: false,
-                message: result.error
+                message: result.error,
             });
         }
         res.status(201).json({
             success: true,
             data: result.data,
-            message: "Provider profile created successfully"
+            message: "Provider profile created successfully",
         });
     }
     catch (error) {
@@ -46,12 +46,12 @@ const createProviderProfile = async (req, res, next) => {
 const getAllProviders = async (req, res, next) => {
     try {
         const { search } = req.query;
-        const searchString = typeof search === 'string' ? search : undefined;
+        const searchString = typeof search === "string" ? search : undefined;
         // true or false
         const isActive = req.query.isActive
-            ? req.query.isActive === 'true'
+            ? req.query.isActive === "true"
                 ? true
-                : req.query.isActive === 'false'
+                : req.query.isActive === "false"
                     ? false
                     : undefined
             : undefined;
@@ -61,12 +61,12 @@ const getAllProviders = async (req, res, next) => {
             limit,
             skip,
             sortBy,
-            sortOrder
+            sortOrder,
         };
         if (searchString) {
             params.search = searchString;
         }
-        if (typeof isActive === 'boolean') {
+        if (typeof isActive === "boolean") {
             params.isActive = isActive;
         }
         const result = await provider_service_1.providerService.getAllProviders(params);
@@ -88,8 +88,8 @@ const createMenuItem = async (req, res, next) => {
         const providerProfile = await prisma_1.prisma.providerProfile.findFirst({
             where: {
                 userId: user.id,
-                isActive: true
-            }
+                isActive: true,
+            },
         });
         if (!providerProfile) {
             return res.status(403).json({
@@ -100,7 +100,7 @@ const createMenuItem = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "Menu item created successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -110,9 +110,9 @@ const createMenuItem = async (req, res, next) => {
 const getProviderById = async (req, res, next) => {
     try {
         const { providerId } = req.params;
-        if (!providerId || typeof providerId !== 'string') {
+        if (!providerId || typeof providerId !== "string") {
             return res.status(400).json({
-                error: "Valid provider ID is required!"
+                error: "Valid provider ID is required!",
             });
         }
         const result = await provider_service_1.providerService.getProviderById(providerId);
@@ -131,17 +131,17 @@ const updateMenuItem = async (req, res, next) => {
             });
         }
         const { mealId } = req.params;
-        if (!mealId || typeof mealId !== 'string') {
+        if (!mealId || typeof mealId !== "string") {
             return res.status(400).json({
-                error: "Valid meal ID is required!"
+                error: "Valid meal ID is required!",
             });
         }
         // Get provider profile for this user
         const providerProfile = await prisma_1.prisma.providerProfile.findFirst({
             where: {
                 userId: user.id,
-                isActive: true
-            }
+                isActive: true,
+            },
         });
         if (!providerProfile) {
             return res.status(403).json({
@@ -152,7 +152,7 @@ const updateMenuItem = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Menu item updated successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -168,17 +168,17 @@ const deleteMenuItem = async (req, res, next) => {
             });
         }
         const { mealId } = req.params;
-        if (!mealId || typeof mealId !== 'string') {
+        if (!mealId || typeof mealId !== "string") {
             return res.status(400).json({
-                error: "Valid meal ID is required!"
+                error: "Valid meal ID is required!",
             });
         }
         // Get provider profile for this user
         const providerProfile = await prisma_1.prisma.providerProfile.findFirst({
             where: {
                 userId: user.id,
-                isActive: true
-            }
+                isActive: true,
+            },
         });
         if (!providerProfile) {
             return res.status(403).json({
@@ -189,7 +189,7 @@ const deleteMenuItem = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Menu item deleted successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -202,6 +202,5 @@ exports.providerController = {
     createMenuItem,
     getProviderById,
     updateMenuItem,
-    deleteMenuItem
+    deleteMenuItem,
 };
-//# sourceMappingURL=provider.controller.js.map

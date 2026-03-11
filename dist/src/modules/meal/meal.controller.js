@@ -58,7 +58,7 @@ const getProviderMeals = async (req, res, next) => {
             return res.status(403).json({
                 error: "Please complete your provider profile first to manage meals. You can set up your profile at: /dashboard/profile",
                 action: "complete_profile",
-                profileUrl: "/dashboard/profile"
+                profileUrl: "/dashboard/profile",
             });
         }
         console.log(`✅ [PROVIDER MEALS] Using provider profile: ${providerProfile.id} (${providerProfile.businessName})`);
@@ -309,4 +309,3 @@ exports.mealController = {
     updateMeal,
     deleteMeal,
 };
-//# sourceMappingURL=meal.controller.js.map

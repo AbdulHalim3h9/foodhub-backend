@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.categoryService = void 0;
 // Category service - Public category listing
 const prisma_1 = require("../../lib/prisma");
-const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, isActive }) => {
+const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, isActive, }) => {
     const where = {};
     // Apply filters
     if (search) {
@@ -11,15 +11,15 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
             {
                 name: {
                     contains: search,
-                    mode: "insensitive"
-                }
+                    mode: "insensitive",
+                },
             },
             {
                 description: {
                     contains: search,
-                    mode: "insensitive"
-                }
-            }
+                    mode: "insensitive",
+                },
+            },
         ];
     }
     if (isActive !== undefined) {
@@ -30,15 +30,15 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
         skip,
         where,
         orderBy: {
-            [sortBy]: sortOrder
+            [sortBy]: sortOrder,
         },
         include: {
             _count: {
                 select: {
-                    meals: true
-                }
-            }
-        }
+                    meals: true,
+                },
+            },
+        },
     });
     const total = await prisma_1.prisma.category.count({ where });
     return {
@@ -47,11 +47,10 @@ const getAllCategories = async ({ page, limit, skip, sortBy, sortOrder, search, 
             total,
             page,
             limit,
-            totalPages: Math.ceil(total / limit)
-        }
+            totalPages: Math.ceil(total / limit),
+        },
     };
 };
 exports.categoryService = {
-    getAllCategories
+    getAllCategories,
 };
-//# sourceMappingURL=category.service.js.map

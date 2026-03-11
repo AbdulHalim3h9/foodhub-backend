@@ -29,7 +29,7 @@ const addItemToCart = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "Item added to cart successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -46,21 +46,21 @@ const updateItemQuantity = async (req, res, next) => {
         }
         const { mealId } = req.params;
         const { quantity } = req.body;
-        if (!mealId || typeof mealId !== 'string') {
+        if (!mealId || typeof mealId !== "string") {
             return res.status(400).json({
-                error: "Valid meal ID is required!"
+                error: "Valid meal ID is required!",
             });
         }
         if (!quantity || quantity <= 0) {
             return res.status(400).json({
-                error: "Valid quantity greater than 0 is required!"
+                error: "Valid quantity greater than 0 is required!",
             });
         }
         const result = await cart_service_1.cartService.updateItemQuantity(user.id, mealId, quantity);
         res.status(200).json({
             success: true,
             message: "Item quantity updated successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -76,16 +76,16 @@ const removeItemFromCart = async (req, res, next) => {
             });
         }
         const { mealId } = req.params;
-        if (!mealId || typeof mealId !== 'string') {
+        if (!mealId || typeof mealId !== "string") {
             return res.status(400).json({
-                error: "Valid meal ID is required!"
+                error: "Valid meal ID is required!",
             });
         }
         const result = await cart_service_1.cartService.removeItemFromCart(user.id, mealId);
         res.status(200).json({
             success: true,
             message: "Item removed from cart successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -104,7 +104,7 @@ const clearCart = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Cart cleared successfully!",
-            data: result
+            data: result,
         });
     }
     catch (e) {
@@ -116,6 +116,5 @@ exports.cartController = {
     addItemToCart,
     updateItemQuantity,
     removeItemFromCart,
-    clearCart
+    clearCart,
 };
-//# sourceMappingURL=cart.controller.js.map

@@ -33,6 +33,9 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.orderRouter = void 0;
 // Customer
@@ -42,7 +45,7 @@ exports.orderRouter = void 0;
 // Admin
 // GET /api/orders/admin - View all orders platform-wide
 // PATCH /api/orders/:orderId/status - Update order status
-const express_1 = __importStar(require("express"));
+const express_1 = __importDefault(require("express"));
 const order_controller_1 = require("./order.controller");
 const auth_1 = __importStar(require("../../middlewares/auth"));
 const router = express_1.default.Router();
@@ -57,4 +60,3 @@ router.get("/all", (req, res, next) => {
 router.get("/:orderId", (0, auth_1.default)(auth_1.UserRole.CUSTOMER), order_controller_1.orderController.getOrderById);
 router.patch("/:orderId/status", (0, auth_1.default)(auth_1.UserRole.ADMIN, auth_1.UserRole.PROVIDER), order_controller_1.orderController.updateOrderStatus);
 exports.orderRouter = router;
-//# sourceMappingURL=order.routes.js.map

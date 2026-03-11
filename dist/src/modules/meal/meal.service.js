@@ -15,10 +15,10 @@ const getProviderMeals = async ({ page, limit, skip, sortBy, sortOrder, category
         };
     }
     if (categoryIds) {
-        const categoryIdArray = categoryIds.split(',').filter(id => id.trim());
+        const categoryIdArray = categoryIds.split(",").filter((id) => id.trim());
         if (categoryIdArray.length > 0) {
             where.categoryId = {
-                in: categoryIdArray
+                in: categoryIdArray,
             };
         }
     }
@@ -104,10 +104,10 @@ const getAllMeals = async ({ page, limit, skip, sortBy, sortOrder, category, cat
         };
     }
     if (categoryIds) {
-        const categoryIdArray = categoryIds.split(',').filter(id => id.trim());
+        const categoryIdArray = categoryIds.split(",").filter((id) => id.trim());
         if (categoryIdArray.length > 0) {
             where.categoryId = {
-                in: categoryIdArray
+                in: categoryIdArray,
             };
         }
     }
@@ -431,4 +431,3 @@ exports.mealService = {
     updateMeal,
     deleteMeal,
 };
-//# sourceMappingURL=meal.service.js.map

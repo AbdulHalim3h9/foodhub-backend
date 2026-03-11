@@ -41,10 +41,10 @@ const getProviderMeals = async ({
   }
 
   if (categoryIds) {
-    const categoryIdArray = categoryIds.split(',').filter(id => id.trim());
+    const categoryIdArray = categoryIds.split(",").filter((id) => id.trim());
     if (categoryIdArray.length > 0) {
       where.categoryId = {
-        in: categoryIdArray
+        in: categoryIdArray,
       };
     }
   }
@@ -172,10 +172,10 @@ const getAllMeals = async ({
   }
 
   if (categoryIds) {
-    const categoryIdArray = categoryIds.split(',').filter(id => id.trim());
+    const categoryIdArray = categoryIds.split(",").filter((id) => id.trim());
     if (categoryIdArray.length > 0) {
       where.categoryId = {
-        in: categoryIdArray
+        in: categoryIdArray,
       };
     }
   }
@@ -387,22 +387,30 @@ const createMeal = async (mealData: {
 
   // Verify category exists if categoryId is provided
   if (mealData.categoryId) {
-    console.log(`🔍 [MEAL SERVICE] Verifying category exists: ${mealData.categoryId}`);
+    console.log(
+      `🔍 [MEAL SERVICE] Verifying category exists: ${mealData.categoryId}`,
+    );
     const category = await prisma.category.findUnique({
       where: { id: mealData.categoryId },
     });
 
     if (!category) {
-      console.log(`❌ [MEAL SERVICE] Category not found: ${mealData.categoryId}`);
+      console.log(
+        `❌ [MEAL SERVICE] Category not found: ${mealData.categoryId}`,
+      );
       throw new Error("Category not found!");
     }
 
-    console.log(`✅ [MEAL SERVICE] Category found: ${category.name} (${category.id})`);
+    console.log(
+      `✅ [MEAL SERVICE] Category found: ${category.name} (${category.id})`,
+    );
   }
 
   // Verify cuisine exists if provided
   if (mealData.cuisineId) {
-    console.log(`🔍 [MEAL SERVICE] Verifying cuisine exists: ${mealData.cuisineId}`);
+    console.log(
+      `🔍 [MEAL SERVICE] Verifying cuisine exists: ${mealData.cuisineId}`,
+    );
     const cuisine = await prisma.cuisine.findUnique({
       where: { id: mealData.cuisineId },
     });
@@ -412,9 +420,13 @@ const createMeal = async (mealData: {
       throw new Error("Cuisine not found!");
     }
 
-    console.log(`✅ [MEAL SERVICE] Cuisine found: ${cuisine.name} (${cuisine.id})`);
+    console.log(
+      `✅ [MEAL SERVICE] Cuisine found: ${cuisine.name} (${cuisine.id})`,
+    );
   } else {
-    console.log("ℹ️ [MEAL SERVICE] No cuisine ID provided - skipping cuisine verification");
+    console.log(
+      "ℹ️ [MEAL SERVICE] No cuisine ID provided - skipping cuisine verification",
+    );
   }
 
   // Create meal
@@ -467,7 +479,10 @@ const createMeal = async (mealData: {
       isFeatured: meal.isFeatured,
     };
   } catch (dbError) {
-    console.error("💥 [MEAL SERVICE] Database error during meal creation:", dbError);
+    console.error(
+      "💥 [MEAL SERVICE] Database error during meal creation:",
+      dbError,
+    );
     throw dbError;
   }
 };
@@ -475,7 +490,7 @@ const createMeal = async (mealData: {
 const updateMeal = async (
   mealId: string,
   updateData: any,
-  providerProfileId: string
+  providerProfileId: string,
 ) => {
   // First check if meal exists and user owns it
   const existingMeal = await prisma.meal.findUnique({
