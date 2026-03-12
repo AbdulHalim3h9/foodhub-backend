@@ -24,7 +24,9 @@ declare global {
 const auth = (...roles: UserRole[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const token = req.headers.authorization;
+      const token =
+        req.headers.authorization ||
+        (req.cookies ? req.cookies.token : undefined);
 
       if (!token) {
         return res.status(401).json({

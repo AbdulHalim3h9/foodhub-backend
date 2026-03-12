@@ -9,6 +9,8 @@ const register = async (req: Request, res: Response) => {
     res.cookie("refreshToken", refreshToken, {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
     });
 
     res.status(200).json({
@@ -36,6 +38,8 @@ const login = async (req: Request, res: Response) => {
     res.cookie("refreshToken", refreshToken, {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
     });
 
     res.status(200).json({

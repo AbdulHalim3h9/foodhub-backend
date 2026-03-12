@@ -11,16 +11,22 @@ import { cartRouter } from "./modules/cart/cart.routes";
 import { mealRouter } from "./modules/meal/meal.routes";
 import { reviewRouter } from "./modules/review/review.routes";
 import { cuisineRouter } from "./modules/cuisine/cuisine.routes";
+import cookieParser from "cookie-parser";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 
 const app: Application = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://localhost:3000"],
+    origin: [
+      "http://localhost:3000",
+      "https://localhost:3000",
+      process.env.FRONTEND_URL,
+    ].filter(Boolean) as string[],
     credentials: true,
   }),
 );
+app.use(cookieParser());
 app.use(express.json());
 
 app.get("/", (req, res) => {
